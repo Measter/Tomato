@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,32 +8,38 @@ using System.Text;
 using System.Windows.Forms;
 using Tomato;
 using Tomato.Hardware;
-using System.Drawing.Drawing2D;
-using System.Threading;
 
 namespace Lettuce
 {
-    public partial class GenerickeyboardWindow : LEM1802Window
+    public partial class GenericKeyboardWindow : DeviceHost
     {
-        protected override void InitClientSize() {
-            this.ClientSize = new Size(200, 50);
-        }
-        
-        public GenerickeyboardWindow(LEM1802 LEM1802, DCPU CPU, bool AssignKeyboard)
-        :base(LEM1802, CPU, AssignKeyboard)
+        private Device[] managedDevices;
+        public override Device[] ManagedDevices
         {
-            this.Text = "Generic Keyboard";
-            this.Name = "test";
-            this.takeScreenshotToolStripMenuItem.Enabled = false;
+            get { return managedDevices; }
         }
-        
-        protected override void OnPaint(PaintEventArgs e)
+        public GenericKeyboard Keyboard;
+        public DCPU CPU;
+
+        public GenericKeyboardWindow(GenericKeyboard Keyboard, DCPU CPU) : base()
         {
-            string title = "Generic Keyboard #" + KeyboardIndex + "\n\n(type in here)";
-            // Title bar
-            e.Graphics.FillRectangle(Brushes.White, new Rectangle(0, 0, this.Width, this.Height));
-            // Devices
-            e.Graphics.DrawString(title, this.Font, Brushes.Black, new PointF(0, 0));
+            InitializeComponent();
+            this.CPU = CPU;
+            this.Keyboard = Keyboard;
+            managedDevices = new Device[] { Keyboard };
+            this.KeyDown += new KeyEventHandler(GenericKeyboardWindow_KeyDown);
+            this.KeyUp += new KeyEventHandler(GenericKeyboardWindow_KeyUp);
+            this.label1.Text = "Generic Keyboard #" + CPU.Devices.IndexOf(Keyboard);
+        }
+
+        void GenericKeyboardWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            Keyboard.KeyDown(e.KeyCode);
+        }
+
+        void GenericKeyboardWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            Keyboard.KeyUp(e.KeyCode);
         }
     }
 }

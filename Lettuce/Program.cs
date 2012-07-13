@@ -60,7 +60,7 @@ namespace Lettuce
 
             CPU = new DCPU();
             string binFile = null;
-            bool littleEndian = false;
+            bool littleEndian = false, pairKeyboards = true;
             List<Device> devices = new List<Device>();
             CPU.IsRunning = false;
             for (int i = 0; i < args.Length; i++)
@@ -98,6 +98,9 @@ namespace Lettuce
                                     }
                                 }
                             }
+                            break;
+                        case "--skip-pairing":
+                            pairKeyboards = false;
                             break;
                         case "--listing":
                             Debugger.LoadOrganicListing(args[++i]);
@@ -161,16 +164,18 @@ namespace Lettuce
             screenLocation.Y = debugger.Location.Y + 4;
             screenLocation.X = debugger.Location.X + debugger.Width + 5;
             
-            int keyboardCount = 0;
             foreach (Device d in CPU.Devices)
+            {
                 if (d is LEM1802)
-                    AddWindow(new LEM1802Window(d as LEM1802, CPU, true));
-                else if (d is GenericKeyboard)
-                    keyboardCount++;
+                    AddWindow(new LEM1802Window(d as LEM1802, CPU, pairKeyboards));
+            }
             
-            int remaining = keyboardCount - LEM1802Window.AssignedKeyboards.Count();
-            for(;remaining > 0; remaining--)
-                AddWindow(new GenerickeyboardWindow(null, CPU, true));
+            // Run again for extra keyboards
+            for (int i = 0; i < CPU.Devices.Count; i++)
+            {
+                if (CPU.Devices[i] is GenericKeyboard && !LEM1802Window.AssignedKeyboards.Contains(i))
+                    AddWindow(new GenericKeyboardWindow(CPU.Devices[i] as GenericKeyboard, CPU));
+            }
             
             debugger.Focus();
             LastTick = DateTime.Now;
@@ -179,20 +184,22 @@ namespace Lettuce
             timer.Dispose();
         }
         
-        static void AddWindow(LEM1802Window window) {
+        static void AddWindow(DeviceHost window)
+        {
             window.StartPosition = FormStartPosition.Manual;
+            if (screenLocation.Y + window.Height > Screen.PrimaryScreen.WorkingArea.Height) // Wrap excessive windows
+            {
+                screenLocation.Y = 25;
+                screenLocation.X += 25;
+            }
             window.Location = screenLocation;
             screenLocation.Y += window.Height + 12;
             window.Show();
             window.Invalidate();
             window.Update();
             window.Focus();
-            if(window.Keyboard != null) {
-                Windows.Add(window.Keyboard, window);
-            }
-            if(window.Screen != null) {
-                Windows.Add(window.Screen, window);
-            }
+            foreach (var device in window.ManagedDevices)
+                Windows.Add(device, window);
         }
         
         static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
