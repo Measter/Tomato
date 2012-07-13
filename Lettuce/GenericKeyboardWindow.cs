@@ -29,7 +29,14 @@ namespace Lettuce
             managedDevices = new Device[] { Keyboard };
             this.KeyDown += new KeyEventHandler(GenericKeyboardWindow_KeyDown);
             this.KeyUp += new KeyEventHandler(GenericKeyboardWindow_KeyUp);
+            this.MouseDown += new MouseEventHandler(GenericKeyboardWindow_MouseDown);
+            this.label1.MouseDown += new MouseEventHandler(GenericKeyboardWindow_MouseDown);
             this.label1.Text = "Generic Keyboard #" + CPU.Devices.IndexOf(Keyboard);
+        }
+
+        void GenericKeyboardWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            this.DoDragDrop(Keyboard, DragDropEffects.Move);
         }
 
         void GenericKeyboardWindow_KeyDown(object sender, KeyEventArgs e)

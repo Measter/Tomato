@@ -44,6 +44,7 @@ namespace Lettuce
               ControlStyles.UserPaint | ControlStyles.Opaque, true);
             
             // Take a screen
+            this.CPU = CPU;
             Screen = LEM1802;
             managedDevices = new Device[] { Screen };
             ScreenIndex = CPU.Devices.IndexOf(Screen);
@@ -63,17 +64,55 @@ namespace Lettuce
                         managedDevices = managedDevices.Concat(new Device[] { Keyboard }).ToArray();
                         AssignedKeyboards.Add(i);
                         KeyboardIndex = i;
+                        this.detatchKeyboardToolStripMenuItem.Visible = true;
                         break;
                     }
                 }
-                this.KeyDown += new KeyEventHandler(LEM1802Window_KeyDown);
-                this.KeyUp += new KeyEventHandler(LEM1802Window_KeyUp);
+            }
+            this.KeyDown += new KeyEventHandler(LEM1802Window_KeyDown);
+            this.KeyUp += new KeyEventHandler(LEM1802Window_KeyUp);
+            if (this.Keyboard == null)
+            {
+                this.DragEnter += new DragEventHandler(LEM1802Window_DragEnter);
+                this.DragDrop += new DragEventHandler(LEM1802Window_DragDrop);
+                this.AllowDrop = true;
             }
             timer = new System.Threading.Timer(delegate(object o)
                 {
                     InvalidateAsync();
                 }, null, 16, 16); // 60 Hz
             InitClientSize();
+        }
+
+        void LEM1802Window_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(GenericKeyboard)))
+            {
+                GenericKeyboard data = (GenericKeyboard)e.Data.GetData(typeof(GenericKeyboard));
+                if (Program.Windows.ContainsKey(data))
+                {
+                    Program.Windows[data].Close();
+                    Program.Windows.Remove(data);
+                    Program.Windows.Add(data, this);
+                    this.Keyboard = data;
+                    this.KeyboardIndex = this.CPU.Devices.IndexOf(data);
+                    managedDevices = managedDevices.Concat(new Device[] { Keyboard }).ToArray();
+                    AssignedKeyboards.Add(KeyboardIndex);
+                    this.DragEnter -= LEM1802Window_DragEnter;
+                    this.DragDrop -= LEM1802Window_DragDrop;
+                    this.detatchKeyboardToolStripMenuItem.Visible = true;
+                    this.AllowDrop = false;
+                }
+            }
+        }
+
+        void LEM1802Window_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(GenericKeyboard)))
+            {
+                GenericKeyboard data = (GenericKeyboard)e.Data.GetData(typeof(GenericKeyboard));
+                e.Effect = DragDropEffects.Move;
+            }
         }
 
         System.Threading.Timer timer;
@@ -128,6 +167,22 @@ namespace Lettuce
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             // Screen
             e.Graphics.DrawImage(Screen.ScreenImage, 10, 25, this.ClientSize.Width - 20, this.ClientSize.Height - 35);
+        }
+
+        private void detatchKeyboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Windows.Remove(this.Keyboard);
+            GenericKeyboardWindow gkw = new GenericKeyboardWindow(this.Keyboard, this.CPU);
+            Program.Windows.Add(this.Keyboard, gkw);
+            gkw.Show();
+            managedDevices = managedDevices.Where(d => d != this.Keyboard).ToArray();
+            this.Keyboard = null;
+            AssignedKeyboards.Remove(this.KeyboardIndex);
+            this.KeyboardIndex = -1;
+            this.AllowDrop = true;
+            this.DragEnter += LEM1802Window_DragEnter;
+            this.DragDrop += LEM1802Window_DragDrop;
+            this.detatchKeyboardToolStripMenuItem.Visible = false;
         }
 
         private void takeScreenshotToolStripMenuItem_Click(object sender, EventArgs e)
