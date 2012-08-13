@@ -120,6 +120,8 @@ namespace Tomato.Hardware
                     return 0x13;
                 case Keys.Control:
                     return 0x91;
+                case Keys.ControlKey:
+                    return 0x91;
                 case Keys.Shift:
                 case Keys.ShiftKey:
                     return 0x90;
