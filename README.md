@@ -19,7 +19,7 @@ If you wish to use any of this software on Linux or Mac, install Mono first.  It
 
 Lettuce is probably what you want to use.  It looks like this:
 
-![Lettuce](http://i.imgur.com/TuwIA.png)
+![Lettuce](http://i.imgur.com/EX66v.png)
 
 It has lots of useful stuff.  If you start it up without command line arguments, you get this:
 
@@ -36,12 +36,12 @@ this moment).  The ones pictured here are provided by Tomato.  Check any amount 
 see this screen, you can add hardware with -hw, or --connect, or -c from the command line.  If you use the command line,
 you can also connect several of the same device.  When you hit OK, you see this:
 
-![Debugger](http://i.imgur.com/TuwIA.png)
+![Debugger](http://i.imgur.com/EX66v.png)
 
 For every connected LEM 1802, a window will pop up.  Each window will associate itself with a keyboard as well, if present.
 Any additional keyboards that don't have LEM 1802 devices to associate with will have their own window.  You can focus on
 a window (i.e. click it) and type to send keys to that keyboard.  Right click the LEM1802 window if you want to take a 
-screenshot of it.
+screenshot of it. You can also drag keyboards off of LEM 1802 windows and back on again.
 
 Also opened is the debugger window.  On the right is the register view, which shows all registers and their current values.
 You can also see if interrupt queueing is enabled, and how many interrupts are queued, and whether or not the device is on fire.
@@ -49,8 +49,8 @@ If you uncheck "Running" and stop the CPU, you're free to modify any of these va
 keyboard) will execute one instruction.  Step over will execute one instruction, unless it's a JSR instruction, in which case
 it will execute until it returns.
 
-Below that is a list of all your connected devices.  Click one to see a little info about it.  Edit Device will open a window
-with more device information and the ability to edit that information.
+Below that is a list of all your connected devices.  Click one to see a little info about it and all of the properties you
+may modify. When you wish to adjust a device property, enter a new value and press Enter to apply.
 
 To the left is the memory view.  You can scroll through all the memory of the device, and you can edit it if the CPU is stopped.
 Double click a cell to edit it, or right click and select "Edit Value".  Right click and select "Goto Address" to jump to a
