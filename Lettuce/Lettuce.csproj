@@ -36,6 +36,9 @@
     <ApplicationIcon>tomato.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gif.Components">
+      <HintPath>..\Gif.Components.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

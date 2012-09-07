@@ -10,6 +10,8 @@ using Tomato;
 using Tomato.Hardware;
 using System.Drawing.Drawing2D;
 using System.Threading;
+using Gif.Components;
+using System.IO;
 
 namespace Lettuce
 {
@@ -39,6 +41,7 @@ namespace Lettuce
         public LEM1802Window(LEM1802 LEM1802, DCPU CPU, bool AssignKeyboard) : base()
         {
             InitializeComponent();
+            startRecordingToolStripMenuItem.Tag = false;
             // Set up drawing
             this.SetStyle(ControlStyles.AllPaintingInWmPaint |
               ControlStyles.UserPaint | ControlStyles.Opaque, true);
@@ -167,6 +170,11 @@ namespace Lettuce
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             // Screen
             e.Graphics.DrawImage(Screen.ScreenImage, 10, 25, this.ClientSize.Width - 20, this.ClientSize.Height - 35);
+            if (CPU.IsRunning && gifEncoder != null)
+            {
+                // Update animated gif
+                gifEncoder.AddFrame(Screen.ScreenImage);
+            }
         }
 
         private void detatchKeyboardToolStripMenuItem_Click(object sender, EventArgs e)
@@ -193,6 +201,36 @@ namespace Lettuce
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
             image.Save(sfd.FileName);
+        }
+
+        private AnimatedGifEncoder gifEncoder;
+        private void startRecordingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if ((bool)startRecordingToolStripMenuItem.Tag)
+            {
+                // End recording
+                startRecordingToolStripMenuItem.Tag = false;
+                startRecordingToolStripMenuItem.Text = "Start Recording";
+                gifEncoder.Finish();
+                gifEncoder = null;
+            }
+            else
+            {
+                // Begin recording an animated gif
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                sfd.Filter = "Animated Gif Image (*.gif)|*.gif";
+                if (sfd.ShowDialog() != DialogResult.OK)
+                    return;
+                startRecordingToolStripMenuItem.Tag = true;
+                startRecordingToolStripMenuItem.Text = "Stop Recording";
+                gifEncoder = new AnimatedGifEncoder();
+                if (File.Exists(sfd.FileName))
+                    File.Delete(sfd.FileName);
+                gifEncoder.Start(sfd.FileName);
+                gifEncoder.SetDelay(16); // 60 Hz
+                gifEncoder.SetRepeat(0); // Always repeat
+            }
         }
     }
 }

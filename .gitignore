@@ -5,3 +5,4 @@ TestResults/
 *.suo
 *.vsmdi
 *.testsettings
+_ReSharper*/

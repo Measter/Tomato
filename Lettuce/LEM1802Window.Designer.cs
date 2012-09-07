@@ -33,30 +33,40 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.takeScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detatchKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startRecordingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.takeScreenshotToolStripMenuItem, this.detatchKeyboardToolStripMenuItem});
+            this.takeScreenshotToolStripMenuItem,
+            this.detatchKeyboardToolStripMenuItem,
+            this.startRecordingToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(165, 92);
             // 
             // takeScreenshotToolStripMenuItem
             // 
             this.takeScreenshotToolStripMenuItem.Name = "takeScreenshotToolStripMenuItem";
-            this.takeScreenshotToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.takeScreenshotToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.takeScreenshotToolStripMenuItem.Text = "Take Screenshot";
             this.takeScreenshotToolStripMenuItem.Click += new System.EventHandler(this.takeScreenshotToolStripMenuItem_Click);
             // 
             // detatchKeyboardToolStripMenuItem
             // 
             this.detatchKeyboardToolStripMenuItem.Name = "detatchKeyboardToolStripMenuItem";
-            this.detatchKeyboardToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.detatchKeyboardToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.detatchKeyboardToolStripMenuItem.Text = "Detach Keyboard";
             this.detatchKeyboardToolStripMenuItem.Visible = false;
             this.detatchKeyboardToolStripMenuItem.Click += new System.EventHandler(this.detatchKeyboardToolStripMenuItem_Click);
+            // 
+            // startRecordingToolStripMenuItem
+            // 
+            this.startRecordingToolStripMenuItem.Name = "startRecordingToolStripMenuItem";
+            this.startRecordingToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.startRecordingToolStripMenuItem.Text = "Start Recording";
+            this.startRecordingToolStripMenuItem.Click += new System.EventHandler(this.startRecordingToolStripMenuItem_Click);
             // 
             // LEM1802Window
             // 
@@ -80,6 +90,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         protected System.Windows.Forms.ToolStripMenuItem takeScreenshotToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detatchKeyboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startRecordingToolStripMenuItem;
     }
 }
 
