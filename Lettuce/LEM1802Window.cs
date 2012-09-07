@@ -169,11 +169,12 @@ namespace Lettuce
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             // Screen
-            e.Graphics.DrawImage(Screen.ScreenImage, 10, 25, this.ClientSize.Width - 20, this.ClientSize.Height - 35);
+            Image screen = (Image)Screen.ScreenImage.Clone();
+            e.Graphics.DrawImage(screen, 10, 25, this.ClientSize.Width - 20, this.ClientSize.Height - 35);
             if (CPU.IsRunning && gifEncoder != null)
             {
                 // Update animated gif
-                gifEncoder.AddFrame(Screen.ScreenImage);
+                gifEncoder.AddFrame(screen);
             }
         }
 
