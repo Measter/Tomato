@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             Tomato.DCPU dcpu1 = new Tomato.DCPU();
             Tomato.DCPU dcpu2 = new Tomato.DCPU();
             Tomato.DCPU dcpu3 = new Tomato.DCPU();
@@ -73,6 +72,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.checkBoxRunning = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxBreakOnInterrupt = new System.Windows.Forms.CheckBox();
             this.listBoxConnectedDevices = new System.Windows.Forms.ListBox();
             this.label17 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -86,6 +86,8 @@
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.customToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.breakOnInvalidInstructionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepOverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,11 +100,13 @@
             this.gotoAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.checkBoxBreakOnInterrupt = new System.Windows.Forms.CheckBox();
+            this.invalidInstructionLabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -550,6 +554,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Hardware";
             // 
+            // checkBoxBreakOnInterrupt
+            // 
+            this.checkBoxBreakOnInterrupt.AutoSize = true;
+            this.checkBoxBreakOnInterrupt.Location = new System.Drawing.Point(6, 252);
+            this.checkBoxBreakOnInterrupt.Name = "checkBoxBreakOnInterrupt";
+            this.checkBoxBreakOnInterrupt.Size = new System.Drawing.Size(111, 17);
+            this.checkBoxBreakOnInterrupt.TabIndex = 2;
+            this.checkBoxBreakOnInterrupt.Text = "Break on Interrupt";
+            this.checkBoxBreakOnInterrupt.UseVisualStyleBackColor = true;
+            // 
             // listBoxConnectedDevices
             // 
             this.listBoxConnectedDevices.FormattingEnabled = true;
@@ -587,7 +601,8 @@
             this.stopToolStripMenuItem,
             this.resetToolStripMenuItem,
             this.speedToolStripMenuItem,
-            this.loadToolStripMenuItem});
+            this.loadToolStripMenuItem,
+            this.optionsToolStripMenuItem});
             this.emulationToolStripMenuItem.Name = "emulationToolStripMenuItem";
             this.emulationToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.emulationToolStripMenuItem.Text = "Emulation";
@@ -662,6 +677,21 @@
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.breakOnInvalidInstructionToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // breakOnInvalidInstructionToolStripMenuItem
+            // 
+            this.breakOnInvalidInstructionToolStripMenuItem.Name = "breakOnInvalidInstructionToolStripMenuItem";
+            this.breakOnInvalidInstructionToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.breakOnInvalidInstructionToolStripMenuItem.Text = "Break on Invalid Instruction";
+            this.breakOnInvalidInstructionToolStripMenuItem.Click += new System.EventHandler(this.breakOnInvalidInstructionToolStripMenuItem_Click);
             // 
             // debugToolStripMenuItem
             // 
@@ -761,21 +791,38 @@
             this.propertyGrid1.TabIndex = 4;
             this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
             // 
-            // checkBoxBreakOnInterrupt
+            // invalidInstructionLabel
             // 
-            this.checkBoxBreakOnInterrupt.AutoSize = true;
-            this.checkBoxBreakOnInterrupt.Location = new System.Drawing.Point(6, 252);
-            this.checkBoxBreakOnInterrupt.Name = "checkBoxBreakOnInterrupt";
-            this.checkBoxBreakOnInterrupt.Size = new System.Drawing.Size(111, 17);
-            this.checkBoxBreakOnInterrupt.TabIndex = 2;
-            this.checkBoxBreakOnInterrupt.Text = "Break on Interrupt";
-            this.checkBoxBreakOnInterrupt.UseVisualStyleBackColor = true;
+            this.invalidInstructionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.invalidInstructionLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
+            this.invalidInstructionLabel.Location = new System.Drawing.Point(759, 2);
+            this.invalidInstructionLabel.Name = "invalidInstructionLabel";
+            this.invalidInstructionLabel.Size = new System.Drawing.Size(204, 19);
+            this.invalidInstructionLabel.TabIndex = 5;
+            this.invalidInstructionLabel.Text = "Invalid instruction detected!";
+            this.invalidInstructionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.invalidInstructionLabel.Visible = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
+            this.pictureBox1.Image = global::Lettuce.Properties.Resources.warning;
+            this.pictureBox1.Location = new System.Drawing.Point(964, 2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             // 
             // Debugger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(992, 602);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.invalidInstructionLabel);
             this.Controls.Add(this.propertyGrid1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -787,6 +834,7 @@
             this.Name = "Debugger";
             this.Text = "Debugger";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Debugger_KeyDown);
+            this.Resize += new System.EventHandler(this.Debugger_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -795,6 +843,7 @@
             this.groupBox3.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -868,5 +917,9 @@
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBoxBreakOnInterrupt;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem breakOnInvalidInstructionToolStripMenuItem;
+        private System.Windows.Forms.Label invalidInstructionLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -42,6 +42,10 @@ namespace Tomato
         /// Called when a breakpoint is hit, before it is executed.
         /// </summary>
         public event EventHandler<BreakpointEventArgs> BreakpointHit;
+        /// <summary>
+        /// Called when an invalid instruction is executed.
+        /// </summary>
+        public event EventHandler<InvalidInstructionEventArgs> InvalidInstruction;
 
         private static Random Random;
         private int cycles = 0;
@@ -93,6 +97,7 @@ namespace Tomato
                 if (!InterruptQueueEnabled && InterruptQueue.Count > 0)
                     FireInterrupt(InterruptQueue.Dequeue());
 
+                ushort PCBeforeExecution = PC;
                 ushort instruction = Memory[PC++];
                 byte opcode = (byte)(instruction & 0x1F);
                 byte valueB = (byte)((instruction & 0x3E0) >> 5);
@@ -163,6 +168,14 @@ namespace Tomato
                                         cycles -= Devices[opA].HandleInterrupt();
                                     break;
                                 default:
+                                    if (InvalidInstruction != null)
+                                    {
+                                        var eventArgs = new InvalidInstructionEventArgs(instruction, PCBeforeExecution);
+                                        PC = PCBeforeExecution;
+                                        InvalidInstruction(this, eventArgs);
+                                        if (!eventArgs.ContinueExecution)
+                                            return;
+                                    }
                                     break;
                             }
                             break;
@@ -331,6 +344,14 @@ namespace Tomato
                         default:
                             // According to spec, should take zero cycles
                             // For sanity, all NOPs take one cycle
+                            if (InvalidInstruction != null)
+                            {
+                                var eventArgs = new InvalidInstructionEventArgs(instruction, PCBeforeExecution);
+                                PC = PCBeforeExecution;
+                                InvalidInstruction(this, eventArgs);
+                                if (!eventArgs.ContinueExecution)
+                                    return;
+                            }
                             break;
                     }
                 }

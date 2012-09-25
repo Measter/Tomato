@@ -31,6 +31,7 @@ namespace Lettuce
             this.KeyPreview = true;
             this.CPU = CPU;
             this.CPU.BreakpointHit += new EventHandler<BreakpointEventArgs>(CPU_BreakpointHit);
+            this.CPU.InvalidInstruction += CpuOnInvalidInstruction; 
             this.rawMemoryDisplay.CPU = this.CPU;
             this.stackDisplay.CPU = this.CPU;
             this.disassemblyDisplay1.CPU = this.CPU;
@@ -45,6 +46,32 @@ namespace Lettuce
                 {
                     DeviceControllers.Add(type);
                 }
+            }
+        }
+
+        private void CpuOnInvalidInstruction(object sender, InvalidInstructionEventArgs invalidInstructionEventArgs)
+        {
+            InvalidInstruction(invalidInstructionEventArgs);
+            if (breakOnInvalidInstructionToolStripMenuItem.Checked)
+            {
+                invalidInstructionEventArgs.ContinueExecution = false;
+                CPU.IsRunning = false;
+            }
+        }
+
+        private delegate void InvalidInstructionDelegate(InvalidInstructionEventArgs eventArgs);
+        void InvalidInstruction(InvalidInstructionEventArgs eventArgs)
+        {
+            if (InvokeRequired)
+                Invoke(new InvalidInstructionDelegate(InvalidInstruction), eventArgs);
+            else
+            {
+                pictureBox1.Visible = true;
+                invalidInstructionLabel.Text = "Invalid instruction at 0x" + eventArgs.Address.ToString("X4") +
+                    ": 0x" + eventArgs.Instruction.ToString("X4");
+                invalidInstructionLabel.Visible = true;
+                if (breakOnInvalidInstructionToolStripMenuItem.Checked)
+                    ResetLayout();
             }
         }
 
@@ -586,6 +613,16 @@ namespace Lettuce
         {
             KnownCode = new Dictionary<ushort,string>();
             KnownLabels = new Dictionary<ushort,string>();
+        }
+
+        private void Debugger_Resize(object sender, EventArgs e)
+        {
+            Invalidate(true);
+        }
+
+        private void breakOnInvalidInstructionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            breakOnInvalidInstructionToolStripMenuItem.Checked = !breakOnInvalidInstructionToolStripMenuItem.Checked;
         }
     }
 }
