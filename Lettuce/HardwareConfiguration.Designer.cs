@@ -50,7 +50,7 @@
             // 
             this.label2.Location = new System.Drawing.Point(12, 29);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(264, 41);
+            this.label2.Size = new System.Drawing.Size(315, 31);
             this.label2.TabIndex = 1;
             this.label2.Text = "You can choose what hardware to enable here.  Start Lettuce with --hw [hardware i" +
     "d] if you wish to skip this step.";
@@ -58,14 +58,14 @@
             // hardwareSelectionListBox
             // 
             this.hardwareSelectionListBox.FormattingEnabled = true;
-            this.hardwareSelectionListBox.Location = new System.Drawing.Point(12, 73);
+            this.hardwareSelectionListBox.Location = new System.Drawing.Point(12, 63);
             this.hardwareSelectionListBox.Name = "hardwareSelectionListBox";
-            this.hardwareSelectionListBox.Size = new System.Drawing.Size(264, 139);
+            this.hardwareSelectionListBox.Size = new System.Drawing.Size(315, 139);
             this.hardwareSelectionListBox.TabIndex = 2;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(198, 218);
+            this.button1.Location = new System.Drawing.Point(252, 208);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -76,7 +76,7 @@
             // setAsDefaultCheckBox
             // 
             this.setAsDefaultCheckBox.AutoSize = true;
-            this.setAsDefaultCheckBox.Location = new System.Drawing.Point(12, 222);
+            this.setAsDefaultCheckBox.Location = new System.Drawing.Point(12, 212);
             this.setAsDefaultCheckBox.Name = "setAsDefaultCheckBox";
             this.setAsDefaultCheckBox.Size = new System.Drawing.Size(93, 17);
             this.setAsDefaultCheckBox.TabIndex = 4;
@@ -88,7 +88,7 @@
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 249);
+            this.ClientSize = new System.Drawing.Size(339, 238);
             this.Controls.Add(this.setAsDefaultCheckBox);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.hardwareSelectionListBox);
