@@ -34,6 +34,8 @@ namespace Tomato.Hardware
             }
         }
 
+        public event EventHandler VerticiesChanged;
+
         [ReadOnly(true)]
         public SPED3State State { get; set; }
 
@@ -97,6 +99,8 @@ namespace Tomato.Hardware
                     TotalVerticies = AttachedCPU.Y;
                     if (TotalVerticies != 0)
                         State = SPED3State.STATE_RUNNING;
+                    if (VerticiesChanged != null)
+                        VerticiesChanged(this, null); // To notify applications when to rebuild the vertex buffer
                     break;
                 case 3:
                     TargetRotation = (ushort)(AttachedCPU.X % 360);
@@ -128,6 +132,12 @@ namespace Tomato.Hardware
             Y = (byte)((value >> 5) & 0x1F);
             Z = (byte)((value >> 10) & 0x1F);
             Color = (byte)((value >> 15) & 1);
+        }
+
+        public string ToString()
+        {
+            return "<" + X + "," + Y + "," + Z + "> " +
+                (Color == 0 ? "Green" : "Red");
         }
     }
 }
