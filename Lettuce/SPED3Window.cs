@@ -138,37 +138,20 @@ namespace Lettuce
             glControl1.SwapBuffers();
         }
 
-        private Color GetColor(SPED3Vertex vertex)
+        private Vector3 GetColor(SPED3Vertex vertex)
         {
+            Vector3 color = new Vector3(0, 0, 0);
             if (vertex.Color == SPED3Color.Black)
-            {
-                if (vertex.Intensity == SPED3Intensity.Dim)
-                    return Color.Black;
-                else
-                    return Color.DarkSlateGray;
-            }
+                color = new Vector3(0.25f, 0.25f, 0.25f);
             else if (vertex.Color == SPED3Color.Green)
-            {
-                if (vertex.Intensity == SPED3Intensity.Dim)
-                    return Color.Green;
-                else
-                    return Color.LightGreen;
-            }
+                color = new Vector3(0, 1, 0);
             else if (vertex.Color == SPED3Color.Red)
-            {
-                if (vertex.Intensity == SPED3Intensity.Dim)
-                    return Color.DarkRed;
-                else
-                    return Color.Red;
-            }
+                color = new Vector3(1, 0, 0);
             else if (vertex.Color == SPED3Color.Blue)
-            {
-                if (vertex.Intensity == SPED3Intensity.Dim)
-                    return Color.Blue;
-                else
-                    return Color.LightBlue;
-            }
-            return Color.Black;
+                color = new Vector3(0, 0, 1);
+            if (vertex.Intensity == SPED3Intensity.Dim)
+                color = Vector3.Multiply(color, new Vector3(0.5f, 0.5f, 0.5f));
+            return color;
         }
 
         static SPED3Window()
