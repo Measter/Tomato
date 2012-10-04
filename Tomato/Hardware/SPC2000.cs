@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Tomato.Hardware
 {
-    public class SCP2000 : Device
+    public class SPC2000 : Device
     {
         [Category("Device Status")]
         public uint UnitToSkip { get; set; }
