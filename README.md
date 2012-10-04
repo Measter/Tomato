@@ -6,6 +6,23 @@ is Lettuce, a graphical debugger for DCPU-16 programs. Also included is Pickles,
 debugger for the command line. All three run on Windows, Linux, and Mac, with the exception
 of Lettuce, which is very buggy on Mac.
 
+**Features:**
+
+* Support for the [1.7 DCPU-16 specification](http://pastebin.com/raw.php?i=Q4JvQvnM)
+* Support for the following officially adopted 0x10c devices:
+  * LEM-1802
+  * Generic Keyboard
+  * Generic Clock
+  * SPC-2000
+  * SPED-3
+* Accurate 100 KHz timing
+* Modular - use Tomato in your own projects easily
+* Load up [Organic](https://github.com/SirCmpwn/Organic) listings for better debugging
+* Record LEM-1802 output as an animated GIF
+* Use any number of devices in any configuration
+
+And many more features are included.
+
 ![Lettuce](http://i.imgur.com/rIGZ2.png)
 
 **[Click to Enlarge](http://i.imgur.com/rIGZ2.png)**
