@@ -120,11 +120,11 @@ namespace Lettuce
             GL.LoadMatrix(ref modelview);
             GL.Rotate(SPED3.CurrentRotation, Vector3.UnitZ);
             // Flicker
-            double flicker = random.NextDouble() * (SPED3.TotalVerticies / 1024f);
+            double flicker = random.NextDouble() * (SPED3.TotalVerticies / 4096f);
             if (SPED3.EnableFlickering)
                 GL.Translate(flicker, flicker, flicker);
 
-            bool flickerModel = random.Next(256) < SPED3.TotalVerticies && SPED3.EnableFlickering;
+            bool flickerModel = random.Next(512) < SPED3.TotalVerticies && SPED3.EnableFlickering;
 
             if (SPED3.TotalVerticies > 0 && !flickerModel)
             {

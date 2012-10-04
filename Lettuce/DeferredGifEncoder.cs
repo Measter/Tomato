@@ -28,7 +28,7 @@ namespace Lettuce
             frames.Add((Image)frame.Clone());
         }
 
-        public void FinishAsync(Action Completed)
+        public void FinishAsync(Action completed)
         {
             Encoding = Finished = true;
             Task.Factory.StartNew(() =>
@@ -40,8 +40,8 @@ namespace Lettuce
                         GifEncoder.AddFrame(frame);
                     GifEncoder.Finish();
                     Encoding = false;
-                    if (Completed != null)
-                        Completed();
+                    if (completed != null)
+                        completed();
                 });
         }
     }
