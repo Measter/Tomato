@@ -37,6 +37,7 @@ namespace Tomato.Hardware
             get { return "Suspension Chamber 2000"; }
         }
 
+        [Browsable(false)]
         public override bool SelectedByDefault
         {
             get

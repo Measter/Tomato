@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace Tomato.Hardware
 {
@@ -13,6 +14,7 @@ namespace Tomato.Hardware
         public abstract string FriendlyName { get; }
         public DCPU AttachedCPU;
 
+        [Browsable(false)]
         public virtual bool SelectedByDefault
         {
             get

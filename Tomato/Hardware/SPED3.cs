@@ -41,8 +41,7 @@ namespace Tomato.Hardware
 
         public event EventHandler VerticiesChanged;
 
-        [ReadOnly(true)]
-        public SPED3State State { get; set; }
+        public SPED3State State { get; private set; }
 
         [Category("Device Status")]
         public ushort TargetRotation { get; set; }
@@ -80,6 +79,7 @@ namespace Tomato.Hardware
             get { return "Suspended Particle Exciter Display"; }
         }
 
+        [Browsable(false)]
         public override bool SelectedByDefault
         {
             get
