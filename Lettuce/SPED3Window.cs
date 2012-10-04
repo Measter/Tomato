@@ -121,15 +121,18 @@ namespace Lettuce
 
                 GL.End();
 
-                GL.Begin(BeginMode.Quads);
-                int vertex = random.Next(SPED3.TotalVerticies);
-                position = new Vector3((float)(verticies[vertex].X) / 256 * 2 - 1,
-                            (float)(verticies[vertex].Y) / 256 * 2 - 1,
-                            (float)(verticies[vertex].Z) / 256 * 2 - 1);
-                GL.Color3(GetColor(verticies[vertex]));
-                foreach (var point in cubeVerticies)
-                    GL.Vertex3(point + position);
-                GL.End();
+                if (SPED3.EnableFlickering)
+                {
+                    GL.Begin(BeginMode.Quads);
+                    int vertex = random.Next(SPED3.TotalVerticies);
+                    position = new Vector3((float)(verticies[vertex].X) / 256 * 2 - 1,
+                                           (float)(verticies[vertex].Y) / 256 * 2 - 1,
+                                           (float)(verticies[vertex].Z) / 256 * 2 - 1);
+                    GL.Color3(GetColor(verticies[vertex]));
+                    foreach (var point in cubeVerticies)
+                        GL.Vertex3(point + position);
+                    GL.End();
+                }
             }
 
             glControl1.SwapBuffers();

@@ -26,6 +26,7 @@ namespace Tomato.Hardware
         public SPED3()
         {
             rotationTimer = new Timer(UpdateRotation, null, 16, 16); // Updates at 60 Hz
+            EnableFlickering = true;
         }
 
         private Timer rotationTimer;
