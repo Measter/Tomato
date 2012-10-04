@@ -18,7 +18,6 @@ namespace Lettuce
         public ushort EndAddress { get; set; }
         private Point MouseLocation;
         private bool IsMouseWithin;
-        //public event EventHandler
 
         public DisassemblyDisplay()
         {
@@ -274,6 +273,23 @@ namespace Lettuce
                 SelectedAddress = gtaf.Value;
                 this.Invalidate();
             }
+        }
+
+        private void setPCToAddressToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Font font = new Font(FontFamily.GenericMonospace, 12);
+            ushort address = SelectedAddress;
+            int offset = MouseLocation.Y / (TextRenderer.MeasureText("0", font).Height + 2);
+            int index = 0;
+            while (offset != 0)
+            {
+                if (!Disassembly[index].IsLabel)
+                    address += CPU.InstructionLength(address);
+                index++;
+                offset--;
+            }
+            CPU.PC = address;
+            this.Invalidate();
         }
     }
 }

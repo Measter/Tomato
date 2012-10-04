@@ -31,22 +31,31 @@
             this.components = new System.ComponentModel.Container();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gotoAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPCToAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gotoAddressToolStripMenuItem});
+            this.gotoAddressToolStripMenuItem,
+            this.setPCToAddressToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(168, 70);
             // 
             // gotoAddressToolStripMenuItem
             // 
             this.gotoAddressToolStripMenuItem.Name = "gotoAddressToolStripMenuItem";
-            this.gotoAddressToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.gotoAddressToolStripMenuItem.Text = "Goto Address";
+            this.gotoAddressToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.gotoAddressToolStripMenuItem.Text = "Go To Address";
             this.gotoAddressToolStripMenuItem.Click += new System.EventHandler(this.gotoAddressToolStripMenuItem_Click);
+            // 
+            // setPCToAddressToolStripMenuItem
+            // 
+            this.setPCToAddressToolStripMenuItem.Name = "setPCToAddressToolStripMenuItem";
+            this.setPCToAddressToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.setPCToAddressToolStripMenuItem.Text = "Set PC to Address";
+            this.setPCToAddressToolStripMenuItem.Click += new System.EventHandler(this.setPCToAddressToolStripMenuItem_Click);
             // 
             // DisassemblyDisplay
             // 
@@ -66,5 +75,6 @@
 
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem gotoAddressToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setPCToAddressToolStripMenuItem;
     }
 }
