@@ -33,6 +33,7 @@
             this.glControl1 = new OpenTK.GLControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.takeScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recordGIFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,9 +54,10 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.takeScreenshotToolStripMenuItem});
+            this.takeScreenshotToolStripMenuItem,
+            this.recordGIFToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
             // 
             // takeScreenshotToolStripMenuItem
             // 
@@ -63,6 +65,13 @@
             this.takeScreenshotToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.takeScreenshotToolStripMenuItem.Text = "Take Screenshot";
             this.takeScreenshotToolStripMenuItem.Click += new System.EventHandler(this.takeScreenshotToolStripMenuItem_Click);
+            // 
+            // recordGIFToolStripMenuItem
+            // 
+            this.recordGIFToolStripMenuItem.Name = "recordGIFToolStripMenuItem";
+            this.recordGIFToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.recordGIFToolStripMenuItem.Text = "Start Recording";
+            this.recordGIFToolStripMenuItem.Click += new System.EventHandler(this.recordGIFToolStripMenuItem_Click);
             // 
             // SPED3Window
             // 
@@ -84,5 +93,6 @@
         private OpenTK.GLControl glControl1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem takeScreenshotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recordGIFToolStripMenuItem;
     }
 }

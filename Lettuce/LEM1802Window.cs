@@ -151,6 +151,7 @@ namespace Lettuce
             }
         }
 
+        private Image screen;
         protected override void OnPaint(PaintEventArgs e)
         {
             string title = "LEM1802 #" + ScreenIndex;
@@ -169,9 +170,9 @@ namespace Lettuce
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             // Screen
-            Image screen = (Image)Screen.ScreenImage.Clone();
+            screen = Screen.ScreenImage;
             e.Graphics.DrawImage(screen, 10, 25, this.ClientSize.Width - 20, this.ClientSize.Height - 35);
-            if (CPU.IsRunning && gifEncoder != null)
+            if (CPU.IsRunning && gifEncoder != null && !gifEncoder.Finished)
             {
                 // Update animated gif
                 gifEncoder.AddFrame(screen);
@@ -185,13 +186,13 @@ namespace Lettuce
             Program.Windows.Add(this.Keyboard, gkw);
             gkw.Show();
             managedDevices = managedDevices.Where(d => d != this.Keyboard).ToArray();
-            this.Keyboard = null;
+            Keyboard = null;
             AssignedKeyboards.Remove(this.KeyboardIndex);
-            this.KeyboardIndex = -1;
-            this.AllowDrop = true;
-            this.DragEnter += LEM1802Window_DragEnter;
-            this.DragDrop += LEM1802Window_DragDrop;
-            this.detatchKeyboardToolStripMenuItem.Visible = false;
+            KeyboardIndex = -1;
+            AllowDrop = true;
+            DragEnter += LEM1802Window_DragEnter;
+            DragDrop += LEM1802Window_DragDrop;
+            detatchKeyboardToolStripMenuItem.Visible = false;
         }
 
         private void takeScreenshotToolStripMenuItem_Click(object sender, EventArgs e)
@@ -204,7 +205,7 @@ namespace Lettuce
             image.Save(sfd.FileName);
         }
 
-        private AnimatedGifEncoder gifEncoder;
+        private DeferredGifEncoder gifEncoder;
         private void startRecordingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if ((bool)startRecordingToolStripMenuItem.Tag)
@@ -212,8 +213,7 @@ namespace Lettuce
                 // End recording
                 startRecordingToolStripMenuItem.Tag = false;
                 startRecordingToolStripMenuItem.Text = "Start Recording";
-                gifEncoder.Finish();
-                gifEncoder = null;
+                gifEncoder.FinishAsync(null);
             }
             else
             {
@@ -225,12 +225,10 @@ namespace Lettuce
                     return;
                 startRecordingToolStripMenuItem.Tag = true;
                 startRecordingToolStripMenuItem.Text = "Stop Recording";
-                gifEncoder = new AnimatedGifEncoder();
+                AnimatedGifEncoder _gifEncoder = new AnimatedGifEncoder();
                 if (File.Exists(sfd.FileName))
                     File.Delete(sfd.FileName);
-                gifEncoder.Start(sfd.FileName);
-                gifEncoder.SetDelay(16); // 60 Hz
-                gifEncoder.SetRepeat(0); // Always repeat
+                gifEncoder = new DeferredGifEncoder(_gifEncoder, sfd.FileName);
             }
         }
     }

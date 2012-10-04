@@ -16,6 +16,7 @@ using OpenTK.Graphics.OpenGL;
 using Tomato.Hardware;
 using Tomato;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
+using System.Diagnostics;
 
 namespace Lettuce
 {
@@ -34,32 +35,47 @@ namespace Lettuce
         public SPED3Window(SPED3 SPED3, DCPU CPU)
         {
             InitializeComponent();
-            timer = new System.Threading.Timer(delegate(object o)
-                {
-                    InvalidateAsync();
-                }, null, 16, 16); // 60 Hz
-            this.Text = "SPED-3 Display #" + CPU.Devices.IndexOf(SPED3);
+            Text = "SPED-3 Display #" + CPU.Devices.IndexOf(SPED3);
             managedDevices = new Device[] { SPED3 };
             this.CPU = CPU;
             this.SPED3 = SPED3;
         }
 
-        private delegate void InvalidateAsyncDelegate();
-        private void InvalidateAsync()
+        private delegate void InvalidateAsyncDelegate(object discarded);
+        private void InvalidateAsync(object discarded)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
                 try
                 {
-                    InvalidateAsyncDelegate iad = new InvalidateAsyncDelegate(InvalidateAsync);
-                    this.Invoke(iad);
+                    InvalidateAsyncDelegate iad = InvalidateAsync;
+                    Invoke(iad, new object());
                 }
                 catch { }
             }
             else
             {
-                this.Invalidate(true);
-                this.Update();
+                Invalidate(true);
+                Update();
+                timer.Change(16, System.Threading.Timeout.Infinite); // 60 Hz
+            }
+        }
+
+        private delegate void ResetTitleAsyncDelegate();
+        private void ResetTitleAsync()
+        {
+            if (InvokeRequired)
+            {
+                try
+                {
+                    ResetTitleAsyncDelegate iad = ResetTitleAsync;
+                    Invoke(iad);
+                }
+                catch { }
+            }
+            else
+            {
+                Text = "SPED-3 Display #" + CPU.Devices.IndexOf(SPED3);
             }
         }
 
@@ -91,11 +107,12 @@ namespace Lettuce
         }
 
         Random random = new Random();
+        Stopwatch stopwatch = new Stopwatch();
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
             if (!glControlLoaded)
                 return;
-
+            stopwatch.Restart();
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             Matrix4 modelview = Matrix4.LookAt(new Vector3(0, -4, 0), Vector3.Zero, Vector3.UnitZ);
@@ -141,7 +158,22 @@ namespace Lettuce
                 }
             }
 
+            if (CPU.IsRunning && gifEncoder != null && !gifEncoder.Finished)
+                gifEncoder.AddFrame(GrabScreenshot());
+
             glControl1.SwapBuffers();
+            stopwatch.Stop();
+
+            if (stopwatch.ElapsedMilliseconds < 16)
+            {
+                timer = new System.Threading.Timer(InvalidateAsync, null, 16 - stopwatch.ElapsedMilliseconds,
+                    System.Threading.Timeout.Infinite); // ~60 Hz
+            }
+            else
+            {
+                timer = new System.Threading.Timer(InvalidateAsync, null, 16,
+                    System.Threading.Timeout.Infinite); // ~60 Hz
+            }
         }
 
         private Vector3 GetColor(SPED3Vertex vertex)
@@ -193,7 +225,7 @@ namespace Lettuce
             GL.ReadPixels(0, 0, ClientSize.Width, ClientSize.Height, PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
             tempBmp.UnlockBits(data);
 
-            tempBmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            //tempBmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
             return tempBmp;
         }
 
@@ -205,6 +237,32 @@ namespace Lettuce
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
             image.Save(sfd.FileName);
+        }
+
+        private DeferredGifEncoder gifEncoder;
+        private void recordGIFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (recordGIFToolStripMenuItem.Text != "Start Recording")
+            {
+                // End recording
+                recordGIFToolStripMenuItem.Text = "Start Recording";
+                gifEncoder.FinishAsync(ResetTitleAsync);
+                Text += " (Encoding...)";
+            }
+            else
+            {
+                // Begin recording an animated gif
+                var sfd = new SaveFileDialog();
+                sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                sfd.Filter = "Animated Gif Image (*.gif)|*.gif";
+                if (sfd.ShowDialog() != DialogResult.OK)
+                    return;
+                recordGIFToolStripMenuItem.Text = "Stop Recording";
+                var _gifEncoder = new AnimatedGifEncoder();
+                if (File.Exists(sfd.FileName))
+                    File.Delete(sfd.FileName);
+                gifEncoder = new DeferredGifEncoder(_gifEncoder, sfd.FileName);
+            }
         }
     }
 }
