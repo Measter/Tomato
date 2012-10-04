@@ -1,74 +1,59 @@
-Tomato
-======
+# Tomato
 
-Tomato is a library for emulating a DCPU-16.  Also included is Lettuce, which is a GUI front-end for Tomato.  Also also
-included is Bacon, which is an SDP server built on top of Tomato.  Also also also included is Pickles, a command-line
-debugger built on top of Tomato.
+Tomato is the collective name for a series of tools built around DCPU-16 emulation. Tomato
+itself is a .NET library for emulating DCPU-16 and all official 0x10c hardware. Also included
+is Lettuce, a graphical debugger for DCPU-16 programs. Also included is Pickles, a text-based
+debugger for the command line. All three run on Windows, Linux, and Mac, with the exception
+of Lettuce, which is very buggy on Mac.
 
-Planned Things
---------------
+![Lettuce](http://i.imgur.com/2rixv.png)
 
-* Allow the Lettuce debugger connect to SDP servers like Bacon
+## Installation
 
-How to Use
-----------
+On Linux and Mac, you must first install Mono to use any Tomato-based software.
 
-If you wish to use any of this software on Linux or Mac, install Mono first.  It's usually called "mono-complete" on Linux.
+### Tomato
 
-**Lettuce**
+Tomato is easy. Simply head to the [Downloads](https://github.com/SirCmpwn/Tomato/downloads)
+page and grab Tomato.dll, which you can immediately begin using in your projects.
 
-Lettuce is probably what you want to use.  It looks like this:
+### Lettuce
 
-![Lettuce](http://i.imgur.com/EX66v.png)
+Lettuce is also easy, but requires OpenGL to emulate SPED-3 devices. Grab Lettuce from the
+[Downloads](https://github.com/SirCmpwn/Tomato/downloads) page and head over to
+http://www.opengl.org/ for information on installing OpenGL (hint: you probably already have
+it installed).
 
-It has lots of useful stuff.  If you start it up without command line arguments, you get this:
+### Pickles
 
-![Memory Configuration](http://i.imgur.com/JEO7P.png)
+Pickles is as easy as Tomato. Grab it from the
+[Downloads](https://github.com/SirCmpwn/Tomato/downloads) page to get started.
 
-This optional (click Skip if you want to) step lets you load a binary file into the emulated memory.  Click browse and go
-find one.  If the file is stored in little-endian, click that check box.  If you don't want to see this on startup, give
-Lettuce a binary file in one of the arguments.  When you click OK, you see this:
+## Usage
 
-![Hardware Configuration](http://i.imgur.com/0mtTK.png)
+If you just want a quick emulator, grap [Lettuce](https://github.com/SirCmpwn/Tomato/downloads)
+and run it. On Windows, double click the file. On Linux or Mac, run this:
 
-This window searches for all hardware provided by Tomato and by any plugins (note that plugins don't actually exist as of
-this moment).  The ones pictured here are provided by Tomato.  Check any amount that you'd like.  If you don't wish to
-see this screen, you can add hardware with -hw, or --connect, or -c from the command line.  If you use the command line,
-you can also connect several of the same device.  When you hit OK, you see this:
+    mono Lettuce.exe
 
-![Debugger](http://i.imgur.com/EX66v.png)
+A nice little wizard will guide you through the rest.
 
-For every connected LEM 1802, a window will pop up.  Each window will associate itself with a keyboard as well, if present.
-Any additional keyboards that don't have LEM 1802 devices to associate with will have their own window.  You can focus on
-a window (i.e. click it) and type to send keys to that keyboard.  Right click the LEM1802 window if you want to take a 
-screenshot of it. You can also drag keyboards off of LEM 1802 windows and back on again.
+For advanced users, head over to the [wiki](https://github.com/SirCmpwn/Tomato/wiki) for
+extensive documentation on all Tomato-related software.
 
-Also opened is the debugger window.  On the right is the register view, which shows all registers and their current values.
-You can also see if interrupt queueing is enabled, and how many interrupts are queued, and whether or not the device is on fire.
-If you uncheck "Running" and stop the CPU, you're free to modify any of these values.  When stopped, Step Into (or F6 on the
-keyboard) will execute one instruction.  Step over will execute one instruction, unless it's a JSR instruction, in which case
-it will execute until it returns.
+## Building from Source
 
-Below that is a list of all your connected devices.  Click one to see a little info about it and all of the properties you
-may modify. When you wish to adjust a device property, enter a new value and press Enter to apply.
+Clone the repository. If you're on Linux/Mac, make sure you have Mono installed. Then, open
+the root of the repository and follow these instructions:
 
-To the left is the memory view.  You can scroll through all the memory of the device, and you can edit it if the CPU is stopped.
-Double click a cell to edit it, or right click and select "Edit Value".  Right click and select "Goto Address" to jump to a
-different address in memory, or hit Ctrl+G.
+*Windows*:
 
-Under that is the disassembler.  Breakpoint lines are highlighted in red, and PC is in yellow.  Double click a line to toggle the
-breakpoint.  If you hover over a value like "C" or "[0x8000]", you'll see the actual runtime value.
+Add "C:\Windows\Microsoft.NET\Framework\v4.0.30319" to your path. Run this:
 
-Keyboard Shortcuts: F5 to Run/Stop, F6 to Step Into, F7 to Step Over, Ctrl+G to goto address in memory view.
+    msbuild
 
-**Bacon**
+*Linux/Mac*:
 
-This doesn't do anything right now.  Eventually, there will be a Windows Service and a command line application around a SDP server
-library called Bacon.
+Install mono and run this from the root of the repository:
 
-**Tomato**
-
-If you're a .NET developer, you can use Tomato like a library.  Just add a reference to Tomato.dll, and you'll have a nice
-DCPU emulation library at your disposal.  The core is the DCPU class, which has memory and registers and such.  Each device
-inherits from the abstract Device class, and you can use DCPU.Connect(Device) to add them to the CPU.  Provided by Tomato are
-GenericClock, GenericKeyboard, and LEM1802.
+    xbuild
