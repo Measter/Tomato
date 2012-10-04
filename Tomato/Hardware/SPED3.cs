@@ -162,7 +162,7 @@ namespace Tomato.Hardware
             X = (byte)(word1 & 0xFF);
             Y = (byte)((word1 >> 8) & 0xFF);
             Z = (byte)(word2 & 0xFF);
-            Color = (SPED3Color)((word2 >> 8) & 2);
+            Color = (SPED3Color)((word2 >> 8) & 3);
             Intensity = (SPED3Intensity)((word2 >> 10) & 1);
         }
 

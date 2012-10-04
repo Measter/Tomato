@@ -109,10 +109,35 @@ namespace Lettuce
                 var verticies = SPED3.Verticies;
                 for (int i = 0; i < SPED3.TotalVerticies; i++)
                 {
-                    if (verticies[i].Color == 0)
-                        GL.Color3(Color.Green);
-                    else
-                        GL.Color3(Color.Red);
+                    if (verticies[i].Color == SPED3Color.Black)
+                    {
+                        if (verticies[i].Intensity == SPED3Intensity.Dim)
+                            GL.Color3(Color.Black);
+                        else
+                            GL.Color3(Color.DarkSlateGray);
+                    }
+                    else if (verticies[i].Color == SPED3Color.Green)
+                    {
+                        if (verticies[i].Intensity == SPED3Intensity.Dim)
+                            GL.Color3(Color.Green);
+                        else
+                            GL.Color3(Color.LightGreen);
+                    }
+                    else if (verticies[i].Color == SPED3Color.Red)
+                    {
+                        if (verticies[i].Intensity == SPED3Intensity.Dim)
+                            GL.Color3(Color.DarkRed);
+                        else
+                            GL.Color3(Color.Red);
+                    }
+                    else if (verticies[i].Color == SPED3Color.Blue)
+                    {
+                        if (verticies[i].Intensity == SPED3Intensity.Dim)
+                            GL.Color3(Color.Blue);
+                        else
+                            GL.Color3(Color.LightBlue);
+                    }
+
                     Vector3 position = new Vector3((float)(verticies[i].X) / 256 * 2 - 1,
                         (float)(verticies[i].Y) / 256 * 2 - 1,
                         (float)(verticies[i].Z) / 256 * 2 - 1);
