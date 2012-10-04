@@ -27,11 +27,16 @@ namespace Tomato.Hardware
         {
             if (TargetRotation != CurrentRotation)
             {
-                if (TargetRotation < CurrentRotation)
-                    CurrentRotation -= 0.8f; // Rotates at roughly 0.8 degrees per cycle
+                if (Math.Abs(TargetRotation - CurrentRotation) < 0.8)
+                    CurrentRotation = TargetRotation;
                 else
-                    CurrentRotation += 0.8f;
+                {
+                    CurrentRotation += 0.8f; // Rotates at roughly 0.8 degrees per cycle
+                    CurrentRotation %= 360;
+                }
             }
+            else
+                State = SPED3State.STATE_RUNNING;
         }
 
         public event EventHandler VerticiesChanged;
@@ -72,7 +77,7 @@ namespace Tomato.Hardware
         [Browsable(false)]
         public override string FriendlyName
         {
-            get { return "Mackapar Suspended Particle Exciter Display, Rev 3"; }
+            get { return "Suspended Particle Exciter Display"; }
         }
 
         public SPED3Vertex[] Verticies
@@ -102,7 +107,7 @@ namespace Tomato.Hardware
                     if (VerticiesChanged != null)
                         VerticiesChanged(this, null); // To notify applications when to rebuild the vertex buffer
                     break;
-                case 3:
+                case 2:
                     TargetRotation = (ushort)(AttachedCPU.X % 360);
                     if (TargetRotation != CurrentRotation)
                         State = SPED3State.STATE_TURNING;

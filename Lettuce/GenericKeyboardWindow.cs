@@ -11,7 +11,7 @@ using Tomato.Hardware;
 
 namespace Lettuce
 {
-    public partial class GenericKeyboardWindow : DeviceHost
+    public partial class GenericKeyboardWindow : DeviceHostForm
     {
         private Device[] managedDevices;
         public override Device[] ManagedDevices

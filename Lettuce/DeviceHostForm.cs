@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 namespace Lettuce
 {
-    public abstract class DeviceHost : Form
+    public abstract class DeviceHostForm : Form, IDeviceHost
     {
-        public DeviceHost()
+        public DeviceHostForm()
         {
             this.FormClosing += new FormClosingEventHandler(DeviceHost_FormClosing);
         }

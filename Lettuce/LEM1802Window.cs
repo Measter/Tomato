@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Lettuce
 {
-    public partial class LEM1802Window : DeviceHost
+    public partial class LEM1802Window : DeviceHostForm
     {
         private Device[] managedDevices;
         public override Device[] ManagedDevices

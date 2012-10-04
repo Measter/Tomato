@@ -13,6 +13,14 @@ namespace Tomato.Hardware
         public abstract string FriendlyName { get; }
         public DCPU AttachedCPU;
 
+        public virtual bool SelectedByDefault
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         /// <summary>
         /// Returns the number of cycles required to perform the interrupt
         /// </summary>

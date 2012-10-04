@@ -168,6 +168,8 @@ namespace Lettuce
             {
                 if (d is LEM1802)
                     AddWindow(new LEM1802Window(d as LEM1802, CPU, pairKeyboards));
+                else if (d is SPED3)
+                    AddWindow(new SPED3Window(d as SPED3, CPU));
             }
             
             // Run again for extra keyboards
@@ -184,7 +186,7 @@ namespace Lettuce
             timer.Dispose();
         }
         
-        static void AddWindow(DeviceHost window)
+        static void AddWindow(DeviceHostForm window)
         {
             window.StartPosition = FormStartPosition.Manual;
             if (screenLocation.Y + window.Height > Screen.PrimaryScreen.WorkingArea.Height) // Wrap excessive windows
