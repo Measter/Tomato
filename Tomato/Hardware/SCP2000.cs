@@ -37,6 +37,14 @@ namespace Tomato.Hardware
             get { return "Suspension Chamber 2000"; }
         }
 
+        public override bool SelectedByDefault
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override int HandleInterrupt()
         {
             switch (AttachedCPU.A)

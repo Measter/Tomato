@@ -38,11 +38,12 @@ namespace Lettuce
                 var types = asm.GetTypes().Where(t => typeof(Device).IsAssignableFrom(t) && t.IsAbstract == false);
                 foreach (var type in types)
                 {
+                    Device device = (Device)Activator.CreateInstance(type);
                     PossibleDevices.Add((Device)Activator.CreateInstance(type));
                 }
             }
             foreach (var device in PossibleDevices)
-                hardwareSelectionListBox.Items.Add(device.FriendlyName, true);
+                hardwareSelectionListBox.Items.Add(device.FriendlyName, device.SelectedByDefault);
         }
 
         private void button1_Click(object sender, EventArgs e)

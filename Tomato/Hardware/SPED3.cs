@@ -80,6 +80,14 @@ namespace Tomato.Hardware
             get { return "Suspended Particle Exciter Display"; }
         }
 
+        public override bool SelectedByDefault
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public SPED3Vertex[] Verticies
         {
             get
