@@ -103,13 +103,13 @@ namespace Lettuce
 
             bool flickerModel = random.Next(256) < SPED3.TotalVerticies && SPED3.EnableFlickering;
 
-            if (SPED3.TotalVerticies <= 128 && SPED3.TotalVerticies > 0 && !flickerModel)
+            if (SPED3.TotalVerticies > 0 && !flickerModel)
             {
                 GL.Begin(BeginMode.LineStrip);
                 var verticies = SPED3.Verticies;
                 Vector3 position;
 
-                for (int i = 0; i < SPED3.TotalVerticies; i++)
+                for (int i = 0; i < SPED3.TotalVerticies && i < 128; i++)
                 {
                     GL.Color3(GetColor(verticies[i]));
 

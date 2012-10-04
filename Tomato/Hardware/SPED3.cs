@@ -57,6 +57,7 @@ namespace Tomato.Hardware
         public float CurrentRotation { get; set; }
 
         [Category("Device Status")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public ushort MemoryMap { get; set; }
 
         [Category("Device Status")]
@@ -142,8 +143,7 @@ namespace Tomato.Hardware
 
         public override void Reset()
         {
-            TotalVerticies = 0;
-            MemoryMap = 0;
+            TotalVerticies = MemoryMap = 0;
             State = SPED3State.STATE_NO_DATA;
         }
     }
