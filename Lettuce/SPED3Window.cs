@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Gif.Components;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Tomato.Hardware;
 using Tomato;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace Lettuce
 {
@@ -63,6 +68,7 @@ namespace Lettuce
         private void glControl1_Load(object sender, EventArgs e)
         {
             glControlLoaded = true;
+
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.DepthTest);
 
@@ -175,5 +181,30 @@ namespace Lettuce
                 // bottom
                 new Vector3(0.1f, 0.1f, -0.1f), new Vector3(0.1f, -0.1f, -0.1f), new Vector3(-0.1f, -0.1f, -0.1f), new Vector3(-0.1f, 0.1f, -0.1f)
             };
+
+        private static Bitmap tempBmp;
+
+        public Bitmap GrabScreenshot()
+        {
+            if (tempBmp == null)
+                tempBmp = new Bitmap(ClientSize.Width, ClientSize.Height);
+            BitmapData data = tempBmp.LockBits(ClientRectangle, ImageLockMode.WriteOnly,
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            GL.ReadPixels(0, 0, ClientSize.Width, ClientSize.Height, PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
+            tempBmp.UnlockBits(data);
+
+            tempBmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            return tempBmp;
+        }
+
+        private void takeScreenshotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var image = GrabScreenshot();
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Bitmap Image (*.bmp)|*.bmp";
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+            image.Save(sfd.FileName);
+        }
     }
 }
