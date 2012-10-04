@@ -99,9 +99,7 @@ namespace Lettuce
 
             GL.Begin(BeginMode.LineStrip);
 
-            bool flicker = false;
-            if (SPED3.TotalVerticies > 100)
-                flicker = random.Next(100) < 25; // TODO: This probably isn't realistic, scale flicker with total verticies correctly
+            bool flicker = random.Next(256) < SPED3.TotalVerticies;
 
             if (!flicker)
             {
