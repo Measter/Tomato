@@ -15,6 +15,12 @@ namespace Tomato.Hardware
         STATE_TURNING = 2
     }
 
+    public enum SPED3Error
+    {
+        ERROR_NONE = 0,
+        ERROR_BROKEN = 1
+    }
+
     public class SPED3 : Device
     {
         public SPED3()
@@ -73,6 +79,9 @@ namespace Tomato.Hardware
             get { return 0x0003; }
         }
 
+        [Category("Emulation Settings")]
+        public bool EnableFlickering { get; set; }
+
         [Browsable(false)]
         public override string FriendlyName
         {
@@ -108,7 +117,10 @@ namespace Tomato.Hardware
             {
                 case 0:
                     AttachedCPU.B = (ushort)State;
-                    AttachedCPU.C = 0; // Proper emulation of errors is unknown
+                    if (TotalVerticies > 128)
+                        AttachedCPU.C = (ushort)SPED3Error.ERROR_BROKEN;
+                    else
+                        AttachedCPU.C = (ushort)SPED3Error.ERROR_NONE;
                     break;
                 case 1:
                     MemoryMap = AttachedCPU.X;
