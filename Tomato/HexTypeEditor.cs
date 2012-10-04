@@ -23,10 +23,21 @@ namespace Tomato
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
+            string text = value as string;
             if (context.PropertyDescriptor.PropertyType == typeof(uint))
-                return uint.Parse(value as string, NumberStyles.AllowHexSpecifier);
+            {
+                if (text.StartsWith("0x"))
+                    return uint.Parse(text.Substring(2), NumberStyles.HexNumber);
+                else
+                    return uint.Parse(text);
+            }
             else
-                return ushort.Parse(value as string, NumberStyles.AllowHexSpecifier);
+            {
+                if (text.StartsWith("0x"))
+                    return ushort.Parse(text.Substring(2), NumberStyles.HexNumber);
+                else
+                    return ushort.Parse(text);
+            }
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
