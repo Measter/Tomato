@@ -92,10 +92,9 @@ namespace Lettuce
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            Matrix4 modelview = Matrix4.LookAt(Vector3.Zero, Vector3.UnitY, Vector3.UnitZ);
+            Matrix4 modelview = Matrix4.LookAt(new Vector3(0, -4, 0), Vector3.Zero, Vector3.UnitZ);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
-            GL.Translate(new Vector3(0, 4f, 0));
             GL.Rotate(SPED3.CurrentRotation, Vector3.UnitZ);
 
             GL.Begin(BeginMode.LineStrip);
