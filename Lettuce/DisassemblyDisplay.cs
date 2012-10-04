@@ -28,7 +28,22 @@ namespace Lettuce
             this.MouseEnter += new EventHandler(DisassemblyDisplay_MouseEnter);
             this.MouseLeave += new EventHandler(DisassemblyDisplay_MouseLeave);
             this.MouseDoubleClick += new MouseEventHandler(DisassemblyDisplay_MouseDoubleClick);
+            this.KeyDown += new KeyEventHandler(DisassemblyDisplay_KeyDown);
             EnableUpdates = true;
+        }
+
+        void DisassemblyDisplay_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.PageDown)
+            {
+                SelectedAddress += CPU.InstructionLength(SelectedAddress);
+                this.Invalidate();
+            }
+            else if (e.KeyCode == Keys.PageUp)
+            {
+                SelectedAddress--;
+                this.Invalidate();
+            }
         }
 
         void DisassemblyDisplay_MouseLeave(object sender, EventArgs e)

@@ -26,6 +26,21 @@ namespace Lettuce
             InitializeComponent();
             wordsWide = 8;
             this.MouseMove += new MouseEventHandler(MemoryDisplay_MouseMove);
+            this.KeyDown += new KeyEventHandler(MemoryDisplay_KeyDown);
+        }
+
+        void MemoryDisplay_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.PageDown)
+            {
+                SelectedAddress += wordsWide;
+                this.Invalidate();
+            }
+            else if (e.KeyCode == Keys.PageUp)
+            {
+                SelectedAddress -= wordsWide;
+                this.Invalidate();
+            }
         }
 
         void MemoryDisplay_MouseMove(object sender, MouseEventArgs e)
