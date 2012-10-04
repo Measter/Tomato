@@ -93,8 +93,11 @@ namespace Tomato.Hardware
             get
             {
                 var verticies = new SPED3Vertex[TotalVerticies];
-                for (ushort i = 0; i < TotalVerticies; i++)
-                    verticies[i] = new SPED3Vertex(AttachedCPU.Memory[MemoryMap + i]);
+                for (ushort i = 0; i < TotalVerticies * 2; i += 2)
+                {
+                    verticies[i / 2] = new SPED3Vertex(AttachedCPU.Memory[MemoryMap + i], 
+                        AttachedCPU.Memory[MemoryMap + i + 1]);
+                }
                 return verticies;
             }
         }
@@ -132,19 +135,35 @@ namespace Tomato.Hardware
         }
     }
 
+    public enum SPED3Color
+    {
+        Black = 0,
+        Red = 1,
+        Green = 2,
+        Blue = 3
+    }
+
+    public enum SPED3Intensity
+    {
+        Dim = 0,
+        Bright = 1
+    }
+
     public struct SPED3Vertex
     {
         public byte X;
         public byte Y;
         public byte Z;
-        public byte Color;
+        public SPED3Color Color;
+        public SPED3Intensity Intensity;
 
-        public SPED3Vertex(ushort value)
+        public SPED3Vertex(ushort word1, ushort word2)
         {
-            X = (byte)(value & 0x1F);
-            Y = (byte)((value >> 5) & 0x1F);
-            Z = (byte)((value >> 10) & 0x1F);
-            Color = (byte)((value >> 15) & 1);
+            X = (byte)(word1 & 0xFF);
+            Y = (byte)((word1 >> 8) & 0xFF);
+            Z = (byte)(word2 & 0xFF);
+            Color = (SPED3Color)((word2 >> 8) & 2);
+            Intensity = (SPED3Intensity)((word2 >> 10) & 1);
         }
 
         public string ToString()
