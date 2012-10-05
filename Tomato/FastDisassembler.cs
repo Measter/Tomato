@@ -28,7 +28,8 @@ namespace Tomato
         /// <summary>
         /// Disassembles a small snippet of data without finding labels.
         /// </summary>
-        public List<CodeEntry> FastDisassemble(ushort[] Data, ushort PCStart, ushort StopAt)
+        /// <param name="Data"></param>
+        public List<CodeEntry> FastDisassemble(ref ushort[] Data, ushort PCStart, ushort StopAt)
         {
             List<CodeEntry> output = new List<CodeEntry>();
             this.Data = Data;

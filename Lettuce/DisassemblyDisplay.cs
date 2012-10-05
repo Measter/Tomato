@@ -121,7 +121,7 @@ namespace Lettuce
             }
 
             FastDisassembler disassembler = new FastDisassembler(Debugger.KnownLabels);
-            Disassembly = disassembler.FastDisassemble(CPU.Memory, SelectedAddress, (ushort)(SelectedAddress + 100));
+            Disassembly = disassembler.FastDisassemble(ref CPU.Memory, SelectedAddress, (ushort)(SelectedAddress + 100));
 
             int index = 0;
             bool setLast = false, dark = SelectedAddress % 2 == 0;

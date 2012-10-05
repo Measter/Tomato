@@ -15,31 +15,17 @@ namespace Tomato
             InterruptQueue = new Queue<ushort>();
             Memory = new ushort[0x10000];
             InterruptQueueEnabled = IsOnFire = false;
-            ClockSpeed = 100000;
             IsRunning = true;
             if (Random == null)
                 Random = new Random();
         }
 
-        public virtual List<Device> Devices { get; set; }
-        public virtual List<Breakpoint> Breakpoints { get; set; }
-        public virtual Queue<ushort> InterruptQueue { get; set; }
-        public virtual bool InterruptQueueEnabled { get; set; }
-        public virtual bool IsOnFire { get; set; }
-        public virtual ushort[] Memory { get; set; }
-        public virtual ushort PC { get; set; }
-        public virtual ushort SP { get; set; }
-        public virtual ushort EX { get; set; }
-        public virtual ushort IA { get; set; }
-        public virtual ushort A { get; set; }
-        public virtual ushort B { get; set; }
-        public virtual ushort C { get; set; }
-        public virtual ushort X { get; set; }
-        public virtual ushort Y { get; set; }
-        public virtual ushort Z { get; set; }
-        public virtual ushort I { get; set; }
-        public virtual ushort J { get; set; }
-
+        public List<Device> Devices;
+        public List<Breakpoint> Breakpoints;
+        public Queue<ushort> InterruptQueue;
+        public bool InterruptQueueEnabled, IsOnFire;
+        public ushort[] Memory;
+        public ushort PC, SP, EX, IA, A, B, C, X, Y, Z, I, J;
         public ushort[] Registers
         {
             get
@@ -50,8 +36,8 @@ namespace Tomato
                 };
             }
         }
-        public virtual int ClockSpeed { get; set; }
-        public virtual bool IsRunning { get; set; }
+        public int ClockSpeed = 100000;
+        public bool IsRunning;
         /// <summary>
         /// Called when a breakpoint is hit, before it is executed.
         /// </summary>
@@ -81,7 +67,7 @@ namespace Tomato
             return length;
         }
 
-        public virtual void Execute(int CyclesToExecute)
+        public void Execute(int CyclesToExecute)
         {
             if (!IsRunning && CyclesToExecute != -1)
                 return;
@@ -374,7 +360,7 @@ namespace Tomato
                 cycles = oldCycles;
         }
 
-        protected virtual void SkipIfChain()
+        private void SkipIfChain()
         {
             byte opcode;
             do
@@ -391,7 +377,7 @@ namespace Tomato
             } while (opcode >= 0x10 && opcode <= 0x17);
         }
 
-        public virtual void FireInterrupt(ushort Message)
+        public void FireInterrupt(ushort Message)
         {
             if (InterruptQueueEnabled)
             {
@@ -412,20 +398,20 @@ namespace Tomato
             }
         }
 
-        public virtual void ConnectDevice(Device Device)
+        public void ConnectDevice(Device Device)
         {
             Device.AttachedCPU = this;
             Devices.Add(Device);
         }
 
-        public virtual void FlashMemory(ushort[] Data)
+        public void FlashMemory(ushort[] Data)
         {
             Array.Copy(Data, Memory, Data.Length);
         }
 
         #region Get/Set
 
-        public virtual void Set(byte destination, ushort value)
+        public void Set(byte destination, ushort value)
         {
             switch (destination)
             {
@@ -539,7 +525,7 @@ namespace Tomato
             }
         }
 
-        public virtual ushort Get(byte target)
+        public ushort Get(byte target)
         {
             switch (target)
             {
@@ -604,7 +590,7 @@ namespace Tomato
 
         #endregion
 
-        public virtual void Reset()
+        public void Reset()
         {
             A = B = C = X = Y = Z = I = J = PC = EX = IA = SP = 0;
 

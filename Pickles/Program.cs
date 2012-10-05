@@ -251,7 +251,7 @@ namespace Pickles
                 string[] parts = input.Split(' ');
                 if (parts.Length > 1)
                     start = ushort.Parse(parts[1], NumberStyles.HexNumber);
-                var code = fdas.FastDisassemble(CPU.Memory, start, (ushort)(start + 0x10));
+                var code = fdas.FastDisassemble(ref CPU.Memory, start, (ushort)(start + 0x10));
                 foreach (var entry in code)
                 {
                     if (CPU.PC == entry.Address)
