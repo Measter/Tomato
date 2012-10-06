@@ -24,6 +24,7 @@ namespace Lettuce
     {
         public SPED3 SPED3;
         public DCPU CPU;
+        private int brightestIndex = 0;
 
         private Device[] managedDevices;
         public override Device[] ManagedDevices
@@ -87,6 +88,9 @@ namespace Lettuce
 
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendEquation(BlendEquationMode.FuncAdd);
+            GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.One);
 
             GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
             GL.ClearColor(Color4.Black);
@@ -124,21 +128,25 @@ namespace Lettuce
             if (SPED3.EnableFlickering)
                 GL.Translate(flicker, flicker, flicker);
 
-            bool flickerModel = random.Next(512) < SPED3.TotalVerticies && SPED3.EnableFlickering;
-
-            if (SPED3.TotalVerticies > 0 && !flickerModel)
+            if (SPED3.TotalVerticies > 0)
             {
                 GL.Begin(BeginMode.LineStrip);
                 var verticies = SPED3.Verticies;
                 Vector3 position;
+                Vector4 alpha = new Vector4(1, 1, 1, 1);
 
-                for (int i = 0; i < SPED3.TotalVerticies && i < 128; i++)
+                const float flickerIntensity = 0.05f;
+
+                for (int i = brightestIndex; i < SPED3.TotalVerticies + brightestIndex; i++)
                 {
-                    GL.Color3(GetColor(verticies[i]));
-
-                    position = new Vector3((float)(verticies[i].X) / 256 * 2 - 1,
-                        (float)(verticies[i].Y) / 256 * 2 - 1,
-                        (float)(verticies[i].Z) / 256 * 2 - 1);
+                    if (SPED3.EnableFlickering)
+                        GL.Color4(Vector4.Multiply(GetColor(verticies[i % SPED3.TotalVerticies]), alpha));
+                    else
+                        GL.Color4(GetColor(verticies[i % SPED3.TotalVerticies]));
+                    alpha = new Vector4(alpha.X - flickerIntensity, alpha.Y - flickerIntensity, alpha.Z - flickerIntensity, alpha.W - flickerIntensity);
+                    position = new Vector3((float)(verticies[i % SPED3.TotalVerticies].X) / 256 * 2 - 1,
+                        (float)(verticies[i % SPED3.TotalVerticies].Y) / 256 * 2 - 1,
+                        (float)(verticies[i % SPED3.TotalVerticies].Z) / 256 * 2 - 1);
                     GL.Vertex3(position);
                 }
 
@@ -147,15 +155,17 @@ namespace Lettuce
                 if (SPED3.EnableFlickering)
                 {
                     GL.Begin(BeginMode.Quads);
-                    int vertex = random.Next(SPED3.TotalVerticies);
-                    position = new Vector3((float)(verticies[vertex].X) / 256 * 2 - 1,
-                                           (float)(verticies[vertex].Y) / 256 * 2 - 1,
-                                           (float)(verticies[vertex].Z) / 256 * 2 - 1);
-                    GL.Color3(GetColor(verticies[vertex]));
+                    position = new Vector3((float)(verticies[brightestIndex].X) / 256 * 2 - 1,
+                                           (float)(verticies[brightestIndex].Y) / 256 * 2 - 1,
+                                           (float)(verticies[brightestIndex].Z) / 256 * 2 - 1);
+                    GL.Color4(GetColor(verticies[brightestIndex]));
                     foreach (var point in cubeVerticies)
                         GL.Vertex3(point + position);
                     GL.End();
                 }
+                brightestIndex++;
+                if (brightestIndex == SPED3.TotalVerticies)
+                    brightestIndex = 0;
             }
 
             if (CPU.IsRunning && gifEncoder != null && !gifEncoder.Finished)
@@ -176,19 +186,19 @@ namespace Lettuce
             }
         }
 
-        private Vector3 GetColor(SPED3Vertex vertex)
+        private Vector4 GetColor(SPED3Vertex vertex)
         {
-            Vector3 color = new Vector3(0, 0, 0);
+            Vector4 color = new Vector4(0, 0, 0, 1);
             if (vertex.Color == SPED3Color.Black)
-                color = new Vector3(0.25f, 0.25f, 0.25f);
+                color = new Vector4(0.25f, 0.25f, 0.25f, 1);
             else if (vertex.Color == SPED3Color.Green)
-                color = new Vector3(0, 1, 0);
+                color = new Vector4(0, 1, 0, 1);
             else if (vertex.Color == SPED3Color.Red)
-                color = new Vector3(1, 0, 0);
+                color = new Vector4(1, 0, 0, 1);
             else if (vertex.Color == SPED3Color.Blue)
-                color = new Vector3(0, 0, 1);
+                color = new Vector4(0, 0, 1, 1);
             if (vertex.Intensity == SPED3Intensity.Dim)
-                color = Vector3.Multiply(color, new Vector3(0.5f, 0.5f, 0.5f));
+                color = Vector4.Multiply(color, new Vector4(0.5f, 0.5f, 0.5f, 0.5f));
             return color;
         }
 
