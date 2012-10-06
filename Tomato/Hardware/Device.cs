@@ -30,6 +30,13 @@ namespace Tomato.Hardware
         public abstract int HandleInterrupt();
         public abstract void Reset();
 
+        /// <summary>
+        /// Called every 1667 cycles (roughly 60 Hz)
+        /// </summary>
+        public virtual void Tick()
+        {
+        }
+
         public bool BreakOnInterrupt { get; set; }
     }
 }

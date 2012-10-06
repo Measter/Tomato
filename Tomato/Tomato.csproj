@@ -51,6 +51,7 @@
     <Compile Include="Hardware\GenericClock.cs" />
     <Compile Include="Hardware\GenericKeyboard.cs" />
     <Compile Include="Hardware\LEM1802.cs" />
+    <Compile Include="Hardware\M35FD.cs" />
     <Compile Include="Hardware\SPC2000.cs" />
     <Compile Include="Hardware\SPED3.cs" />
     <Compile Include="HexTypeEditor.cs" />

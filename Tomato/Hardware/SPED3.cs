@@ -64,18 +64,21 @@ namespace Tomato.Hardware
         public ushort TotalVerticies { get; set; }
 
         [Category("Device Information")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public override uint DeviceID
         {
             get { return 0x42babf3c; }
         }
 
         [Category("Device Information")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public override uint ManufacturerID
         {
             get { return 0x1eb37e91; }
         }
 
         [Category("Device Information")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public override ushort Version
         {
             get { return 0x0003; }

@@ -14,18 +14,21 @@ namespace Tomato.Hardware
         public ushort SkipUnit { get; set; }
 
         [Category("Device Information")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public override uint DeviceID
         {
             get { return 0x40e41d9d; }
         }
 
         [Category("Device Information")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public override uint ManufacturerID
         {
             get { return 0x1c6c8b36; }
         }
 
         [Category("Device Information")]
+        [TypeConverter(typeof(HexTypeEditor))]
         public override ushort Version
         {
             get { return 0x005e; }
