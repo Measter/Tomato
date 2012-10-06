@@ -11,7 +11,8 @@ namespace Tomato.Hardware
     {
         public M35FD()
         {
-
+            DeviceState = M35FDStateCode.STATE_NO_MEDIA;
+            LastError = M35FDErrorCode.ERROR_NONE;
         }
 
         public ushort[] Disk { get; private set; }
