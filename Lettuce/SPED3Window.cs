@@ -133,9 +133,10 @@ namespace Lettuce
                 GL.Begin(BeginMode.LineStrip);
                 var verticies = SPED3.Verticies;
                 Vector3 position;
-                Vector4 alpha = new Vector4(1, 1, 1, 1);
+                const float flickerIntensity = 0.01f;
 
-                const float flickerIntensity = 0.05f;
+                float initialIntensity = 1 - (SPED3.TotalVerticies * flickerIntensity);
+                Vector4 alpha = new Vector4(initialIntensity, initialIntensity, initialIntensity, initialIntensity);
 
                 for (int i = brightestIndex; i < SPED3.TotalVerticies + brightestIndex; i++)
                 {
@@ -143,7 +144,7 @@ namespace Lettuce
                         GL.Color4(Vector4.Multiply(GetColor(verticies[i % SPED3.TotalVerticies]), alpha));
                     else
                         GL.Color4(GetColor(verticies[i % SPED3.TotalVerticies]));
-                    alpha = new Vector4(alpha.X - flickerIntensity, alpha.Y - flickerIntensity, alpha.Z - flickerIntensity, alpha.W - flickerIntensity);
+                    alpha = new Vector4(alpha.X + flickerIntensity, alpha.Y + flickerIntensity, alpha.Z + flickerIntensity, alpha.W + flickerIntensity);
                     position = new Vector3((float)(verticies[i % SPED3.TotalVerticies].X) / 256 * 2 - 1,
                         (float)(verticies[i % SPED3.TotalVerticies].Y) / 256 * 2 - 1,
                         (float)(verticies[i % SPED3.TotalVerticies].Z) / 256 * 2 - 1);
