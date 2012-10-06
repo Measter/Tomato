@@ -20,6 +20,14 @@ namespace Lettuce
             e.Cancel = true;
         }
 
+        public virtual bool OpenByDefault
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public abstract Device[] ManagedDevices { get; }
     }
 }

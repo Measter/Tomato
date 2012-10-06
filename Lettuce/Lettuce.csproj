@@ -117,6 +117,12 @@
     <Compile Include="LEM1802Window.Designer.cs">
       <DependentUpon>LEM1802Window.cs</DependentUpon>
     </Compile>
+    <Compile Include="M35FDWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M35FDWindow.Designer.cs">
+      <DependentUpon>M35FDWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MemoryConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LEM1802Window.resx">
       <DependentUpon>LEM1802Window.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M35FDWindow.resx">
+      <DependentUpon>M35FDWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MemoryConfiguration.resx">
       <DependentUpon>MemoryConfiguration.cs</DependentUpon>

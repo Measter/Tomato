@@ -170,6 +170,8 @@ namespace Lettuce
                     AddWindow(new LEM1802Window(d as LEM1802, CPU, pairKeyboards));
                 else if (d is SPED3)
                     AddWindow(new SPED3Window(d as SPED3, CPU));
+                else if (d is M35FD)
+                    AddWindow(new M35FDWindow(d as M35FD, CPU));
             }
             
             // Run again for extra keyboards
@@ -194,12 +196,15 @@ namespace Lettuce
                 screenLocation.Y = 25;
                 screenLocation.X += 25;
             }
-            window.Location = screenLocation;
-            screenLocation.Y += window.Height + 12;
-            window.Show();
-            window.Invalidate();
-            window.Update();
-            window.Focus();
+            if (window.OpenByDefault)
+            {
+                window.Location = screenLocation;
+                screenLocation.Y += window.Height + 12;
+                window.Show();
+                window.Invalidate();
+                window.Update();
+                window.Focus();
+            }
             foreach (var device in window.ManagedDevices)
                 Windows.Add(device, window);
         }

@@ -90,11 +90,24 @@ namespace Tomato.Hardware
                 case 1: // Set interrupt
                     InterruptMessage = AttachedCPU.X;
                     break;
-                case 2:
-                    
+                case 2: // Read sector
+                    if (DeviceState == M35FDStateCode.STATE_NO_MEDIA)
+                    {
+
+                        break;
+                    }
                     break;
             }
             return 0;
+        }
+
+        private bool isReading = false;
+        private bool isWriting = false;
+        private uint fromAddress, toAddress;
+
+        public override void Tick()
+        {
+            base.Tick();
         }
 
         public void InsertDisk(ushort[] disk, bool writable)
