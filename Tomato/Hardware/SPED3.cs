@@ -25,25 +25,47 @@ namespace Tomato.Hardware
     {
         public SPED3()
         {
-            rotationTimer = new Timer(UpdateRotation, null, 16, 16); // Updates at 60 Hz
+            rotationTimer = new Timer(UpdateRotation, null, 16, Timeout.Infinite); // Updates at 60 Hz
             EnableFlickering = true;
         }
 
         private Timer rotationTimer;
+        float speed = 0.02f;
         private void UpdateRotation(object discarded)
         {
             if (TargetRotation != CurrentRotation)
             {
-                if (Math.Abs(TargetRotation - CurrentRotation) < 0.8)
+                if (Math.Abs(TargetRotation - CurrentRotation) < speed)
                     CurrentRotation = TargetRotation;
                 else
                 {
-                    CurrentRotation += 0.8f; // Rotates at roughly 0.8 degrees per cycle
+                    if (CompareDegrees(CurrentRotation, TargetRotation) <= 0)
+                        CurrentRotation -= speed;
+                    else
+                        CurrentRotation += speed;
+                    if (speed < 0.8f)
+                        speed += 0.02f;
+                    while (CurrentRotation < 0)
+                        CurrentRotation += 360;
                     CurrentRotation %= 360;
                 }
             }
             else
+            {
                 State = SPED3State.STATE_RUNNING;
+                if (speed > 0.02f)
+                    speed -= 0.02f;
+            }
+            rotationTimer = new Timer(UpdateRotation, null, 16, Timeout.Infinite); // Updates at 60 Hz
+        }
+
+        private static float CompareDegrees(float A, float B)
+        {
+            if (A > 180 && B < 180)
+                return (360 - A) + B;
+            if (A < 180 && B > 180)
+                return -((360 - B) + A);
+            return B - A;
         }
 
         public event EventHandler VerticiesChanged;
@@ -122,14 +144,11 @@ namespace Tomato.Hardware
             {
                 case 0:
                     AttachedCPU.B = (ushort)State;
-                    if (TotalVerticies > 128)
-                        AttachedCPU.C = (ushort)SPED3Error.ERROR_BROKEN;
-                    else
-                        AttachedCPU.C = (ushort)SPED3Error.ERROR_NONE;
+                    AttachedCPU.C = (ushort)SPED3Error.ERROR_NONE;
                     break;
                 case 1:
                     MemoryMap = AttachedCPU.X;
-                    TotalVerticies = AttachedCPU.Y;
+                    TotalVerticies = (ushort)(AttachedCPU.Y % 128);
                     if (TotalVerticies != 0)
                         State = SPED3State.STATE_RUNNING;
                     if (VerticiesChanged != null)
