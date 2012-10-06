@@ -107,7 +107,6 @@ namespace Tomato.Hardware
 
         public override void Tick()
         {
-            base.Tick();
         }
 
         public void InsertDisk(ushort[] disk, bool writable)

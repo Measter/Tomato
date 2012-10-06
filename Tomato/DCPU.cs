@@ -49,6 +49,37 @@ namespace Tomato
 
         private static Random Random;
         private int cycles = 0;
+        private int Cycles
+        {
+            get
+            {
+                return cycles;
+            }
+            set
+            {
+                if (cycles - value > 0)
+                    HardwareCycles -= (cycles - value);
+                cycles = value;
+            }
+        }
+        private int hardwareCycles = 1667;
+        private int HardwareCycles
+        {
+            get
+            {
+                return hardwareCycles;
+            }
+            set
+            {
+                hardwareCycles = value;
+                while (hardwareCycles <= 0)
+                {
+                    for (int i = 0; i < Devices.Count; i++)
+                        Devices[i].Tick();
+                    hardwareCycles += 1667;
+                }
+            }
+        }
 
         public ushort InstructionLength(ushort address)
         {
@@ -71,12 +102,12 @@ namespace Tomato
         {
             if (!IsRunning && CyclesToExecute != -1)
                 return;
-            int oldCycles = cycles;
+            int oldCycles = Cycles;
             if (CyclesToExecute == -1)
-                cycles = 1;
+                Cycles = 1;
             else
-                cycles += CyclesToExecute;
-            while (cycles > 0)
+                Cycles += CyclesToExecute;
+            while (Cycles > 0)
             {
                 if (BreakpointHit != null)
                 {
@@ -113,7 +144,7 @@ namespace Tomato
                 }
                 short opB_s = (short)opB;
                 short opA_s = (short)opA;
-                cycles--;
+                Cycles--;
                 unchecked
                 {
                     switch (opcode)
@@ -122,12 +153,12 @@ namespace Tomato
                             switch (valueB)
                             {
                                 case 0x01: // JSR a
-                                    cycles -= 2;
+                                    Cycles -= 2;
                                     Memory[--SP] = PC;
                                     PC = opA;
                                     break;
                                 case 0x08: // INT a
-                                    cycles -= 3;
+                                    Cycles -= 3;
                                     InterruptQueueEnabled = false;
                                     FireInterrupt(opA);
                                     break;
@@ -143,15 +174,15 @@ namespace Tomato
                                     InterruptQueueEnabled = false;
                                     break;
                                 case 0x0C: // IAQ a
-                                    cycles--;
+                                    Cycles--;
                                     InterruptQueueEnabled = opA != 0;
                                     break;
                                 case 0x10: // HWN a
-                                    cycles--;
+                                    Cycles--;
                                     Set(valueA, (ushort)Devices.Count);
                                     break;
                                 case 0x11: // HWQ a
-                                    cycles -= 3;
+                                    Cycles -= 3;
                                     if (opA < Devices.Count)
                                     {
                                         Device d = Devices[opA];
@@ -163,9 +194,9 @@ namespace Tomato
                                     }
                                     break;
                                 case 0x12: // HWI a
-                                    cycles -= 3;
+                                    Cycles -= 3;
                                     if (opA < Devices.Count)
-                                        cycles -= Devices[opA].HandleInterrupt();
+                                        Cycles -= Devices[opA].HandleInterrupt();
                                     break;
                                 default:
                                     if (InvalidInstruction != null)
@@ -183,7 +214,7 @@ namespace Tomato
                             Set(valueB, opA);
                             break;
                         case 0x02: // ADD b, a
-                            cycles--;
+                            Cycles--;
                             if (opB + opA > 0xFFFF)
                                 EX = 0x0001;
                             else
@@ -191,7 +222,7 @@ namespace Tomato
                             Set(valueB, (ushort)(opB + opA));
                             break;
                         case 0x03: // SUB b, a
-                            cycles--;
+                            Cycles--;
                             if (opB - opA < 0)
                                 EX = 0xFFFF;
                             else
@@ -199,17 +230,17 @@ namespace Tomato
                             Set(valueB, (ushort)(opB - opA));
                             break;
                         case 0x04: // MUL b, a
-                            cycles--;
+                            Cycles--;
                             EX = (ushort)(((opB * opA) >> 16) & 0xffff);
                             Set(valueB, (ushort)(opB * opA));
                             break;
                         case 0x05: // MLI b, a
-                            cycles--;
+                            Cycles--;
                             EX = (ushort)(((opB_s * opA_s) >> 16) & 0xffff);
                             Set(valueB, (ushort)(opB_s * opA_s));
                             break;
                         case 0x06: // DIV b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             if (opA == 0)
                             {
                                 EX = 0;
@@ -222,7 +253,7 @@ namespace Tomato
                             }
                             break;
                         case 0x07: // DVI b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             if (opA_s == 0)
                             {
                                 EX = 0;
@@ -235,14 +266,14 @@ namespace Tomato
                             }
                             break;
                         case 0x08: // MOD b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             if (opA == 0)
                                 Set(valueB, 0);
                             else
                                 Set(valueB, (ushort)(opB % opA));
                             break;
                         case 0x09: // MDI b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             if (opA_s == 0)
                                 Set(valueB, 0);
                             else
@@ -270,73 +301,73 @@ namespace Tomato
                             Set(valueB, (ushort)(opB << opA));
                             break;
                         case 0x10: // IFB b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!((ushort)(opB & opA) != 0))
                                 SkipIfChain();
                             break;
                         case 0x11: // IFC b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!((ushort)(opB & opA) == 0))
                                 SkipIfChain();
                             break;
                         case 0x12: // IFE b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!(opB == opA))
                                 SkipIfChain();
                             break;
                         case 0x13: // IFN b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!(opB != opA))
                                 SkipIfChain();
                             break;
                         case 0x14: // IFG b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!(opB > opA))
                                 SkipIfChain();
                             break;
                         case 0x15: // IFA b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!(opB_s > opA_s))
                                 SkipIfChain();
                             break;
                         case 0x16: // IFL b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!(opB < opA))
                                 SkipIfChain();
                             break;
                         case 0x17: // IFU b, a
-                            cycles += 2;
+                            Cycles += 2;
                             Get(valueB);
                             if (!(opB_s < opA_s))
                                 SkipIfChain();
                             break;
                         case 0x1A: // ADX b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             uint resADX = (uint)(opB + opA + (short)EX);
                             EX = (ushort)((resADX >> 16) & 0xFFFF);
                             Set(valueB, (ushort)resADX);
                             break;
                         case 0x1B: // SBX b, a
-                            cycles -= 2;
+                            Cycles -= 2;
                             uint resSBX = (uint)(opB - opA + (short)EX);
                             EX = (ushort)((resSBX >> 16) & 0xFFFF);
                             Set(valueB, (ushort)resSBX);
                             break;
                         case 0x1E: // STI b, a
-                            cycles--;
+                            Cycles--;
                             Set(valueB, opA);
                             I++;
                             J++;
                             break;
                         case 0x1F: // STD b, a
-                            cycles--;
+                            Cycles--;
                             Set(valueB, opA);
                             I--;
                             J--;
@@ -357,7 +388,7 @@ namespace Tomato
                 }
             }
             if (CyclesToExecute == -1)
-                cycles = oldCycles;
+                Cycles = oldCycles;
         }
 
         private void SkipIfChain()
@@ -365,7 +396,7 @@ namespace Tomato
             byte opcode;
             do
             {
-                cycles--;
+                Cycles--;
                 ushort instruction = Memory[PC++];
                 opcode = (byte)(instruction & 0x1F);
                 byte valueB = (byte)((instruction & 0x3E0) >> 5);
@@ -464,35 +495,35 @@ namespace Tomato
                     Memory[J] = value;
                     break;
                 case 0x10:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(A + Memory[PC++])] = value;
                     break;
                 case 0x11:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(B + Memory[PC++])] = value;
                     break;
                 case 0x12:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(C + Memory[PC++])] = value;
                     break;
                 case 0x13:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(X + Memory[PC++])] = value;
                     break;
                 case 0x14:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(Y + Memory[PC++])] = value;
                     break;
                 case 0x15:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(Z + Memory[PC++])] = value;
                     break;
                 case 0x16:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(I + Memory[PC++])] = value;
                     break;
                 case 0x17:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(J + Memory[PC++])] = value;
                     break;
                 case 0x18:
@@ -502,7 +533,7 @@ namespace Tomato
                     Memory[SP] = value;
                     break;
                 case 0x1A:
-                    cycles--;
+                    Cycles--;
                     Memory[(ushort)(SP + Memory[PC++])] = value;
                     break;
                 case 0x1B:
@@ -515,11 +546,11 @@ namespace Tomato
                     EX = value;
                     break;
                 case 0x1E:
-                    cycles--;
+                    Cycles--;
                     Memory[Memory[PC++]] = value;
                     break;
                 case 0x1F:
-                    cycles--;
+                    Cycles--;
                     PC++;
                     break;
             }
@@ -562,14 +593,14 @@ namespace Tomato
                 case 0x15:
                 case 0x16:
                 case 0x17:
-                    cycles--;
+                    Cycles--;
                     return Memory[(ushort)(Get((byte)(target - 0x10)) + Memory[PC++])];
                 case 0x18:
                     return Memory[SP++];
                 case 0x19:
                     return Memory[SP];
                 case 0x1A:
-                    cycles--;
+                    Cycles--;
                     return Memory[(ushort)(SP + Memory[PC++])];
                 case 0x1B:
                     return SP;
@@ -578,10 +609,10 @@ namespace Tomato
                 case 0x1D:
                     return EX;
                 case 0x1E:
-                    cycles--;
+                    Cycles--;
                     return Memory[Memory[PC++]];
                 case 0x1F:
-                    cycles--;
+                    Cycles--;
                     return Memory[PC++];
                 default:
                     return (ushort)(target - 0x21);
