@@ -26,6 +26,8 @@ namespace Lettuce
         protected static List<DiskImage> DiskImages { get; set; }
         protected static event EventHandler ReloadImages;
 
+        private bool disableReverseEndianness = false;
+
         public M35FD M35FD { get; set; }
         public DCPU CPU { get; set; }
 
@@ -102,6 +104,12 @@ namespace Lettuce
                     return;
                 }
                 ushort[] data = new ushort[737280];
+                byte[] temp = new byte[2];
+                for (int i = 0; i < data.Length; i++)
+                {
+                    stream.Read(temp, 0, 2);
+                    data[i] = BitConverter.ToUInt16(temp, 0);
+                }
                 AddImage(data, Path.GetFileName(ofd.FileName));
             }
         }
@@ -143,6 +151,7 @@ namespace Lettuce
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            disableReverseEndianness = true;
             if (listBox1.SelectedIndex != -1)
             {
                 removeButton.Enabled = writeProtectedCheckBox.Enabled = bigEndianCheckBox.Enabled = saveSelectedDiskButton.Enabled = true;
@@ -153,6 +162,7 @@ namespace Lettuce
             }
             else
                 removeButton.Enabled = insertDiskButton.Enabled = writeProtectedCheckBox.Enabled = bigEndianCheckBox.Enabled = saveSelectedDiskButton.Enabled = false;
+            disableReverseEndianness = false;
         }
 
         private void addBlankDisk_Click(object sender, EventArgs e)
@@ -176,6 +186,8 @@ namespace Lettuce
 
         private void bigEndianCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            if (disableReverseEndianness)
+                return;
             var image = DiskImages[listBox1.SelectedIndex];
             image.LittleEndian = !bigEndianCheckBox.Checked;
             for (int i = 0; i < image.Data.Length; i++)
