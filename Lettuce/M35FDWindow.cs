@@ -93,7 +93,7 @@ namespace Lettuce
         private void browseButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Disk Images (*.iso)|*.iso|All Files (*.*)|*.*";
+            ofd.Filter = "Disk Images (*.img)|*.img|All Files (*.*)|*.*";
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
             using (Stream stream = File.Open(ofd.FileName, FileMode.Open))
@@ -199,10 +199,10 @@ namespace Lettuce
             var disk = DiskImages[listBox1.SelectedIndex];
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "ISO Images (*.iso)|*.iso|All Files (*.*)|*.*";
+            sfd.Filter = "Disk Images (*.img)|*.iso|All Files (*.*)|*.*";
             sfd.FileName = disk.Name;
             if (disk.IsBlank)
-                sfd.FileName += ".iso";
+                sfd.FileName += ".img";
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
             using (Stream stream = File.Create(sfd.FileName))
