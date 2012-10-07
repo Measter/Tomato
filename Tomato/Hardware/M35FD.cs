@@ -93,9 +93,52 @@ namespace Tomato.Hardware
                 case 2: // Read sector
                     if (DeviceState == M35FDStateCode.STATE_NO_MEDIA)
                     {
-
+                        LastError = M35FDErrorCode.ERROR_NO_MEDIA;
+                        AttachedCPU.B = 0;
                         break;
                     }
+                    if (isReading || isWriting)
+                    {
+                        LastError = M35FDErrorCode.ERROR_BUSY;
+                        AttachedCPU.B = 0;
+                        break;
+                    }
+                    targetTrack = (uint)AttachedCPU.X / wordsPerTrack;
+                    seekTicks = (int)(tracksPerTick * Math.Abs(targetTrack - currentTrack));
+                    fromAddress = (uint)AttachedCPU.X * wordsPerSector;
+                    toAddress = AttachedCPU.Y;
+                    AttachedCPU.B = 1;
+                    wordsWritten = 0;
+                    isReading = true;
+                    LastError = M35FDErrorCode.ERROR_NONE;
+                    break;
+                case 3: // Write sector
+                    if (DeviceState == M35FDStateCode.STATE_NO_MEDIA)
+                    {
+                        LastError = M35FDErrorCode.ERROR_NO_MEDIA;
+                        AttachedCPU.B = 0;
+                        break;
+                    }
+                    if (isReading || isWriting)
+                    {
+                        LastError = M35FDErrorCode.ERROR_BUSY;
+                        AttachedCPU.B = 0;
+                        break;
+                    }
+                    if (!Writable)
+                    {
+                        LastError = M35FDErrorCode.ERROR_PROTECTED;
+                        AttachedCPU.B = 0;
+                        break;
+                    }
+                    targetTrack = (uint)AttachedCPU.X / wordsPerTrack;
+                    seekTicks = (int)(tracksPerTick * Math.Abs(targetTrack - currentTrack));
+                    fromAddress = (uint)AttachedCPU.X * wordsPerSector;
+                    toAddress = AttachedCPU.Y;
+                    AttachedCPU.B = 1;
+                    wordsWritten = 0;
+                    isWriting = true;
+                    LastError = M35FDErrorCode.ERROR_NONE;
                     break;
             }
             return 0;
@@ -103,10 +146,50 @@ namespace Tomato.Hardware
 
         private bool isReading = false;
         private bool isWriting = false;
-        private uint fromAddress, toAddress;
+        private uint fromAddress, toAddress, currentTrack, targetTrack;
+        private int seekTicks, wordsWritten;
+        private const int wordsPerTick = 512;
+        private const int wordsPerSector = 512, wordsPerTrack = 512 * 18;
+        private const float tracksPerTick = 0.144f;
 
         public override void Tick()
         {
+            if (isReading)
+            {
+                // Handle seeking
+                if (seekTicks != 0)
+                    seekTicks--;
+                else
+                {
+                    currentTrack = targetTrack;
+                    int wordsToWrite = wordsPerTick;
+                    if (wordsToWrite + wordsWritten > wordsPerSector)
+                        wordsToWrite = wordsPerSector - wordsWritten;
+                    Array.Copy(Disk, fromAddress, AttachedCPU.Memory, toAddress, wordsToWrite);
+                    toAddress += wordsPerTick;
+                    wordsWritten += wordsPerTick;
+                    if (wordsWritten >= wordsPerSector)
+                        isReading = false;
+                }
+            }
+            else if (isWriting)
+            {
+                // Handle seeking
+                if (seekTicks != 0)
+                    seekTicks--;
+                else
+                {
+                    currentTrack = targetTrack;
+                    int wordsToWrite = wordsPerTick;
+                    if (wordsToWrite + wordsWritten > wordsPerSector)
+                        wordsToWrite = wordsPerSector - wordsWritten;
+                    Array.Copy(AttachedCPU.Memory, fromAddress, Disk, toAddress, wordsToWrite);
+                    toAddress += wordsPerTick;
+                    wordsWritten += wordsPerTick;
+                    if (wordsWritten >= wordsPerSector)
+                        isWriting = false;
+                }
+            }
         }
 
         public void InsertDisk(ushort[] disk, bool writable)
@@ -119,6 +202,7 @@ namespace Tomato.Hardware
                 DeviceState = M35FDStateCode.STATE_READY;
             else
                 DeviceState = M35FDStateCode.STATE_READY_WP;
+            currentTrack = 0;
         }
 
         public void Eject()
@@ -127,6 +211,11 @@ namespace Tomato.Hardware
                 throw new IOException("No disk present.");
             Disk = null;
             DeviceState = M35FDStateCode.STATE_NO_MEDIA;
+            if (isReading || isWriting)
+            {
+                isReading = isWriting = false;
+                LastError = M35FDErrorCode.ERROR_EJECT;
+            }
         }
 
         public override void Reset()
