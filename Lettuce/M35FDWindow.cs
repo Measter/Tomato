@@ -134,7 +134,7 @@ namespace Lettuce
         private void insertDiskButton_Click(object sender, EventArgs e)
         {
             var image = DiskImages[listBox1.SelectedIndex];
-            M35FD.InsertDisk(image.Data, image.Writable);
+            M35FD.InsertDisk(ref image.Data, image.Writable);
             if (M35FD.Disk != null)
             {
                 imageNameLabel.Text = image.Name;
@@ -199,7 +199,7 @@ namespace Lettuce
             var disk = DiskImages[listBox1.SelectedIndex];
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Disk Images (*.img)|*.iso|All Files (*.*)|*.*";
+            sfd.Filter = "Disk Images (*.img)|*.img|All Files (*.*)|*.*";
             sfd.FileName = disk.Name;
             if (disk.IsBlank)
                 sfd.FileName += ".img";
@@ -219,7 +219,7 @@ namespace Lettuce
 
         protected class DiskImage
         {
-            public ushort[] Data { get; set; }
+            public ushort[] Data;
             public string Name { get; set; }
             public bool LittleEndian { get; set; }
             public bool Writable { get; set; }

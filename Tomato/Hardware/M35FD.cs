@@ -133,8 +133,8 @@ namespace Tomato.Hardware
                     }
                     targetTrack = (uint)AttachedCPU.X / wordsPerTrack;
                     seekTicks = (int)(tracksPerTick * Math.Abs(targetTrack - currentTrack));
-                    fromAddress = (uint)AttachedCPU.X * wordsPerSector;
-                    toAddress = AttachedCPU.Y;
+                    toAddress = (uint)AttachedCPU.X * wordsPerSector;
+                    fromAddress = AttachedCPU.Y;
                     AttachedCPU.B = 1;
                     wordsWritten = 0;
                     isWriting = true;
@@ -192,7 +192,7 @@ namespace Tomato.Hardware
             }
         }
 
-        public void InsertDisk(ushort[] disk, bool writable)
+        public void InsertDisk(ref ushort[] disk, bool writable)
         {
             if (disk.Length != 737280)
                 throw new IOException("Invalid disk size.");
