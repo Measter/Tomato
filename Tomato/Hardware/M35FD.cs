@@ -56,7 +56,7 @@ namespace Tomato.Hardware
         [TypeConverter(typeof(HexTypeEditor))]
         public override uint DeviceID
         {
-            get { return 0x7349f615; }
+            get { return 0x12345678; }
         }
 
         [Category("Device Information")]
