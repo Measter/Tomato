@@ -38,5 +38,10 @@ namespace Tomato.Hardware
         }
 
         public bool BreakOnInterrupt { get; set; }
+
+        public override string ToString()
+        {
+            return FriendlyName;
+        }
     }
 }

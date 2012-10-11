@@ -8,23 +8,21 @@ using System.Text;
 using System.Windows.Forms;
 using Tomato.Hardware;
 using System.Reflection;
+using System.IO;
 
 namespace Lettuce
 {
     public partial class HardwareConfiguration : Form
     {
-        private List<Device> PossibleDevices;
+        private List<Device> possibleDevices;
 
         public List<Device> SelectedDevices
         {
             get
             {
-                List<Device> devices = new List<Device>();
-                for (int i = 0; i < hardwareSelectionListBox.Items.Count; i++)
-                {
-                    if (hardwareSelectionListBox.GetItemChecked(i))
-                        devices.Add(PossibleDevices[i]);
-                }
+                var devices = new List<Device>();
+                foreach (var device in selectedListBox.Items)
+                    devices.Add((Device)device);
                 return devices;
             }
         }
@@ -32,24 +30,70 @@ namespace Lettuce
         public HardwareConfiguration()
         {
             InitializeComponent();
-            PossibleDevices = new List<Device>();
+            possibleDevices = new List<Device>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 var types = asm.GetTypes().Where(t => typeof(Device).IsAssignableFrom(t) && t.IsAbstract == false);
                 foreach (var type in types)
                 {
-                    Device device = (Device)Activator.CreateInstance(type);
-                    PossibleDevices.Add((Device)Activator.CreateInstance(type));
+                    var device = (Device)Activator.CreateInstance(type);
+                    possibleDevices.Add(device);
                 }
             }
-            foreach (var device in PossibleDevices)
-                hardwareSelectionListBox.Items.Add(device.FriendlyName, device.SelectedByDefault);
+            foreach (var device in possibleDevices)
+            {
+                availableListBox.Items.Add(device);
+                if (device.SelectedByDefault)
+                    selectedListBox.Items.Add(device);
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
-            this.Close();
+            Close();
+        }
+
+        private void availableListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            addDeviceButton.Enabled = availableListBox.SelectedIndex != -1;
+        }
+
+        private void addDeviceButton_Click(object sender, EventArgs e)
+        {
+            selectedListBox.Items.Add(Activator.CreateInstance(availableListBox.SelectedItem.GetType()));
+        }
+
+        private void selectedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            removeDeviceButton.Enabled = selectedListBox.SelectedIndex != -1;
+            moveUpButton.Enabled = selectedListBox.SelectedIndex != 0 && selectedListBox.Items.Count > 1;
+            moveDownButton.Enabled = selectedListBox.SelectedIndex != selectedListBox.Items.Count - 1;
+        }
+
+        private void removeDeviceButton_Click(object sender, EventArgs e)
+        {
+            int index = selectedListBox.SelectedIndex;
+            selectedListBox.Items.RemoveAt(selectedListBox.SelectedIndex);
+            if (index != selectedListBox.Items.Count)
+                selectedListBox.SelectedIndex = index;
+        }
+
+        private void moveDownButton_Click(object sender, EventArgs e)
+        {
+            var device = selectedListBox.SelectedItem;
+            int index = selectedListBox.SelectedIndex;
+            selectedListBox.Items.RemoveAt(selectedListBox.SelectedIndex);
+            selectedListBox.Items.Insert(index + 1, device);
+            selectedListBox.SelectedIndex = index + 1;
+        }
+
+        private void moveUpButton_Click(object sender, EventArgs e)
+        {
+            var device = selectedListBox.SelectedItem;
+            int index = selectedListBox.SelectedIndex;
+            selectedListBox.Items.RemoveAt(selectedListBox.SelectedIndex);
+            selectedListBox.Items.Insert(index - 1, device);
+            selectedListBox.SelectedIndex = index - 1;
         }
     }
 }
