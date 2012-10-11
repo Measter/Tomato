@@ -236,7 +236,7 @@ namespace Lettuce
             GL.ReadPixels(0, 0, ClientSize.Width, ClientSize.Height, PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
             tempBmp.UnlockBits(data);
 
-            //tempBmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            tempBmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
             return tempBmp;
         }
 
