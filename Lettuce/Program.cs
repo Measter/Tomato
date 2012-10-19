@@ -105,6 +105,9 @@ namespace Lettuce
                         case "--listing":
                             Debugger.LoadOrganicListing(args[++i]);
                             break;
+                        case "--little-endian":
+                            littleEndian = true;
+                            break;
                     }
                 }
                 else
