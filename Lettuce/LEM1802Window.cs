@@ -147,7 +147,7 @@ namespace Lettuce
             }
             else
             {
-				this.Invalidate();
+                this.Invalidate();
                 if(RuntimeInfo.IsLinux)
                     this.Update();
             }
