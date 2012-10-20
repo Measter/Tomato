@@ -8,13 +8,13 @@ using Tomato.Hardware;
 using System.Reflection;
 using System.Globalization;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Pickles
 {
     class Program
     {
         static List<Device> PossibleDevices = new List<Device>();
-        static List<PinnedConsole> Consoles = new List<PinnedConsole>();
         static int ConsoleID = 0;
         static Timer ClockTimer;
         public static DCPU CPU;
@@ -23,22 +23,11 @@ namespace Pickles
 
         static void Main(string[] args)
         {
-            PinnedConsole globalConsole = new PinnedConsole()
-            {
-                ID = -1,
-                Width = Console.WindowWidth,
-                Height = Console.WindowHeight,
-                Interval = -1,
-                Left = 0,
-                Top = 0,
-                Global = true
-            };
-
             Console.Clear();
             Console.TreatControlCAsInput = true;
 
-            globalConsole.WriteLine("Pickles DCPU-16 Debugger     Copyright Drew DeVault 2012");
-            globalConsole.WriteLine("Use \"help\" for assistance.");
+            Console.WriteLine("Pickles DCPU-16 Debugger     Copyright Drew DeVault 2012");
+            Console.WriteLine("Use \"help\" for assistance.");
 
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -54,15 +43,15 @@ namespace Pickles
             ClockTimer = new System.Threading.Timer(FetchExecute, null, 10, Timeout.Infinite);
             while (true)
             {
-                globalConsole.Write(">");
+                Console.Write(">");
                 string originalInput = ReadLineEnableShortcuts().Trim();
-                ParseInput(originalInput, globalConsole);
+                ParseInput(originalInput);
                 if (originalInput.ToLower() == "quit" || originalInput.ToLower() == "q")
                     break;
             }
         }
 
-        private static void ParseInput(string originalInput, PinnedConsole Console)
+        private static void ParseInput(string originalInput)
         {
             string input = originalInput.ToLower().Trim();
             string[] parameters = input.Split(' ');
@@ -70,37 +59,11 @@ namespace Pickles
             if (input == "quit" || input == "q")
                 return;
             else if (input == "clear")
-            {
-                if (Console.Global)
-                    System.Console.Clear();
-                else
-                    Console.Clear();
-            }
+                Console.Clear();
             else if (input.StartsWith("bind "))
             {
                 string[] parts = input.Split(' ');
                 Shortcuts.Add(parts[1].ToLower(), input.Substring(5 + parts[1].Length));
-            }
-            else if (input.StartsWith("pin ")) // pin x y interval command...
-            {
-                string[] parts = input.Split(' ');
-                int x = int.Parse(parts[1]);
-                int y = int.Parse(parts[2]);
-                int interval = int.Parse(parts[3]);
-                string command = input.Substring(input.IndexOf(' ') + 1);
-                command = command.Substring(command.IndexOf(' ') + 1);
-                command = command.Substring(command.IndexOf(' ') + 1);
-                command = command.Substring(command.IndexOf(' ') + 1);
-                PinnedConsole pc = new PinnedConsole()
-                {
-                    Command = command,
-                    Left = x,
-                    Top = y,
-                    Interval = interval,
-                    ID = ConsoleID++
-                };
-                pc.Timer = new Timer(new TimerCallback(UpdateConsole), pc, pc.Interval, System.Threading.Timeout.Infinite);
-                Console.WriteLine("Console ID " + pc.ID.ToString() + " created.");
             }
             else if (input.StartsWith("flash "))
             {
@@ -162,9 +125,7 @@ namespace Pickles
                     }
                 }
                 else
-                {
                     CPU.Execute(-1);
-                }
             }
             else if (input.StartsWith("dump "))
             {
@@ -175,14 +136,14 @@ namespace Pickles
                     {
                         int index = int.Parse(parts[1]);
                         if (CPU.Devices[index] is LEM1802)
-                            DrawScreen(CPU.Devices[index] as LEM1802, Console);
+                            DrawScreen(CPU.Devices[index] as LEM1802);
                     }
                     else
                     {
                         foreach (var device in CPU.Devices)
                             if (device is LEM1802)
                             {
-                                DrawScreen(device as LEM1802, Console);
+                                DrawScreen(device as LEM1802);
                                 break;
                             }
                     }
@@ -256,23 +217,23 @@ namespace Pickles
                 {
                     if (CPU.PC == entry.Address)
                     {
-                        ConsoleColor background = System.Console.BackgroundColor;
-                        ConsoleColor foreground = System.Console.ForegroundColor;
-                        System.Console.BackgroundColor = ConsoleColor.Yellow;
-                        System.Console.ForegroundColor = ConsoleColor.Black;
+                        ConsoleColor background = Console.BackgroundColor;
+                        ConsoleColor foreground = Console.ForegroundColor;
+                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.WriteLine(GetHexString(entry.Address, 4) + ": " + entry.Code);
-                        System.Console.ForegroundColor = foreground;
-                        System.Console.BackgroundColor = background;
+                        Console.ForegroundColor = foreground;
+                        Console.BackgroundColor = background;
                     }
                     else if (CPU.Breakpoints.Where(b => b.Address == entry.Address).Count() != 0)
                     {
-                        ConsoleColor background = System.Console.BackgroundColor;
-                        ConsoleColor foreground = System.Console.ForegroundColor;
-                        System.Console.BackgroundColor = ConsoleColor.DarkRed;
-                        System.Console.ForegroundColor = ConsoleColor.White;
+                        ConsoleColor background = Console.BackgroundColor;
+                        ConsoleColor foreground = Console.ForegroundColor;
+                        Console.BackgroundColor = ConsoleColor.DarkRed;
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(GetHexString(entry.Address, 4) + ": " + entry.Code);
-                        System.Console.ForegroundColor = foreground;
-                        System.Console.BackgroundColor = background;
+                        Console.ForegroundColor = foreground;
+                        Console.BackgroundColor = background;
                     }
                     else
                         Console.WriteLine(GetHexString(entry.Address, 4) + ": " + entry.Code);
@@ -285,6 +246,8 @@ namespace Pickles
                     Address = ushort.Parse(input.Substring(11), NumberStyles.HexNumber)
                 });
             }
+            else if (input == "exit" || input == "quit" || input == "bye")
+                Process.GetCurrentProcess().Kill();
             else if (input == "") { }
             else
             {
@@ -292,26 +255,12 @@ namespace Pickles
                 {
                     string[] file = File.ReadAllLines(input);
                     foreach (var line in file)
-                        ParseInput(line, Console);
+                        ParseInput(line);
                 }
                 else
                     Console.WriteLine("Unknown command.");
             }
             return;
-        }
-
-        static void UpdateConsole(object o)
-        {
-            PinnedConsole pc = o as PinnedConsole;
-            int left = Console.CursorLeft;
-            int top = Console.CursorTop;
-            Console.CursorLeft = pc.Left;
-            Console.CursorTop = pc.Top;
-            pc.Clear();
-            ParseInput(pc.Command, pc);
-            Console.CursorLeft = left;
-            Console.CursorTop = top;
-            pc.Timer = new Timer(new TimerCallback(UpdateConsole), pc, pc.Interval, System.Threading.Timeout.Infinite);
         }
 
         private static List<string> History = new List<string>();
@@ -323,96 +272,90 @@ namespace Pickles
             {
                 // TODO: Support scrolling across newlines and window boundaries
                 var keyinfo = Console.ReadKey(true);
-                lock (PinnedConsole.DisplayLock)
+                if (keyinfo.Modifiers == ConsoleModifiers.Control)
                 {
-                    if (keyinfo.Modifiers == ConsoleModifiers.Control)
+                    if (Shortcuts.ContainsKey(keyinfo.Key.ToString().ToLower()))
+                        ParseInput(Shortcuts[keyinfo.Key.ToString().ToLower()]);
+                    continue;
+                }
+                if (keyinfo.Key == ConsoleKey.Enter)
+                    break;
+                else if (keyinfo.Key == ConsoleKey.LeftArrow)
+                {
+                    if (cursor > 0)
                     {
-                        if (Shortcuts.ContainsKey(keyinfo.Key.ToString().ToLower()))
-                            ParseInput(Shortcuts[keyinfo.Key.ToString().ToLower()], new PinnedConsole()
-                                {
-                                    Hidden = true
-                                });
-                        continue;
+                        Console.CursorLeft--;
+                        cursor--;
                     }
-                    if (keyinfo.Key == ConsoleKey.Enter)
-                        break;
-                    else if (keyinfo.Key == ConsoleKey.LeftArrow)
+                }
+                else if (keyinfo.Key == ConsoleKey.RightArrow)
+                {
+                    if (cursor < entry.Length)
                     {
-                        if (cursor > 0)
-                        {
-                            Console.CursorLeft--;
-                            cursor--;
-                        }
+                        Console.CursorLeft++;
+                        cursor++;
                     }
-                    else if (keyinfo.Key == ConsoleKey.RightArrow)
-                    {
-                        if (cursor < entry.Length)
-                        {
-                            Console.CursorLeft++;
-                            cursor++;
-                        }
-                    }
-                    else if (keyinfo.Key == ConsoleKey.UpArrow)
-                    {
-                        Console.SetCursorPosition(curLeft, curTop);
-                        for (int i = 0; i < entry.Length; i++)
-                            Console.Write(" ");
+                }
+                else if (keyinfo.Key == ConsoleKey.UpArrow)
+                {
+                    Console.SetCursorPosition(curLeft, curTop);
+                    for (int i = 0; i < entry.Length; i++)
+                        Console.Write(" ");
+                    historyEntry++;
+                    if (historyEntry > History.Count - 1)
+                        historyEntry--;
+                    Console.SetCursorPosition(curLeft, curTop);
+                    Console.Write(History.ElementAt(historyEntry));
+                    entry = History.ElementAt(historyEntry);
+                    cursor = entry.Length - 1;
+                }
+                else if (keyinfo.Key == ConsoleKey.DownArrow)
+                {
+                    Console.SetCursorPosition(curLeft, curTop);
+                    for (int i = 0; i < entry.Length; i++)
+                        Console.Write(" ");
+                    historyEntry--;
+                    if (historyEntry < -1)
                         historyEntry++;
-                        if (historyEntry > History.Count - 1)
-                            historyEntry--;
-                        Console.SetCursorPosition(curLeft, curTop);
-                        Console.Write(History.ElementAt(historyEntry));
+                    if (historyEntry == -1)
+                        entry = "";
+                    else
+                    {
                         entry = History.ElementAt(historyEntry);
                         cursor = entry.Length - 1;
                     }
-                    else if (keyinfo.Key == ConsoleKey.DownArrow)
+                    Console.SetCursorPosition(curLeft, curTop);
+                    Console.Write(entry);
+                }
+                else if (keyinfo.Key == ConsoleKey.Backspace)
+                {
+                    if (cursor > 0)
                     {
-                        Console.SetCursorPosition(curLeft, curTop);
-                        for (int i = 0; i < entry.Length; i++)
-                            Console.Write(" ");
-                        historyEntry--;
-                        if (historyEntry < -1)
-                            historyEntry++;
-                        if (historyEntry == -1)
-                            entry = "";
-                        else
-                        {
-                            entry = History.ElementAt(historyEntry);
-                            cursor = entry.Length - 1;
-                        }
-                        Console.SetCursorPosition(curLeft, curTop);
-                        Console.Write(entry);
-                    }
-                    else if (keyinfo.Key == ConsoleKey.Backspace)
-                    {
-                        if (cursor > 0)
-                        {
-                            Console.CursorLeft--;
-                            cursor--;
-                            entry = entry.Remove(cursor, 1);
-                            int left = Console.CursorLeft;
-                            Console.Write(entry.Substring(cursor) + " ");
-                            Console.CursorLeft = left;
-                        }
-                    }
-                    else if (keyinfo.Key == ConsoleKey.Delete)
-                    {
-                        if (cursor < entry.Length)
-                        {
-                            entry = entry.Remove(cursor, 1);
-                            int left = Console.CursorLeft;
-                            Console.Write(entry.Substring(cursor) + " ");
-                            Console.CursorLeft = left;
-                        }
-                    }
-                    else
-                    {
-                        entry = entry.Insert(cursor, keyinfo.KeyChar.ToString());
-                        cursor++;
+                        Console.CursorLeft--;
+                        cursor--;
+                        entry = entry.Remove(cursor, 1);
                         int left = Console.CursorLeft;
-                        Console.Write(entry.Substring(cursor - 1));
-                        Console.CursorLeft = left + 1;
+                        Console.Write(entry.Substring(cursor) + " ");
+                        Console.CursorLeft = left;
                     }
+                }
+                else if (keyinfo.Key == ConsoleKey.Delete)
+                {
+                    if (cursor < entry.Length)
+                    {
+                        entry = entry.Remove(cursor, 1);
+                        int left = Console.CursorLeft;
+                        Console.Write(entry.Substring(cursor) + " ");
+                        Console.CursorLeft = left;
+                    }
+                }
+                else
+                {
+                    entry = entry.Insert(cursor, keyinfo.KeyChar.ToString());
+                    cursor++;
+                    int left = Console.CursorLeft;
+                    Console.Write(entry.Substring(cursor - 1));
+                    Console.CursorLeft = left + 1;
                 }
             }
             if (History.Count == 20)
@@ -430,17 +373,16 @@ namespace Pickles
             return result;
         }
 
-        private static void DrawScreen(LEM1802 Screen, PinnedConsole Console)
+        private static void DrawScreen(LEM1802 Screen)
         {
-            Console.Clear(); // TODO: not this
-            ConsoleColor foregroundInitial = System.Console.ForegroundColor;
-            ConsoleColor backgroundInitial = System.Console.BackgroundColor;
+            ConsoleColor foregroundInitial = Console.ForegroundColor;
+            ConsoleColor backgroundInitial = Console.BackgroundColor;
             ushort address = 0;
-            System.Console.ForegroundColor = GetPaletteColor((byte)Screen.BorderColorValue);
+            Console.ForegroundColor = GetPaletteColor((byte)Screen.BorderColorValue);
             Console.Write("                                  \n");
             for (int y = 0; y < 12; y++)
             {
-                System.Console.ForegroundColor = GetPaletteColor((byte)Screen.BorderColorValue);
+                Console.ForegroundColor = GetPaletteColor((byte)Screen.BorderColorValue);
                 Console.Write(" ");
                 for (int x = 0; x < 32; x++)
                 {
@@ -448,16 +390,16 @@ namespace Pickles
 
                     ConsoleColor background = GetPaletteColor((byte)((value & 0xF00) >> 8));
                     ConsoleColor foreground = GetPaletteColor((byte)((value & 0xF000) >> 12));
-                    System.Console.ForegroundColor = foreground;
-                    System.Console.BackgroundColor = background;
+                    Console.ForegroundColor = foreground;
+                    Console.BackgroundColor = background;
                     Console.Write(Encoding.ASCII.GetString(new byte[] { (byte)(value & 0xFF) }));
                     address++;
                 }
-                System.Console.ForegroundColor = GetPaletteColor((byte)Screen.BorderColorValue);
+                Console.ForegroundColor = GetPaletteColor((byte)Screen.BorderColorValue);
                 Console.Write(" \n");
             }
-            System.Console.ForegroundColor = foregroundInitial;
-            System.Console.BackgroundColor = backgroundInitial;
+            Console.ForegroundColor = foregroundInitial;
+            Console.BackgroundColor = backgroundInitial;
         }
 
         private static ConsoleColor GetPaletteColor(byte p)
@@ -465,21 +407,21 @@ namespace Pickles
             p &= 0xF;
             return new ConsoleColor[]
             {
-                ConsoleColor.Black, // TODO
                 ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
-                ConsoleColor.Black,
+                ConsoleColor.Blue,
+                ConsoleColor.Green,
+                ConsoleColor.DarkCyan,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Magenta,
+                ConsoleColor.DarkYellow,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkGray,
+                ConsoleColor.Cyan,
+                ConsoleColor.Green,
+                ConsoleColor.Blue,
+                ConsoleColor.Magenta,
+                ConsoleColor.Magenta,
+                ConsoleColor.Yellow,
                 ConsoleColor.White
             }[p];
         }
