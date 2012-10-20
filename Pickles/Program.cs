@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace Pickles
 {
-    class Program
+    public class Program
     {
         static List<Device> PossibleDevices = new List<Device>();
         static int ConsoleID = 0;
@@ -21,6 +21,7 @@ namespace Pickles
         public static DateTime LastTick;
         public static Dictionary<string, string> Shortcuts = new Dictionary<string, string>();
 
+        [STAThread]
         static void Main(string[] args)
         {
             Console.Clear();
@@ -38,6 +39,8 @@ namespace Pickles
 
             string input;
             CPU = new DCPU();
+            CPU.BreakpointHit += CPU_BreakpointHit;
+            CPU.InvalidInstruction += CPU_InvalidInstruction;
             CPU.IsRunning = false;
             LastTick = DateTime.Now;
             ClockTimer = new System.Threading.Timer(FetchExecute, null, 10, Timeout.Infinite);
@@ -51,14 +54,27 @@ namespace Pickles
             }
         }
 
+        static void CPU_InvalidInstruction(object sender, InvalidInstructionEventArgs e)
+        {
+            Console.Write("Invalid instruction executed: 0x" + e.Instruction.ToString("X4") + " at 0x" + e.Address.ToString("X4") + "\n>");
+            e.ContinueExecution = false;
+            CPU.IsRunning = false;
+        }
+
+        static void CPU_BreakpointHit(object sender, BreakpointEventArgs e)
+        {
+            e.ContinueExecution = false;
+            CPU.IsRunning = false;
+            Console.WriteLine("Breakpoint hit: 0x" + e.Breakpoint.Address.ToString("X4"));
+            ParseInput("dasm"); ParseInput("list registers"); Console.Write(">");
+        }
+
         private static void ParseInput(string originalInput)
         {
             string input = originalInput.ToLower().Trim();
             string[] parameters = input.Split(' ');
 
-            if (input == "quit" || input == "q")
-                return;
-            else if (input == "clear")
+            if (input == "clear")
                 Console.Clear();
             else if (input.StartsWith("bind "))
             {
@@ -201,8 +217,9 @@ namespace Pickles
                 }
                 else if (parts[1] == "hardware")
                 {
+                    int i = 0;
                     foreach (var hw in CPU.Devices)
-                        Console.WriteLine(hw.FriendlyName);
+                        Console.WriteLine((i++) + ": " + hw.FriendlyName + " (0x" + hw.DeviceID.ToString("X8") + ")");
                 }
             }
             else if (input.StartsWith("dasm") || input.StartsWith("dis"))
@@ -241,13 +258,32 @@ namespace Pickles
             }
             else if (input.StartsWith("breakpoint "))
             {
-                CPU.Breakpoints.Add(new Breakpoint()
+                string[] parts = input.Split(' ');
+                ushort address = ushort.Parse(parts[2], NumberStyles.HexNumber);
+                if (parts[1] == "add" || parts[1] == "set")
                 {
-                    Address = ushort.Parse(input.Substring(11), NumberStyles.HexNumber)
-                });
+                    if (CPU.Breakpoints.Count(b => b.Address == address) == 0)
+                    {
+                        CPU.Breakpoints.Add(new Breakpoint()
+                        {
+                            Address = ushort.Parse(input.Substring(11), NumberStyles.HexNumber)
+                        });
+                    }
+                    else
+                        Console.WriteLine("There is already a breakpoint set at that address.");
+                }
+                else if (parts[1] == "remove")
+                {
+                    if (CPU.Breakpoints.Count(b => b.Address == address) != 0)
+                        CPU.Breakpoints.Remove(CPU.Breakpoints.FirstOrDefault(b => b.Address == address));
+                    else
+                        Console.WriteLine("There is no breakpoint set at that address.");
+                }
             }
             else if (input == "exit" || input == "quit" || input == "bye")
                 Process.GetCurrentProcess().Kill();
+            else if (input.StartsWith("help"))
+                DoHelp(input);
             else if (input == "") { }
             else
             {
@@ -261,6 +297,94 @@ namespace Pickles
                     Console.WriteLine("Unknown command.");
             }
             return;
+        }
+
+        private static void DoHelp(string input)
+        {
+            if (input == "help")
+            {
+                Console.WriteLine("For help on a specific command, use help [command].\n" +
+                    "The following commands are available:\n" +
+                    "    bind, breakpoint, clear, connect, dasm, dump, exit, flash, list,\n    start, step, stop");
+            }
+            else
+            {
+                string command = input.Substring(5);
+                switch (command)
+                {
+                    case "bind":
+                        Console.WriteLine("$ bind [key] [command...]\n" +
+                            "Binds the specified [key] to [command...] and executes [command...]\nwhen pressed in conjunction with [Ctrl].");
+                        break;
+                    case "breakpoint":
+                        Console.WriteLine("$ breakpoint [add|remove] [address]\n" +
+                            "Adds or removes a breakpoint at [address], specified in hexadecimal.");
+                        break;
+                    case "clear":
+                        Console.WriteLine("$ clear\n" +
+                            "Clears the console.");
+                        break;
+                    case "connect":
+                        Console.WriteLine("$ connect [hardware...]\n" +
+                            "Connects hardware to the CPU. [hardware...] is a comma-delimited list of\n" +
+                            "devices. You may use the device name (such as \"LEM1802\"), or the hardware ID,\n" +
+                            "in hexadecimal. Example: $ connect LEM1802,genericclock,30cf7406");
+                        break;
+                    case "dasm":
+                        Console.WriteLine("$ dasm (start address)\n" +
+                            "Displays a disassembly of memory. If (start address) is not provided,\n" +
+                            "PC will be used. 0x10 words of memory are displayed. PC is shown with\n" +
+                            "a yellow background, and breakpoints are shown in red.");
+                        break;
+                    case "dump":
+                        Console.WriteLine("See \"help dump memory\", \"help dump stack\", and \"help dump screen\".");
+                        break;
+                    case "dump memory":
+                        Console.WriteLine("$ dump memory [start address] (end address)\n" +
+                            "Outputs a segment of memory to the console. (end address) defaults to\n" +
+                            "[start address] + 0x40. PC is shown with brackets around the cell.");
+                        break;
+                    case "dump stack":
+                        Console.WriteLine("$ dump stack\n" +
+                            "Outputs the first 10 words on the stack.");
+                        break;
+                    case "dump screen":
+                        Console.WriteLine("$ dump screen [index]\n" +
+                            "Outputs a textual representation of the LEM-1802 device at [index].");
+                        break;
+                    case "exit":
+                        Console.WriteLine("$ exit\n" +
+                            "Exits Pickles.");
+                        break;
+                    case "flash":
+                        Console.WriteLine("$ flash (little|big) [file]\n" +
+                            "Inserts the contents of [file] into memory. If an endianness is not specified, big-\n" +
+                            "endian is the default.");
+                        break;
+                    case "list":
+                        Console.WriteLine("See \"help list registers\" and \"help list hardware\".");
+                        break;
+                    case "list hardware":
+                        Console.WriteLine("$ list hardware\n" +
+                            "Displays a list of all connected devices, as well as their hadware IDs.");
+                        break;
+                    case "list registers":
+                        Console.WriteLine("$ list registers\n" +
+                            "Lists all registers and their values.");
+                        break;
+                    case "start":
+                        Console.WriteLine("$ start\n" +
+                            "Starts the CPU at 60 Hz.");
+                        break;
+                    case "stop":
+                        Console.WriteLine("$ stop\n" +
+                            "Stops CPU execution.");
+                        break;
+                    default:
+                        Console.WriteLine("Unrecognized command.");
+                        break;
+                }
+            }
         }
 
         private static List<string> History = new List<string>();
