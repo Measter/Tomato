@@ -41,6 +41,7 @@ namespace Lettuce
         public LEM1802Window(LEM1802 LEM1802, DCPU CPU, bool AssignKeyboard) : base()
         {
             InitializeComponent();
+            this.iad = new InvalidateAsyncDelegate(InvalidateAsync);
             startRecordingToolStripMenuItem.Tag = false;
             // Set up drawing
             this.SetStyle(ControlStyles.AllPaintingInWmPaint |
@@ -133,21 +134,22 @@ namespace Lettuce
         }
 
         private delegate void InvalidateAsyncDelegate();
+        private InvalidateAsyncDelegate iad;
         private void InvalidateAsync()
         {
             if (this.InvokeRequired)
             {
                 try
                 {
-                    InvalidateAsyncDelegate iad = new InvalidateAsyncDelegate(InvalidateAsync);
                     this.Invoke(iad);
                 }
                 catch { }
             }
             else
             {
-                this.Invalidate();
-                this.Update();
+				this.Invalidate();
+                if(RuntimeInfo.IsLinux)
+                    this.Update();
             }
         }
 
