@@ -266,7 +266,7 @@ namespace Pickles
                     {
                         CPU.Breakpoints.Add(new Breakpoint()
                         {
-                            Address = ushort.Parse(input.Substring(11), NumberStyles.HexNumber)
+                            Address = address
                         });
                     }
                     else
