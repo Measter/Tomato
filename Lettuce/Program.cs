@@ -160,7 +160,7 @@ namespace Lettuce
 
             debugger = new Debugger(ref CPU);
             debugger.StartPosition = FormStartPosition.Manual;
-            if(Directory.Exists("/Volumes")) // is mac?
+			if(RuntimeInfo.IsMacOSX)
                 debugger.Location = new Point(0, 22);
             else
                 debugger.Location = new Point(0, 0);
