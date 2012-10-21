@@ -30,6 +30,7 @@ namespace Lettuce
         public MemoryConfiguration()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void browseButton_Click(object sender, EventArgs e)

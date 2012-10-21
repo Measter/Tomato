@@ -30,6 +30,7 @@ namespace Lettuce
         public HardwareConfiguration()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             possibleDevices = new List<Device>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
