@@ -17,7 +17,7 @@ namespace Lettuce
         public static bool IsLinux { get; private set; }
         public static bool IsMacOSX { get; private set; }
 
-        internal static void GatherInfo()
+        static RuntimeInfo()
         {
             IsMono = Type.GetType("Mono.Runtime") != null;
             int p = (int)Environment.OSVersion.Platform;
