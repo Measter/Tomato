@@ -81,6 +81,7 @@ namespace Lettuce
                                 Console.Error.WriteLine("Missing argument at --connect");
                                 break;
                             }
+                            bool gotWrongParam = false;
                             string deviceID = args[++i];
                             string[] ids = deviceID.Split(',');
                             foreach (var dID in ids)
@@ -110,9 +111,14 @@ namespace Lettuce
                                         }
                                     }
                                 }
-                                if(!foundDevice)
+                                if (!foundDevice)
+                                {
                                     Console.Error.WriteLine("Device '" + dID + "' could not be found, continuing..");
+                                    gotWrongParam = true;
+                                }
                             }
+                            if (gotWrongParam)
+                                return;
                             break;
                         case "--skip-pairing":
                             pairKeyboards = false;
@@ -120,9 +126,11 @@ namespace Lettuce
                         case "--listing":
                             var file = args[++i];
                             if(!File.Exists(file))
+                            {
                                 Console.Error.WriteLine("Could not find listing-file: " + file);
-                            else
-                                Debugger.LoadOrganicListing(file);
+                                return;
+                            }
+                            Debugger.LoadOrganicListing(file);
                             break;
                         case "--little-endian":
                             littleEndian = true;
@@ -138,7 +146,9 @@ namespace Lettuce
                             Console.WriteLine("Lettuce - a graphical debugger for DCPU-16 programs");
                             Console.WriteLine("Options:");
                             Console.WriteLine("\t--no-wait             Starts debugging immediately.");
-                            Console.WriteLine("\t--connect [Devices]   A comma-seperated list of devices to connect (ID or name).");
+                            Console.WriteLine("\t--connect [Devices]   A comma-seperated list of devices to connect");
+                            Console.WriteLine("\t                      For example: --connect 0x40E41D9D,M35FD");
+                            Console.WriteLine("\t                      See also: --list-devices");
                             Console.WriteLine("\t--list-devices        Lists all available devices and exits.");
                             Console.WriteLine("\t--skip-pairing");
                             Console.WriteLine("\t--listing [File.lst]  Loads File.lst to make debugging easier.");
