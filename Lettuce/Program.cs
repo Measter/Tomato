@@ -76,17 +76,27 @@ namespace Lettuce
                             break;
                         case "-c":
                         case "--connect":
+                            if (i + 1 == args.Length || args[i + 1].StartsWith("-"))
+                            {
+                                Console.Error.WriteLine("Missing argument at --connect");
+                                break;
+                            }
                             string deviceID = args[++i];
                             string[] ids = deviceID.Split(',');
                             foreach (var dID in ids)
                             {
                                 uint id;
+                                bool foundDevice = false;
+
                                 if (uint.TryParse(dID, NumberStyles.HexNumber, null, out id))
                                 {
                                     foreach (Device d in PossibleDevices)
                                     {
                                         if (d.DeviceID == id)
-                                            devices.Add((Device)Activator.CreateInstance(d.GetType()));
+                                        {
+                                            devices.Add((Device) Activator.CreateInstance(d.GetType()));
+                                            foundDevice = true;
+                                        }
                                     }
                                 }
                                 else
@@ -94,20 +104,47 @@ namespace Lettuce
                                     foreach (Device d in PossibleDevices)
                                     {
                                         if (d.GetType().Name.ToLower() == dID.ToLower())
+                                        {
                                             devices.Add((Device)Activator.CreateInstance(d.GetType()));
+                                            foundDevice = true;
+                                        }
                                     }
                                 }
+                                if(!foundDevice)
+                                    Console.Error.WriteLine("Device '" + dID + "' could not be found, continuing..");
                             }
                             break;
                         case "--skip-pairing":
                             pairKeyboards = false;
                             break;
                         case "--listing":
-                            Debugger.LoadOrganicListing(args[++i]);
+                            var file = args[++i];
+                            if(!File.Exists(file))
+                                Console.Error.WriteLine("Could not find listing-file: " + file);
+                            else
+                                Debugger.LoadOrganicListing(file);
                             break;
                         case "--little-endian":
                             littleEndian = true;
                             break;
+                        case "--list-devices":
+                            Console.WriteLine("Got {0} devices:", PossibleDevices.Count);
+                            foreach (var device in PossibleDevices)
+                            {
+                                Console.WriteLine("ID: 0x{0:X}, Name: {1}", device.DeviceID, device.GetType().Name);
+                            }
+                            return;
+                        case "--help":
+                            Console.WriteLine("Lettuce - a graphical debugger for DCPU-16 programs");
+                            Console.WriteLine("Options:");
+                            Console.WriteLine("\t--no-wait             Starts debugging immediately.");
+                            Console.WriteLine("\t--connect [Devices]   A comma-seperated list of devices to connect (ID or name).");
+                            Console.WriteLine("\t--list-devices        Lists all available devices and exits.");
+                            Console.WriteLine("\t--skip-pairing");
+                            Console.WriteLine("\t--listing [File.lst]  Loads File.lst to make debugging easier.");
+                            Console.WriteLine("\t--little-endian       Switches to little-endian mode.");
+                            Console.WriteLine("\t--help                Outputs this and exits.");
+                            return;
                     }
                 }
                 else
