@@ -3,8 +3,7 @@
 Tomato is the collective name for a series of tools built around DCPU-16 emulation. Tomato
 itself is a .NET library for emulating DCPU-16 and all official 0x10c hardware. Also included
 is Lettuce, a graphical debugger for DCPU-16 programs. Also included is Pickles, a text-based
-debugger for the command line. All three run on Windows, Linux, and Mac, with the exception
-of Lettuce, which is very buggy on Mac.
+debugger for the command line. All three run on Windows, Linux, and Mac.
 
 [![Download latest version](http://i.imgur.com/cMhpN.png)](https://github.com/SirCmpwn/Tomato/downloads)
 
@@ -17,10 +16,11 @@ of Lettuce, which is very buggy on Mac.
   * Generic Clock
   * SPC-2000
   * SPED-3
+  * M35FD - Experimental
 * Accurate 100 KHz timing
 * Modular - use Tomato in your own projects easily
 * Load up [Organic](https://github.com/SirCmpwn/Organic) listings for better debugging
-* Record LEM-1802 output as an animated GIF
+* Record LEM-1802 and SPED-3 displays as an animated GIF
 * Use any number of devices in any configuration
 
 And many more features are included.
