@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Lettuce.Config;
 using Tomato.Hardware;
 using Tomato;
 using System.IO;
@@ -22,7 +23,8 @@ namespace Lettuce
         public static string lastbinFilepath = "";
         public static string lastlistingFilepath = "";
         public static bool lastlittleEndian = false;
-        
+        public static Configuration Configuration;
+
         public static Dictionary<Device, Form> Windows = new Dictionary<Device, Form>();
         
         private static System.Threading.Timer timer;
@@ -36,6 +38,9 @@ namespace Lettuce
         static void Main(string[] args)
         {
             RuntimeInfo.GatherInfo();
+
+            var userConfig = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            Configuration = ConfigurationManager.LoadConfiguration(Path.Combine(userConfig, ".lettuce"));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

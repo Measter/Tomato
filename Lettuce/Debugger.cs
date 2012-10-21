@@ -20,6 +20,11 @@ namespace Lettuce
         private bool MayUpdateLayout = true;
         public List<Type> DeviceControllers;
 
+        private const string FUNC_STEP_INTO = "step_into";
+        private const string FUNC_STEP_OVER = "step_over";
+        private const string FUNC_CHANGE_RUNNING = "change_run";
+        private const string FUNC_GOTO_ADDRESS = "goto_addr";
+
         public Debugger(ref DCPU CPU)
         {
             InitializeComponent();
@@ -35,6 +40,8 @@ namespace Lettuce
                 rawMemoryDisplay.Height += 22;
                 disassemblyDisplay1.Height += 22;
             }
+            
+            FixKeyConfig();
 
             this.KeyPreview = true;
             this.CPU = CPU;
@@ -386,21 +393,46 @@ namespace Lettuce
             ResetLayout();
         }
 
+        private void FixKeyConfig()
+        {
+            // TODO: add Mac-Keys
+            if (!Program.Configuration.Keybindings.ContainsKey(FUNC_STEP_INTO))
+                Program.Configuration.Keybindings.Add(FUNC_STEP_INTO, new Tuple<Keys, Keys>(Keys.F6, Keys.None));
+            if (!Program.Configuration.Keybindings.ContainsKey(FUNC_STEP_OVER))
+                Program.Configuration.Keybindings.Add(FUNC_STEP_OVER, new Tuple<Keys, Keys>(Keys.F7, Keys.None));
+            if (!Program.Configuration.Keybindings.ContainsKey(FUNC_CHANGE_RUNNING))
+                Program.Configuration.Keybindings.Add(FUNC_CHANGE_RUNNING, new Tuple<Keys, Keys>(Keys.F5, Keys.None));
+            if (!Program.Configuration.Keybindings.ContainsKey(FUNC_GOTO_ADDRESS))
+                Program.Configuration.Keybindings.Add(FUNC_GOTO_ADDRESS, new Tuple<Keys, Keys>(Keys.G, Keys.Control));
+        }
+
         private void Debugger_KeyDown(object sender, KeyEventArgs e)
         {
-            if (RuntimeInfo.IsMacOSX &&
-                (e.KeyCode == Keys.W || e.KeyCode == Keys.Q) && e.Modifiers == Keys.Alt)
+            // CMD+W should only close the current window,
+            // but the emulator-window is the one and only window, so I don't care.
+            if (RuntimeInfo.IsMacOSX && (e.KeyCode == Keys.W || e.KeyCode == Keys.Q) && e.Modifiers == Keys.Alt)
                 this.Close();
-            if (e.KeyCode == Keys.F6) // TODO: Keyboard customization, add keys for mac
-                buttonStepInto_Click(sender, e);
-            if (e.KeyCode == Keys.F7)
-                buttonStepOver_Click(sender, e);
-            if (e.KeyCode == Keys.F5)
-                checkBoxRunning.Checked = !checkBoxRunning.Checked;
-            if (e.Control)
+
+            foreach (var keybinding in Program.Configuration.Keybindings)
             {
-                if (e.KeyCode == Keys.G)
-                    gotoAddressToolStripMenuItem_Click(sender, e);
+                if (e.KeyCode == keybinding.Value.Item1 && e.Modifiers == keybinding.Value.Item2)
+                {
+                    switch (keybinding.Key)
+                    {
+                        case FUNC_STEP_INTO:
+                            buttonStepInto_Click(sender, e);
+                            break;
+                        case FUNC_STEP_OVER:
+                            buttonStepOver_Click(sender, e);
+                            break;
+                        case FUNC_CHANGE_RUNNING:
+                            checkBoxRunning.Checked = !checkBoxRunning.Checked;
+                            break;
+                        case FUNC_GOTO_ADDRESS:
+                            gotoAddressToolStripMenuItem_Click(sender, e);
+                            break;
+                    }
+                }
             }
         }
 

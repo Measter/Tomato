@@ -66,6 +66,7 @@
     <Compile Include="ClockSpeedForm.Designer.cs">
       <DependentUpon>ClockSpeedForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="Debugger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +112,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IDeviceHost.cs" />
+    <Compile Include="INIFile.cs" />
     <Compile Include="LEM1802Window.cs">
       <SubType>Form</SubType>
     </Compile>
