@@ -25,7 +25,7 @@ namespace Lettuce.Config
         {
             foreach (var bind in config.Keybindings)
             {
-                config._iniFile["keys", bind.Key] = bind.Value.Item1 + ";" + bind.Value.Item2;
+                config._iniFile["keys", bind.Key] = bind.Value.Item1 + "," + bind.Value.Item2;
             }
             return INIFile.Write(path, config._iniFile);
         }
@@ -39,7 +39,7 @@ namespace Lettuce.Config
             foreach (var kvp in keyBindings)
             {
                 var func = kvp.Key;
-                var rawKey = kvp.Value.Split(';');
+                var rawKey = kvp.Value.Split(',');
                 var key1 = (Keys) Enum.Parse(typeof(Keys), rawKey[0]);
                 var key2 = (Keys) Enum.Parse(typeof(Keys), rawKey[1]);
 
