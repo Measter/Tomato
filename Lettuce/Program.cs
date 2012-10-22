@@ -24,6 +24,7 @@ namespace Lettuce
         public static string lastlistingFilepath = "";
         public static bool lastlittleEndian = false;
         public static Configuration Configuration;
+        public static string ConfigFilePath;
 
         public static Dictionary<Device, Form> Windows = new Dictionary<Device, Form>();
         
@@ -39,8 +40,9 @@ namespace Lettuce
         {
             RuntimeInfo.GatherInfo();
 
-            var userConfig = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Configuration = ConfigurationManager.LoadConfiguration(Path.Combine(userConfig, ".lettuce"));
+            ConfigFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            ConfigFilePath = Path.Combine(ConfigFilePath, ".lettuce");
+            Configuration = ConfigurationManager.LoadConfiguration(ConfigFilePath);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

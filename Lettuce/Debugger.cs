@@ -20,10 +20,10 @@ namespace Lettuce
         private bool MayUpdateLayout = true;
         public List<Type> DeviceControllers;
 
-        private const string FUNC_STEP_INTO = "step_into";
-        private const string FUNC_STEP_OVER = "step_over";
-        private const string FUNC_CHANGE_RUNNING = "change_run";
-        private const string FUNC_GOTO_ADDRESS = "goto_addr";
+        public const string FUNC_STEP_INTO = "step_into";
+        public const string FUNC_STEP_OVER = "step_over";
+        public const string FUNC_CHANGE_RUNNING = "change_run";
+        public const string FUNC_GOTO_ADDRESS = "goto_addr";
 
         public Debugger(ref DCPU CPU)
         {
@@ -666,6 +666,12 @@ namespace Lettuce
         private void breakOnInvalidInstructionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             breakOnInvalidInstructionToolStripMenuItem.Checked = !breakOnInvalidInstructionToolStripMenuItem.Checked;
+        }
+
+        private void keyboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var keyboardForm = new KeyboardConfiguration();
+            keyboardForm.ShowDialog(this);
         }
     }
 }
