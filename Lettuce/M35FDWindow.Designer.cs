@@ -1,4 +1,4 @@
-﻿namespace Lettuce
+namespace Lettuce
 {
     partial class M35FDWindow
     {
