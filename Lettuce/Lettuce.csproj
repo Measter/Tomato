@@ -66,6 +66,7 @@
     <Compile Include="ClockSpeedForm.Designer.cs">
       <DependentUpon>ClockSpeedForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="Debugger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +112,13 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IDeviceHost.cs" />
+    <Compile Include="INIFile.cs" />
+    <Compile Include="KeyboardConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyboardConfiguration.Designer.cs">
+      <DependentUpon>KeyboardConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="LEM1802Window.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HardwareConfiguration.resx">
       <DependentUpon>HardwareConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardConfiguration.resx">
+      <DependentUpon>KeyboardConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LEM1802Window.resx">
       <DependentUpon>LEM1802Window.cs</DependentUpon>
