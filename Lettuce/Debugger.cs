@@ -577,8 +577,9 @@ namespace Lettuce
             (sender as ToolStripMenuItem).Checked = true;
             ClockSpeedForm csf = new ClockSpeedForm();
             csf.Value = CPU.ClockSpeed;
-            csf.ShowDialog();
-            CPU.ClockSpeed = csf.Value;
+            var result = csf.ShowDialog();
+            if(result == DialogResult.OK)
+                CPU.ClockSpeed = csf.Value;
         }
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
