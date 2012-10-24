@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -533,8 +533,8 @@ namespace Lettuce
         private void defineValueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DefineValueForm dvf = new DefineValueForm();
-            dvf.ShowDialog();
-            if (!KnownLabels.ContainsKey(dvf.Value))
+            var res = dvf.ShowDialog();
+            if (res == DialogResult.OK && !KnownLabels.ContainsKey(dvf.Value))
                 KnownLabels.Add(dvf.Value, dvf.Name);
         }
 
