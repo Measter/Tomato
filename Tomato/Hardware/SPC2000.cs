@@ -62,7 +62,7 @@ namespace Tomato.Hardware
                     break;
                 case 2:
                     GetStatus();
-                    if (AttachedCPU.C == 0) // Error in spec?
+                    if (AttachedCPU.C == 1)
                     {
                         // Trigger device
                         // Not sure what to do here.
