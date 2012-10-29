@@ -56,7 +56,7 @@ namespace Tomato.Hardware
         [TypeConverter(typeof(HexTypeEditor))]
         public override uint DeviceID
         {
-            get { return 0x12345678; }
+            get { return 0x4fd524c5; }
         }
 
         [Category("Device Information")]
@@ -111,6 +111,7 @@ namespace Tomato.Hardware
                     wordsWritten = 0;
                     isReading = true;
                     LastError = M35FDErrorCode.ERROR_NONE;
+                    DeviceState = M35FDStateCode.STATE_BUSY;
                     break;
                 case 3: // Write sector
                     if (DeviceState == M35FDStateCode.STATE_NO_MEDIA)
@@ -139,6 +140,7 @@ namespace Tomato.Hardware
                     wordsWritten = 0;
                     isWriting = true;
                     LastError = M35FDErrorCode.ERROR_NONE;
+                    DeviceState = M35FDStateCode.STATE_BUSY;
                     break;
             }
             return 0;
@@ -169,7 +171,10 @@ namespace Tomato.Hardware
                     toAddress += wordsPerTick;
                     wordsWritten += wordsPerTick;
                     if (wordsWritten >= wordsPerSector)
+                    {
                         isReading = false;
+                        DeviceState = M35FDStateCode.STATE_READY;
+                    }
                 }
             }
             else if (isWriting)
@@ -187,7 +192,10 @@ namespace Tomato.Hardware
                     toAddress += wordsPerTick;
                     wordsWritten += wordsPerTick;
                     if (wordsWritten >= wordsPerSector)
+                    {
                         isWriting = false;
+                        DeviceState = M35FDStateCode.STATE_READY;
+                    }
                 }
             }
         }
@@ -228,7 +236,8 @@ namespace Tomato.Hardware
     {
         STATE_NO_MEDIA = 0,
         STATE_READY = 1,
-        STATE_READY_WP = 2
+        STATE_READY_WP = 2,
+        STATE_BUSY = 3
     }
 
     public enum M35FDErrorCode
