@@ -33,14 +33,6 @@ namespace Lettuce
             if (KnownLabels == null)
                 KnownLabels = new Dictionary<ushort, string>();
 
-            if(RuntimeInfo.IsMacOSX)
-            {
-                // fix some mono-winforms insanity
-                stackDisplay.Height += 22;
-                rawMemoryDisplay.Height += 22;
-                disassemblyDisplay1.Height += 22;
-            }
-
             FixKeyConfig();
 
             this.KeyPreview = true;
