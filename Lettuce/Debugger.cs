@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,14 +32,6 @@ namespace Lettuce
                 KnownCode = new Dictionary<ushort, string>();
             if (KnownLabels == null)
                 KnownLabels = new Dictionary<ushort, string>();
-
-            if(RuntimeInfo.IsMacOSX)
-            {
-                // fix some mono-winforms insanity
-                stackDisplay.Height += 22;
-                rawMemoryDisplay.Height += 22;
-                disassemblyDisplay1.Height += 22;
-            }
 
             FixKeyConfig();
 
@@ -533,8 +525,8 @@ namespace Lettuce
         private void defineValueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DefineValueForm dvf = new DefineValueForm();
-            dvf.ShowDialog();
-            if (!KnownLabels.ContainsKey(dvf.Value))
+            var res = dvf.ShowDialog();
+            if (res == DialogResult.OK && !KnownLabels.ContainsKey(dvf.Value))
                 KnownLabels.Add(dvf.Value, dvf.Name);
         }
 
@@ -577,8 +569,9 @@ namespace Lettuce
             (sender as ToolStripMenuItem).Checked = true;
             ClockSpeedForm csf = new ClockSpeedForm();
             csf.Value = CPU.ClockSpeed;
-            csf.ShowDialog();
-            CPU.ClockSpeed = csf.Value;
+            var result = csf.ShowDialog();
+            if(result == DialogResult.OK)
+                CPU.ClockSpeed = csf.Value;
         }
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)

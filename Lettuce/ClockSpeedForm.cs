@@ -26,6 +26,7 @@ namespace Lettuce
         public ClockSpeedForm()
         {
             InitializeComponent();
+            this.DialogResult = DialogResult.Cancel;
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -69,7 +70,15 @@ namespace Lettuce
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if(textBox1.Text.Length == 0)
+            {
+                MessageBox.Show(this, "Invalid value!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
     }
 }

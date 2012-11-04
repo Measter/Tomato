@@ -18,6 +18,7 @@ namespace Lettuce
         public DefineValueForm()
         {
             InitializeComponent();
+            this.DialogResult = DialogResult.Cancel;
         }
 
         private void textBoxRegisterX_KeyDown(object sender, KeyEventArgs e)
@@ -67,7 +68,24 @@ namespace Lettuce
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (textBox1.Text.Length == 0)
+            {
+                ShowError("Invalid name!");
+            }
+            else if (textBox2.Text.Length == 0)
+            {
+                ShowError("Invalid value!");
+            }
+            else
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
+
+        private void ShowError(string error)
+        {
+            MessageBox.Show(this, error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
