@@ -159,7 +159,6 @@ namespace Tomato
                                     break;
                                 case 0x08: // INT a
                                     Cycles -= 3;
-                                    InterruptQueueEnabled = false;
                                     FireInterrupt(opA);
                                     break;
                                 case 0x09: // IAG a
