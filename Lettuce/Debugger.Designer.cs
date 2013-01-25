@@ -29,14 +29,21 @@ namespace Lettuce
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Expression", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Result", System.Windows.Forms.HorizontalAlignment.Left);
             Tomato.DCPU dcpu1 = new Tomato.DCPU();
             Tomato.DCPU dcpu2 = new Tomato.DCPU();
             Tomato.DCPU dcpu3 = new Tomato.DCPU();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debugger));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.watchTextBox = new System.Windows.Forms.TextBox();
+            this.addWatchButton = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
+            this.watchesListView = new System.Windows.Forms.ListView();
+            this.expressionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.resultHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.stackDisplay = new Lettuce.MemoryDisplay();
             this.label18 = new System.Windows.Forms.Label();
+            this.disassemblyDisplay1 = new Lettuce.DisassemblyDisplay();
+            this.rawMemoryDisplay = new Lettuce.MemoryDisplay();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -104,15 +111,6 @@ namespace Lettuce
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.invalidInstructionLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.watchesListView = new System.Windows.Forms.ListView();
-            this.label16 = new System.Windows.Forms.Label();
-            this.addWatchButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.expressionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.resultHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.stackDisplay = new Lettuce.MemoryDisplay();
-            this.disassemblyDisplay1 = new Lettuce.DisassemblyDisplay();
-            this.rawMemoryDisplay = new Lettuce.MemoryDisplay();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -125,7 +123,7 @@ namespace Lettuce
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.watchTextBox);
             this.groupBox1.Controls.Add(this.addWatchButton);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.watchesListView);
@@ -142,6 +140,74 @@ namespace Lettuce
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Memory";
             // 
+            // watchTextBox
+            // 
+            this.watchTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.watchTextBox.Location = new System.Drawing.Point(402, 532);
+            this.watchTextBox.Name = "watchTextBox";
+            this.watchTextBox.Size = new System.Drawing.Size(122, 20);
+            this.watchTextBox.TabIndex = 11;
+            this.watchTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.watchTextBox_KeyUp);
+            // 
+            // addWatchButton
+            // 
+            this.addWatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.addWatchButton.Location = new System.Drawing.Point(530, 530);
+            this.addWatchButton.Name = "addWatchButton";
+            this.addWatchButton.Size = new System.Drawing.Size(46, 23);
+            this.addWatchButton.TabIndex = 10;
+            this.addWatchButton.Text = "Add";
+            this.addWatchButton.UseVisualStyleBackColor = true;
+            this.addWatchButton.Click += new System.EventHandler(this.addWatchButton_Click);
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(399, 274);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(50, 13);
+            this.label16.TabIndex = 9;
+            this.label16.Text = "Watches";
+            // 
+            // watchesListView
+            // 
+            this.watchesListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.watchesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.expressionHeader,
+            this.resultHeader});
+            this.watchesListView.Location = new System.Drawing.Point(402, 289);
+            this.watchesListView.MultiSelect = false;
+            this.watchesListView.Name = "watchesListView";
+            this.watchesListView.Size = new System.Drawing.Size(174, 235);
+            this.watchesListView.TabIndex = 8;
+            this.watchesListView.UseCompatibleStateImageBehavior = false;
+            this.watchesListView.View = System.Windows.Forms.View.Details;
+            // 
+            // expressionHeader
+            // 
+            this.expressionHeader.Text = "Expression";
+            this.expressionHeader.Width = 70;
+            // 
+            // resultHeader
+            // 
+            this.resultHeader.Text = "Result";
+            this.resultHeader.Width = 100;
+            // 
+            // stackDisplay
+            // 
+            this.stackDisplay.AsStack = true;
+            this.stackDisplay.CPU = dcpu1;
+            this.stackDisplay.Font = new System.Drawing.Font("Courier New", 12F);
+            this.stackDisplay.Location = new System.Drawing.Point(8, 32);
+            this.stackDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.stackDisplay.Name = "stackDisplay";
+            this.stackDisplay.SelectedAddress = ((ushort)(0));
+            this.stackDisplay.Size = new System.Drawing.Size(113, 238);
+            this.stackDisplay.TabIndex = 7;
+            // 
             // label18
             // 
             this.label18.AutoSize = true;
@@ -150,6 +216,36 @@ namespace Lettuce
             this.label18.Size = new System.Drawing.Size(35, 13);
             this.label18.TabIndex = 6;
             this.label18.Text = "Stack";
+            // 
+            // disassemblyDisplay1
+            // 
+            this.disassemblyDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.disassemblyDisplay1.CPU = dcpu2;
+            this.disassemblyDisplay1.EnableUpdates = true;
+            this.disassemblyDisplay1.EndAddress = ((ushort)(0));
+            this.disassemblyDisplay1.Font = new System.Drawing.Font("Courier New", 12F);
+            this.disassemblyDisplay1.Location = new System.Drawing.Point(6, 289);
+            this.disassemblyDisplay1.Margin = new System.Windows.Forms.Padding(4);
+            this.disassemblyDisplay1.Name = "disassemblyDisplay1";
+            this.disassemblyDisplay1.SelectedAddress = ((ushort)(0));
+            this.disassemblyDisplay1.Size = new System.Drawing.Size(389, 264);
+            this.disassemblyDisplay1.TabIndex = 5;
+            // 
+            // rawMemoryDisplay
+            // 
+            this.rawMemoryDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rawMemoryDisplay.AsStack = false;
+            this.rawMemoryDisplay.CPU = dcpu3;
+            this.rawMemoryDisplay.Font = new System.Drawing.Font("Courier New", 12F);
+            this.rawMemoryDisplay.Location = new System.Drawing.Point(129, 32);
+            this.rawMemoryDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.rawMemoryDisplay.Name = "rawMemoryDisplay";
+            this.rawMemoryDisplay.SelectedAddress = ((ushort)(0));
+            this.rawMemoryDisplay.Size = new System.Drawing.Size(447, 238);
+            this.rawMemoryDisplay.TabIndex = 4;
             // 
             // label2
             // 
@@ -805,109 +901,6 @@ namespace Lettuce
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
             // 
-            // watchesListView
-            // 
-            this.watchesListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.watchesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.expressionHeader,
-            this.resultHeader});
-            listViewGroup1.Header = "Expression";
-            listViewGroup1.Name = "listViewGroup1";
-            listViewGroup2.Header = "Result";
-            listViewGroup2.Name = "listViewGroup2";
-            this.watchesListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2});
-            this.watchesListView.Location = new System.Drawing.Point(402, 289);
-            this.watchesListView.MultiSelect = false;
-            this.watchesListView.Name = "watchesListView";
-            this.watchesListView.Size = new System.Drawing.Size(174, 235);
-            this.watchesListView.TabIndex = 8;
-            this.watchesListView.UseCompatibleStateImageBehavior = false;
-            this.watchesListView.View = System.Windows.Forms.View.Details;
-            // 
-            // label16
-            // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(399, 274);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(50, 13);
-            this.label16.TabIndex = 9;
-            this.label16.Text = "Watches";
-            // 
-            // addWatchButton
-            // 
-            this.addWatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.addWatchButton.Location = new System.Drawing.Point(530, 530);
-            this.addWatchButton.Name = "addWatchButton";
-            this.addWatchButton.Size = new System.Drawing.Size(46, 23);
-            this.addWatchButton.TabIndex = 10;
-            this.addWatchButton.Text = "Add";
-            this.addWatchButton.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(402, 532);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(122, 20);
-            this.textBox1.TabIndex = 11;
-            // 
-            // expressionHeader
-            // 
-            this.expressionHeader.Text = "Expression";
-            this.expressionHeader.Width = 70;
-            // 
-            // resultHeader
-            // 
-            this.resultHeader.Text = "Result";
-            this.resultHeader.Width = 100;
-            // 
-            // stackDisplay
-            // 
-            this.stackDisplay.AsStack = true;
-            this.stackDisplay.CPU = dcpu1;
-            this.stackDisplay.Font = new System.Drawing.Font("Courier New", 12F);
-            this.stackDisplay.Location = new System.Drawing.Point(8, 32);
-            this.stackDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.stackDisplay.Name = "stackDisplay";
-            this.stackDisplay.SelectedAddress = ((ushort)(0));
-            this.stackDisplay.Size = new System.Drawing.Size(113, 238);
-            this.stackDisplay.TabIndex = 7;
-            // 
-            // disassemblyDisplay1
-            // 
-            this.disassemblyDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.disassemblyDisplay1.CPU = dcpu2;
-            this.disassemblyDisplay1.EnableUpdates = true;
-            this.disassemblyDisplay1.EndAddress = ((ushort)(0));
-            this.disassemblyDisplay1.Font = new System.Drawing.Font("Courier New", 12F);
-            this.disassemblyDisplay1.Location = new System.Drawing.Point(6, 289);
-            this.disassemblyDisplay1.Margin = new System.Windows.Forms.Padding(4);
-            this.disassemblyDisplay1.Name = "disassemblyDisplay1";
-            this.disassemblyDisplay1.SelectedAddress = ((ushort)(0));
-            this.disassemblyDisplay1.Size = new System.Drawing.Size(389, 264);
-            this.disassemblyDisplay1.TabIndex = 5;
-            // 
-            // rawMemoryDisplay
-            // 
-            this.rawMemoryDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rawMemoryDisplay.AsStack = false;
-            this.rawMemoryDisplay.CPU = dcpu3;
-            this.rawMemoryDisplay.Font = new System.Drawing.Font("Courier New", 12F);
-            this.rawMemoryDisplay.Location = new System.Drawing.Point(129, 32);
-            this.rawMemoryDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.rawMemoryDisplay.Name = "rawMemoryDisplay";
-            this.rawMemoryDisplay.SelectedAddress = ((ushort)(0));
-            this.rawMemoryDisplay.Size = new System.Drawing.Size(447, 238);
-            this.rawMemoryDisplay.TabIndex = 4;
-            // 
             // Debugger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1017,7 +1010,7 @@ namespace Lettuce
         private System.Windows.Forms.ToolStripMenuItem keyboardToolStripMenuItem;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ListView watchesListView;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox watchTextBox;
         private System.Windows.Forms.Button addWatchButton;
         private System.Windows.Forms.ColumnHeader expressionHeader;
         private System.Windows.Forms.ColumnHeader resultHeader;

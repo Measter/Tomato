@@ -158,6 +158,7 @@
     <Compile Include="UnhandledExceptionForm.Designer.cs">
       <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Watch.cs" />
     <EmbeddedResource Include="ClockSpeedForm.resx">
       <DependentUpon>ClockSpeedForm.cs</DependentUpon>
     </EmbeddedResource>

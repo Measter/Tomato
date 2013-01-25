@@ -19,6 +19,7 @@ namespace Lettuce
         public DCPU CPU { get; set; }
         private bool MayUpdateLayout = true;
         public List<Type> DeviceControllers;
+        public List<string> Watches { get; set; }
 
         public const string FUNC_STEP_INTO = "step_into";
         public const string FUNC_STEP_OVER = "step_over";
@@ -42,6 +43,7 @@ namespace Lettuce
             this.rawMemoryDisplay.CPU = this.CPU;
             this.stackDisplay.CPU = this.CPU;
             this.disassemblyDisplay1.CPU = this.CPU;
+            Watches = new List<string>();
             foreach (Device d in CPU.Devices)
                 listBoxConnectedDevices.Items.Add(d.FriendlyName);
             // Load device controllers
@@ -86,7 +88,7 @@ namespace Lettuce
         {
             if (stepOverEnabled)
             {
-                CPU.Breakpoints.Remove(CPU.Breakpoints.Where(b => b.Address == CPU.PC).First());
+                CPU.Breakpoints.Remove(CPU.Breakpoints.First(b => b.Address == CPU.PC));
                 e.ContinueExecution = false;
                 (sender as DCPU).IsRunning = false;
                 disassemblyDisplay1.EnableUpdates = true;
@@ -114,7 +116,6 @@ namespace Lettuce
             return result;
         }
 
-        delegate void ResetLayoutDelegate();
         public void ResetLayout()
         {
             if (this.IsDisposed || this.Disposing)
@@ -123,8 +124,7 @@ namespace Lettuce
             {
                 try
                 {
-                    ResetLayoutDelegate rld = new ResetLayoutDelegate(ResetLayout);
-                    this.Invoke(rld);
+                    this.Invoke(new Action(ResetLayout));
                 }
                 catch { }
             }
@@ -133,6 +133,7 @@ namespace Lettuce
                 if (!MayUpdateLayout)
                     return;
                 MayUpdateLayout = false;
+                SuspendLayout();
                 textBoxRegisterA.Text = GetHexString(CPU.A, 4);
                 textBoxRegisterB.Text = GetHexString(CPU.B, 4);
                 textBoxRegisterC.Text = GetHexString(CPU.C, 4);
@@ -152,11 +153,31 @@ namespace Lettuce
                 rawMemoryDisplay.Invalidate();
                 disassemblyDisplay1.Invalidate();
                 propertyGrid1.SelectedObject = propertyGrid1.SelectedObject; // Forces update, intentionally redundant
+                UpdateWatches();
                 if (CPU.IsRunning)
                     DisableAll();
                 else
                     EnableAll();
+                ResumeLayout(true);
                 MayUpdateLayout = true;
+            }
+        }
+
+        private void UpdateWatches()
+        {
+            watchesListView.Items.Clear();
+            foreach (var watch in Watches)
+            {
+                var item = new ListViewItem(watch);
+                try
+                {
+                    item.SubItems.Add("0x" + Watch.Evaluate(watch, CPU).ToString("X4"));
+                }
+                catch (Exception e)
+                {
+                    item.SubItems.Add(e.Message);
+                }
+                watchesListView.Items.Add(item);
             }
         }
 
@@ -454,7 +475,6 @@ namespace Lettuce
         {
             if (listBoxConnectedDevices.SelectedIndex == -1)
                 return;
-            Device d = CPU.Devices[listBoxConnectedDevices.SelectedIndex];
             CPU.IsRunning = false;
             ResetLayout();
         }
@@ -465,13 +485,13 @@ namespace Lettuce
         private void organicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Load organic listing
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             ofd.Filter = "Listing files (*.lst)|*.lst|Text files (*.txt)|*.txt|All files (*.*)|*.*";
             ofd.FileName = "";
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
             LoadOrganicListing(ofd.FileName);
-            Lettuce.Program.lastlistingFilepath = ofd.FileName;
+            Program.lastlistingFilepath = ofd.FileName;
             ResetLayout();
         }
 
@@ -567,7 +587,7 @@ namespace Lettuce
             foreach (var item in speedToolStripMenuItem.DropDownItems)
                 (item as ToolStripMenuItem).Checked = false;
             (sender as ToolStripMenuItem).Checked = true;
-            ClockSpeedForm csf = new ClockSpeedForm();
+            var csf = new ClockSpeedForm();
             csf.Value = CPU.ClockSpeed;
             var result = csf.ShowDialog();
             if(result == DialogResult.OK)
@@ -590,7 +610,7 @@ namespace Lettuce
         {
             string binFile = null;
             bool littleEndian = false;
-            MemoryConfiguration mc = new MemoryConfiguration();
+            var mc = new MemoryConfiguration();
             if (mc.ShowDialog() == DialogResult.OK)
             {
                 binFile = mc.FileName;
@@ -612,7 +632,7 @@ namespace Lettuce
                             data.Add((ushort)(b | (a << 8)));
                     }
                 }
-                Lettuce.Program.CPU.FlashMemory(data.ToArray());
+                Program.CPU.FlashMemory(data.ToArray());
             }
         }
 
@@ -640,8 +660,8 @@ namespace Lettuce
             }
             Lettuce.Program.CPU.FlashMemory(data.ToArray());
             Clearlisting();
-            if (!string.IsNullOrEmpty(Lettuce.Program.lastlistingFilepath))
-                LoadOrganicListing(Lettuce.Program.lastlistingFilepath);
+            if (!string.IsNullOrEmpty(Program.lastlistingFilepath))
+                LoadOrganicListing(Program.lastlistingFilepath);
             ResetLayout();
         }
 
@@ -665,6 +685,19 @@ namespace Lettuce
         {
             var keyboardForm = new KeyboardConfiguration();
             keyboardForm.ShowDialog(this);
+        }
+
+        private void addWatchButton_Click(object sender, EventArgs e)
+        {
+            Watches.Add(watchTextBox.Text);
+            watchTextBox.Text = string.Empty;
+            ResetLayout();
+        }
+
+        private void watchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                addWatchButton_Click(sender, e);
         }
     }
 }
