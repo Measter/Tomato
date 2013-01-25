@@ -16,7 +16,7 @@ debugger for the command line. All three run on Windows, Linux, and Mac.
   * Generic Clock
   * SPC-2000
   * SPED-3
-  * M35FD - Experimental
+  * M35FD
 * Accurate 100 KHz timing
 * Modular - use Tomato in your own projects easily
 * Load up [Organic](https://github.com/SirCmpwn/Organic) listings for better debugging
