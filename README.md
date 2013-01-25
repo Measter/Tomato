@@ -52,7 +52,7 @@ Pickles is as easy as Tomato. Grab it from the
 
 ## Usage
 
-If you just want a quick emulator, grap [Lettuce](https://github.com/SirCmpwn/Tomato/downloads)
+If you just want a quick emulator, grab [Lettuce](https://github.com/SirCmpwn/Tomato/downloads)
 and run it. On Windows, double click the file. On Linux or Mac, run this:
 
     mono Lettuce.exe
