@@ -25,9 +25,9 @@ debugger for the command line. All three run on Windows, Linux, and Mac.
 
 And many more features are included.
 
-![Lettuce](http://i.imgur.com/rIGZ2.png)
+![Lettuce](http://i.imgur.com/DHQ9jbC.png)
 
-**[Click to Enlarge](http://i.imgur.com/rIGZ2.png)**
+**[Click to Enlarge](http://i.imgur.com/DHQ9jbC.png)**
 
 ## Installation
 
