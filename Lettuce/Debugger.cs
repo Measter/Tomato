@@ -699,5 +699,18 @@ namespace Lettuce
             if (e.KeyCode == Keys.Enter)
                 addWatchButton_Click(sender, e);
         }
+
+        private void watchesContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            if (watchesListView.SelectedIndices.Count == 0)
+                e.Cancel = true;
+        }
+
+        private void removeWatchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (watchesListView.SelectedIndices.Count != 0)
+                Watches.RemoveAt(watchesListView.SelectedIndices[0]);
+            ResetLayout();
+        }
     }
 }

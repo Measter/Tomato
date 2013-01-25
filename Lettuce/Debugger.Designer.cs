@@ -40,6 +40,8 @@ namespace Lettuce
             this.watchesListView = new System.Windows.Forms.ListView();
             this.expressionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.resultHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.watchesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeWatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stackDisplay = new Lettuce.MemoryDisplay();
             this.label18 = new System.Windows.Forms.Label();
             this.disassemblyDisplay1 = new Lettuce.DisassemblyDisplay();
@@ -112,6 +114,7 @@ namespace Lettuce
             this.invalidInstructionLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
+            this.watchesContextMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -178,6 +181,7 @@ namespace Lettuce
             this.watchesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.expressionHeader,
             this.resultHeader});
+            this.watchesListView.ContextMenuStrip = this.watchesContextMenuStrip;
             this.watchesListView.Location = new System.Drawing.Point(402, 289);
             this.watchesListView.MultiSelect = false;
             this.watchesListView.Name = "watchesListView";
@@ -195,6 +199,21 @@ namespace Lettuce
             // 
             this.resultHeader.Text = "Result";
             this.resultHeader.Width = 100;
+            // 
+            // watchesContextMenuStrip
+            // 
+            this.watchesContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeWatchToolStripMenuItem});
+            this.watchesContextMenuStrip.Name = "watchesContextMenuStrip";
+            this.watchesContextMenuStrip.Size = new System.Drawing.Size(155, 48);
+            this.watchesContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.watchesContextMenuStrip_Opening);
+            // 
+            // removeWatchToolStripMenuItem
+            // 
+            this.removeWatchToolStripMenuItem.Name = "removeWatchToolStripMenuItem";
+            this.removeWatchToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.removeWatchToolStripMenuItem.Text = "Remove Watch";
+            this.removeWatchToolStripMenuItem.Click += new System.EventHandler(this.removeWatchToolStripMenuItem_Click);
             // 
             // stackDisplay
             // 
@@ -922,6 +941,7 @@ namespace Lettuce
             this.Resize += new System.EventHandler(this.Debugger_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.watchesContextMenuStrip.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1014,5 +1034,7 @@ namespace Lettuce
         private System.Windows.Forms.Button addWatchButton;
         private System.Windows.Forms.ColumnHeader expressionHeader;
         private System.Windows.Forms.ColumnHeader resultHeader;
+        private System.Windows.Forms.ContextMenuStrip watchesContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem removeWatchToolStripMenuItem;
     }
 }
