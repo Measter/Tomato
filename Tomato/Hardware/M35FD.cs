@@ -15,7 +15,7 @@ namespace Tomato.Hardware
             LastError = M35FDErrorCode.ERROR_NONE;
         }
 
-        public ushort[] Disk { get; private set; }
+        public ushort[] Disk { get; set; }
         [Category("Disk Information")]
         public bool Writable { get; set; }
 

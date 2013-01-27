@@ -11,6 +11,8 @@ using System.Reflection;
 using System.Globalization;
 using System.Drawing;
 using System.Security.Permissions;
+using System.ComponentModel;
+using System.Drawing.Design;
 
 namespace Lettuce
 {
@@ -190,6 +192,10 @@ namespace Lettuce
                 foreach (var device in hwc.SelectedDevices)
                     devices.Add(device);
             }
+            // Inject custom UITypeEditor into M35FD
+            TypeDescriptor.AddAttributes(typeof(ushort[]),
+                new EditorAttribute(typeof(M35FDTypeEditor), typeof(UITypeEditor)));
+
             if (!string.IsNullOrEmpty(binFile))
             {
                 lastbinFilepath = binFile;

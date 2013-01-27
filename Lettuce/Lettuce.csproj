@@ -125,6 +125,7 @@
     <Compile Include="LEM1802Window.Designer.cs">
       <DependentUpon>LEM1802Window.cs</DependentUpon>
     </Compile>
+    <Compile Include="M35FDTypeEditor.cs" />
     <Compile Include="M35FDWindow.cs">
       <SubType>Form</SubType>
     </Compile>
