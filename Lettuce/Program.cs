@@ -30,6 +30,7 @@ namespace Lettuce
         
         private static System.Threading.Timer timer;
         private static Point screenLocation = new Point();
+        private static bool EnableAutomaticArrangement = true;
 
         /// <summary>
         /// The main entry point for the application.
@@ -147,6 +148,9 @@ namespace Lettuce
                                 Console.WriteLine("ID: 0x{0:X}, Name: {1}", device.DeviceID, device.GetType().Name);
                             }
                             return;
+                        case "--disable-auto-arrange":
+                            EnableAutomaticArrangement = false;
+                            break;
                         case "--help":
                             Console.WriteLine("Lettuce - a graphical debugger for DCPU-16 programs");
                             Console.WriteLine("Options:");
@@ -211,11 +215,14 @@ namespace Lettuce
                 CPU.ConnectDevice(device);
 
             debugger = new Debugger(ref CPU);
-            debugger.StartPosition = FormStartPosition.Manual;
-            if(RuntimeInfo.IsMacOSX)
-                debugger.Location = new Point(0, 22);
-            else
-                debugger.Location = new Point(0, 0);
+            if (EnableAutomaticArrangement)
+            {
+                debugger.StartPosition = FormStartPosition.Manual;
+                if (RuntimeInfo.IsMacOSX)
+                    debugger.Location = new Point(0, 22);
+                else
+                    debugger.Location = new Point(0, 0);
+            }
             debugger.ResetLayout();
             debugger.Show();
             
@@ -248,7 +255,8 @@ namespace Lettuce
         
         static void AddWindow(DeviceHostForm window)
         {
-            window.StartPosition = FormStartPosition.Manual;
+            if (EnableAutomaticArrangement)
+                window.StartPosition = FormStartPosition.Manual;
             if (screenLocation.Y + window.Height > Screen.PrimaryScreen.WorkingArea.Height) // Wrap excessive windows
             {
                 screenLocation.Y = 25;
@@ -256,7 +264,8 @@ namespace Lettuce
             }
             if (window.OpenByDefault)
             {
-                window.Location = screenLocation;
+                if (EnableAutomaticArrangement)
+                    window.Location = screenLocation;
                 screenLocation.Y += window.Height + 12;
                 window.Show();
                 window.Invalidate();
