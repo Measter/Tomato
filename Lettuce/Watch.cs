@@ -66,6 +66,14 @@ namespace Lettuce
                     return ~Evaluate(parts[2], cpu);
                 switch (parts[1]) // Evaluate
                 {
+                    case "+":
+                        return Evaluate(parts[0], cpu)
+                               +
+                               Evaluate(parts[2], cpu);
+                    case "-":
+                        return Evaluate(parts[0], cpu)
+                               -
+                               Evaluate(parts[2], cpu);
                     case "*":
                         return Evaluate(parts[0], cpu)
                                *
@@ -77,10 +85,6 @@ namespace Lettuce
                     case "%":
                         return Evaluate(parts[0], cpu)
                                %
-                               Evaluate(parts[2], cpu);
-                    case "+":
-                        return Evaluate(parts[0], cpu)
-                               +
                                Evaluate(parts[2], cpu);
                     case "<<":
                         return Evaluate(parts[0], cpu)
