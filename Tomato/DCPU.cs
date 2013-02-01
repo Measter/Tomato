@@ -196,7 +196,7 @@ namespace Tomato
                                 case 0x12: // HWI a
                                     Cycles -= 3;
                                     if (opA < Devices.Count)
-                                        Cycles -= Devices[opA].HandleInterrupt();
+                                        Cycles -= Devices[opA].DoInterrupt();
                                     break;
                                 default:
                                     if (InvalidInstruction != null)
@@ -386,6 +386,8 @@ namespace Tomato
                             break;
                     }
                 }
+                if (!IsRunning)
+                    return;
             }
             if (CyclesToExecute == -1)
                 Cycles = oldCycles;

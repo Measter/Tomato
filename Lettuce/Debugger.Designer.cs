@@ -42,7 +42,10 @@ namespace Lettuce
             this.resultHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.watchesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.removeWatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stackDisplay = new Lettuce.MemoryDisplay();
             this.label18 = new System.Windows.Forms.Label();
+            this.disassemblyDisplay1 = new Lettuce.DisassemblyDisplay();
+            this.rawMemoryDisplay = new Lettuce.MemoryDisplay();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -106,11 +109,8 @@ namespace Lettuce
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.invalidInstructionLabel = new System.Windows.Forms.Label();
+            this.warningLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.stackDisplay = new Lettuce.MemoryDisplay();
-            this.disassemblyDisplay1 = new Lettuce.DisassemblyDisplay();
-            this.rawMemoryDisplay = new Lettuce.MemoryDisplay();
             this.groupBox1.SuspendLayout();
             this.watchesContextMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -213,6 +213,19 @@ namespace Lettuce
             this.removeWatchToolStripMenuItem.Text = "Remove Watch";
             this.removeWatchToolStripMenuItem.Click += new System.EventHandler(this.removeWatchToolStripMenuItem_Click);
             // 
+            // stackDisplay
+            // 
+            this.stackDisplay.AsStack = true;
+            this.stackDisplay.CPU = dcpu1;
+            this.stackDisplay.DisplayScrollBar = false;
+            this.stackDisplay.Font = new System.Drawing.Font("Courier New", 12F);
+            this.stackDisplay.Location = new System.Drawing.Point(8, 32);
+            this.stackDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.stackDisplay.Name = "stackDisplay";
+            this.stackDisplay.SelectedAddress = ((ushort)(0));
+            this.stackDisplay.Size = new System.Drawing.Size(113, 238);
+            this.stackDisplay.TabIndex = 7;
+            // 
             // label18
             // 
             this.label18.AutoSize = true;
@@ -221,6 +234,37 @@ namespace Lettuce
             this.label18.Size = new System.Drawing.Size(35, 13);
             this.label18.TabIndex = 6;
             this.label18.Text = "Stack";
+            // 
+            // disassemblyDisplay1
+            // 
+            this.disassemblyDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.disassemblyDisplay1.CPU = dcpu2;
+            this.disassemblyDisplay1.EnableUpdates = true;
+            this.disassemblyDisplay1.EndAddress = ((ushort)(0));
+            this.disassemblyDisplay1.Font = new System.Drawing.Font("Courier New", 12F);
+            this.disassemblyDisplay1.Location = new System.Drawing.Point(6, 289);
+            this.disassemblyDisplay1.Margin = new System.Windows.Forms.Padding(4);
+            this.disassemblyDisplay1.Name = "disassemblyDisplay1";
+            this.disassemblyDisplay1.SelectedAddress = ((ushort)(0));
+            this.disassemblyDisplay1.Size = new System.Drawing.Size(407, 264);
+            this.disassemblyDisplay1.TabIndex = 5;
+            // 
+            // rawMemoryDisplay
+            // 
+            this.rawMemoryDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rawMemoryDisplay.AsStack = false;
+            this.rawMemoryDisplay.CPU = dcpu3;
+            this.rawMemoryDisplay.DisplayScrollBar = true;
+            this.rawMemoryDisplay.Font = new System.Drawing.Font("Courier New", 12F);
+            this.rawMemoryDisplay.Location = new System.Drawing.Point(129, 32);
+            this.rawMemoryDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.rawMemoryDisplay.Name = "rawMemoryDisplay";
+            this.rawMemoryDisplay.SelectedAddress = ((ushort)(0));
+            this.rawMemoryDisplay.Size = new System.Drawing.Size(465, 238);
+            this.rawMemoryDisplay.TabIndex = 4;
             // 
             // label2
             // 
@@ -601,12 +645,14 @@ namespace Lettuce
             // checkBoxBreakOnInterrupt
             // 
             this.checkBoxBreakOnInterrupt.AutoSize = true;
+            this.checkBoxBreakOnInterrupt.Enabled = false;
             this.checkBoxBreakOnInterrupt.Location = new System.Drawing.Point(6, 252);
             this.checkBoxBreakOnInterrupt.Name = "checkBoxBreakOnInterrupt";
             this.checkBoxBreakOnInterrupt.Size = new System.Drawing.Size(111, 17);
             this.checkBoxBreakOnInterrupt.TabIndex = 2;
             this.checkBoxBreakOnInterrupt.Text = "Break on Interrupt";
             this.checkBoxBreakOnInterrupt.UseVisualStyleBackColor = true;
+            this.checkBoxBreakOnInterrupt.CheckedChanged += new System.EventHandler(this.checkBoxBreakOnInterrupt_CheckedChanged);
             // 
             // listBoxConnectedDevices
             // 
@@ -754,7 +800,7 @@ namespace Lettuce
             // 
             this.stepIntoToolStripMenuItem.Name = "stepIntoToolStripMenuItem";
             this.stepIntoToolStripMenuItem.ShortcutKeyDisplayString = "F6";
-            this.stepIntoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stepIntoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.stepIntoToolStripMenuItem.Text = "Step Into";
             this.stepIntoToolStripMenuItem.Click += new System.EventHandler(this.buttonStepInto_Click);
             // 
@@ -762,28 +808,28 @@ namespace Lettuce
             // 
             this.stepOverToolStripMenuItem.Name = "stepOverToolStripMenuItem";
             this.stepOverToolStripMenuItem.ShortcutKeyDisplayString = "F7";
-            this.stepOverToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stepOverToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.stepOverToolStripMenuItem.Text = "Step Over";
             this.stepOverToolStripMenuItem.Click += new System.EventHandler(this.buttonStepOver_Click);
             // 
             // loadListingToolStripMenuItem
             // 
             this.loadListingToolStripMenuItem.Name = "loadListingToolStripMenuItem";
-            this.loadListingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadListingToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.loadListingToolStripMenuItem.Text = "Load Listing";
             this.loadListingToolStripMenuItem.Click += new System.EventHandler(this.loadListingToolStripMenuItem_Click);
             // 
             // defineValueToolStripMenuItem
             // 
             this.defineValueToolStripMenuItem.Name = "defineValueToolStripMenuItem";
-            this.defineValueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.defineValueToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.defineValueToolStripMenuItem.Text = "Define Value";
             this.defineValueToolStripMenuItem.Click += new System.EventHandler(this.defineValueToolStripMenuItem_Click);
             // 
             // reloadToolStripMenuItem
             // 
             this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.reloadToolStripMenuItem.Text = "Reload";
             this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
@@ -836,17 +882,17 @@ namespace Lettuce
             this.propertyGrid1.TabIndex = 4;
             this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
             // 
-            // invalidInstructionLabel
+            // warningLabel
             // 
-            this.invalidInstructionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.invalidInstructionLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
-            this.invalidInstructionLabel.Location = new System.Drawing.Point(777, 2);
-            this.invalidInstructionLabel.Name = "invalidInstructionLabel";
-            this.invalidInstructionLabel.Size = new System.Drawing.Size(204, 19);
-            this.invalidInstructionLabel.TabIndex = 5;
-            this.invalidInstructionLabel.Text = "Invalid instruction detected!";
-            this.invalidInstructionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.invalidInstructionLabel.Visible = false;
+            this.warningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.warningLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
+            this.warningLabel.Location = new System.Drawing.Point(777, 2);
+            this.warningLabel.Name = "warningLabel";
+            this.warningLabel.Size = new System.Drawing.Size(204, 19);
+            this.warningLabel.TabIndex = 5;
+            this.warningLabel.Text = "Invalid instruction detected!";
+            this.warningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.warningLabel.Visible = false;
             // 
             // pictureBox1
             // 
@@ -861,57 +907,13 @@ namespace Lettuce
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
             // 
-            // stackDisplay
-            // 
-            this.stackDisplay.AsStack = true;
-            this.stackDisplay.CPU = dcpu1;
-            this.stackDisplay.DisplayScrollBar = false;
-            this.stackDisplay.Font = new System.Drawing.Font("Courier New", 12F);
-            this.stackDisplay.Location = new System.Drawing.Point(8, 32);
-            this.stackDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.stackDisplay.Name = "stackDisplay";
-            this.stackDisplay.SelectedAddress = ((ushort)(0));
-            this.stackDisplay.Size = new System.Drawing.Size(113, 238);
-            this.stackDisplay.TabIndex = 7;
-            // 
-            // disassemblyDisplay1
-            // 
-            this.disassemblyDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.disassemblyDisplay1.CPU = dcpu2;
-            this.disassemblyDisplay1.EnableUpdates = true;
-            this.disassemblyDisplay1.EndAddress = ((ushort)(0));
-            this.disassemblyDisplay1.Font = new System.Drawing.Font("Courier New", 12F);
-            this.disassemblyDisplay1.Location = new System.Drawing.Point(6, 289);
-            this.disassemblyDisplay1.Margin = new System.Windows.Forms.Padding(4);
-            this.disassemblyDisplay1.Name = "disassemblyDisplay1";
-            this.disassemblyDisplay1.SelectedAddress = ((ushort)(0));
-            this.disassemblyDisplay1.Size = new System.Drawing.Size(407, 264);
-            this.disassemblyDisplay1.TabIndex = 5;
-            // 
-            // rawMemoryDisplay
-            // 
-            this.rawMemoryDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rawMemoryDisplay.AsStack = false;
-            this.rawMemoryDisplay.CPU = dcpu3;
-            this.rawMemoryDisplay.DisplayScrollBar = true;
-            this.rawMemoryDisplay.Font = new System.Drawing.Font("Courier New", 12F);
-            this.rawMemoryDisplay.Location = new System.Drawing.Point(129, 32);
-            this.rawMemoryDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.rawMemoryDisplay.Name = "rawMemoryDisplay";
-            this.rawMemoryDisplay.SelectedAddress = ((ushort)(0));
-            this.rawMemoryDisplay.Size = new System.Drawing.Size(465, 238);
-            this.rawMemoryDisplay.TabIndex = 4;
-            // 
             // Debugger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1010, 602);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.invalidInstructionLabel);
+            this.Controls.Add(this.warningLabel);
             this.Controls.Add(this.propertyGrid1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -1007,7 +1009,7 @@ namespace Lettuce
         private System.Windows.Forms.CheckBox checkBoxBreakOnInterrupt;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem breakOnInvalidInstructionToolStripMenuItem;
-        private System.Windows.Forms.Label invalidInstructionLabel;
+        private System.Windows.Forms.Label warningLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem keyboardToolStripMenuItem;

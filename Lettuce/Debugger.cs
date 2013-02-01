@@ -21,6 +21,8 @@ namespace Lettuce
         public List<Type> DeviceControllers;
         public List<string> Watches { get; set; }
 
+        private List<bool> InterruptBreakDevices { get; set; }
+
         public const string FUNC_STEP_INTO = "step_into";
         public const string FUNC_STEP_OVER = "step_over";
         public const string FUNC_CHANGE_RUNNING = "change_run";
@@ -33,19 +35,24 @@ namespace Lettuce
                 KnownCode = new Dictionary<ushort, string>();
             if (KnownLabels == null)
                 KnownLabels = new Dictionary<ushort, string>();
-
+            InterruptBreakDevices = new List<bool>();
             FixKeyConfig();
 
-            this.KeyPreview = true;
+            KeyPreview = true;
             this.CPU = CPU;
-            this.CPU.BreakpointHit += new EventHandler<BreakpointEventArgs>(CPU_BreakpointHit);
+            this.CPU.BreakpointHit += this.CPU_BreakpointHit;
             this.CPU.InvalidInstruction += CpuOnInvalidInstruction; 
-            this.rawMemoryDisplay.CPU = this.CPU;
-            this.stackDisplay.CPU = this.CPU;
-            this.disassemblyDisplay1.CPU = this.CPU;
+            rawMemoryDisplay.CPU = this.CPU;
+            stackDisplay.CPU = this.CPU;
+            disassemblyDisplay1.CPU = this.CPU;
+
             Watches = new List<string>();
             foreach (Device d in CPU.Devices)
+            {
                 listBoxConnectedDevices.Items.Add(d.FriendlyName);
+                InterruptBreakDevices.Add(false);
+                d.InterruptFired += OnDeviceInterrupt;
+            }
             // Load device controllers
             DeviceControllers = new List<Type>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -55,6 +62,17 @@ namespace Lettuce
                 {
                     DeviceControllers.Add(type);
                 }
+            }
+        }
+
+        private void OnDeviceInterrupt(object sender, EventArgs eventArgs)
+        {
+            int index = CPU.Devices.IndexOf(sender as Device);
+            if (InterruptBreakDevices[index])
+            {
+                CPU.IsRunning = false;
+                SetUIWarning("Hardware interrupt fired on device #" + index);
+                ResetLayout();
             }
         }
 
@@ -68,19 +86,31 @@ namespace Lettuce
             }
         }
 
-        private delegate void InvalidInstructionDelegate(InvalidInstructionEventArgs eventArgs);
         void InvalidInstruction(InvalidInstructionEventArgs eventArgs)
         {
             if (InvokeRequired)
-                Invoke(new InvalidInstructionDelegate(InvalidInstruction), eventArgs);
+                Invoke(new Action(() => InvalidInstruction(eventArgs)));
             else
             {
                 pictureBox1.Visible = true;
-                invalidInstructionLabel.Text = "Invalid instruction at 0x" + eventArgs.Address.ToString("X4") +
+                warningLabel.Text = "Invalid instruction at 0x" + eventArgs.Address.ToString("X4") +
                     ": 0x" + eventArgs.Instruction.ToString("X4");
-                invalidInstructionLabel.Visible = true;
+                warningLabel.Visible = true;
                 if (breakOnInvalidInstructionToolStripMenuItem.Checked)
                     ResetLayout();
+            }
+        }
+
+        void SetUIWarning(string text)
+        {
+            if (InvokeRequired)
+                Invoke(new Action(() => SetUIWarning(text)));
+            else
+            {
+                pictureBox1.Visible = true;
+                warningLabel.Text = text;
+                warningLabel.Visible = true;
+                ResetLayout();
             }
         }
 
@@ -227,10 +257,12 @@ namespace Lettuce
 
         private void listBoxConnectedDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
+            checkBoxBreakOnInterrupt.Enabled = (listBoxConnectedDevices.SelectedIndex != -1);
             if (listBoxConnectedDevices.SelectedIndex == -1)
                 return;
             Device selected = CPU.Devices[listBoxConnectedDevices.SelectedIndex];
             propertyGrid1.SelectedObject = selected;
+            checkBoxBreakOnInterrupt.Checked = InterruptBreakDevices[listBoxConnectedDevices.SelectedIndex];
         }
         
         private void listBoxConnectedDevices_MouseDoubleClick(object sender, EventArgs e)
@@ -711,6 +743,11 @@ namespace Lettuce
             LoadOrganicListing(ofd.FileName);
             Program.lastlistingFilepath = ofd.FileName;
             ResetLayout();
+        }
+
+        private void checkBoxBreakOnInterrupt_CheckedChanged(object sender, EventArgs e)
+        {
+            InterruptBreakDevices[listBoxConnectedDevices.SelectedIndex] = checkBoxBreakOnInterrupt.Checked;
         }
     }
 }
