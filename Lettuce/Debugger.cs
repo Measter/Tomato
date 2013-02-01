@@ -589,7 +589,7 @@ namespace Lettuce
 
         private void checkBoxInterruptQueue_CheckedChanged(object sender, EventArgs e)
         {
-            CPU.InterruptQueueEnabled = !CPU.InterruptQueueEnabled;
+            CPU.InterruptQueueEnabled = checkBoxInterruptQueue.Checked;
             ResetLayout();
         }
         
