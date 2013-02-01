@@ -5,7 +5,7 @@ itself is a .NET library for emulating DCPU-16 and all official 0x10c hardware. 
 is Lettuce, a graphical debugger for DCPU-16 programs. Also included is Pickles, a text-based
 debugger for the command line. All three run on Windows, Linux, and Mac.
 
-[![Download latest version](http://i.imgur.com/cMhpN.png)](https://github.com/SirCmpwn/Tomato/downloads)
+[![Download latest version](http://i.imgur.com/cMhpN.png)](http://sircmpwn.github.com/Tomato/Lettuce.zip)
 
 ## Features
 
