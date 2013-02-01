@@ -712,5 +712,10 @@ namespace Lettuce
                 Watches.RemoveAt(watchesListView.SelectedIndices[0]);
             ResetLayout();
         }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
     }
 }
