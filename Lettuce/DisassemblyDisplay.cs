@@ -29,6 +29,7 @@ namespace Lettuce
             this.MouseDoubleClick += new MouseEventHandler(DisassemblyDisplay_MouseDoubleClick);
             this.KeyDown += new KeyEventHandler(DisassemblyDisplay_KeyDown);
             EnableUpdates = true;
+            vScrollBar.Maximum = 65535;
         }
 
         void DisassemblyDisplay_KeyDown(object sender, KeyEventArgs e)
@@ -71,6 +72,7 @@ namespace Lettuce
                     SelectedAddress--;
                 else if (e.Delta < 0)
                     SelectedAddress += CPU.InstructionLength(SelectedAddress);
+                vScrollBar.Value = SelectedAddress;
                 this.Invalidate();
                 base.OnMouseWheel(e);
             }
@@ -262,7 +264,7 @@ namespace Lettuce
                     index++;
                 }
             }
-            e.Graphics.DrawRectangle(Pens.Black, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
+            e.Graphics.DrawRectangle(Pens.Black, new Rectangle(0, 0, this.Width - 1 - vScrollBar.Width, this.Height - 1));
         }
 
         private void gotoAddressToolStripMenuItem_Click(object sender, EventArgs e)
@@ -289,6 +291,20 @@ namespace Lettuce
                 offset--;
             }
             CPU.PC = address;
+            this.Invalidate();
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.Type == ScrollEventType.EndScroll)
+                return;
+            if (e.Type == ScrollEventType.SmallDecrement)
+                SelectedAddress--;
+            else if (e.Type == ScrollEventType.SmallIncrement)
+                SelectedAddress += CPU.InstructionLength(SelectedAddress);
+            else
+                SelectedAddress = (ushort)vScrollBar.Value;
+            vScrollBar.Value = SelectedAddress;
             this.Invalidate();
         }
     }
