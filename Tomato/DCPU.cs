@@ -342,7 +342,7 @@ namespace Tomato
                                 SkipIfChain();
                             break;
                         case 0x17: // IFU b, a
-                            Cycles += 2;
+                            Cycles -= 2;
                             Get(valueB);
                             if (!(opB_s < opA_s))
                                 SkipIfChain();
