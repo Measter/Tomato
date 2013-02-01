@@ -109,6 +109,10 @@ namespace Tomato
                 Cycles += CyclesToExecute;
             while (Cycles > 0)
             {
+                if (IsOnFire)
+                    Memory[Random.Next(0xFFFF)] = (ushort)Random.Next(0xFFFF);
+                if (!InterruptQueueEnabled && InterruptQueue.Count > 0)
+                    FireInterrupt(InterruptQueue.Dequeue());
                 if (BreakpointHit != null)
                 {
                     foreach (var breakpoint in Breakpoints)
@@ -123,10 +127,6 @@ namespace Tomato
                         }
                     }
                 }
-                if (IsOnFire)
-                    Memory[Random.Next(0xFFFF)] = (ushort)Random.Next(0xFFFF);
-                if (!InterruptQueueEnabled && InterruptQueue.Count > 0)
-                    FireInterrupt(InterruptQueue.Dequeue());
 
                 ushort PCBeforeExecution = PC;
                 ushort instruction = Memory[PC++];
