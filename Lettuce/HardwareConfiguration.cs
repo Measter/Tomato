@@ -54,6 +54,7 @@ namespace Lettuce
                         selectedListBox.Items.Add(device);
                 }
             }
+            DialogResult = DialogResult.Cancel;
         }
 
         private bool LoadSavedDevices()
@@ -85,6 +86,7 @@ namespace Lettuce
 
         private void button5_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             Close();
             var configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     ".lettuce", "devices.config");

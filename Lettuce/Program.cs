@@ -178,8 +178,11 @@ namespace Lettuce
             }
             if (binFile == null)
             {
-                MemoryConfiguration mc = new MemoryConfiguration();
-                if (mc.ShowDialog() == DialogResult.OK)
+                var mc = new MemoryConfiguration();
+                var result = mc.ShowDialog();
+                if (result == DialogResult.Cancel)
+                    return;
+                if (result == DialogResult.OK)
                 {
                     binFile = mc.FileName;
                     littleEndian = mc.LittleEndian;
@@ -187,8 +190,10 @@ namespace Lettuce
             }
             if (devices.Count == 0)
             {
-                HardwareConfiguration hwc = new HardwareConfiguration();
-                hwc.ShowDialog();
+                var hwc = new HardwareConfiguration();
+                var result = hwc.ShowDialog();
+                if (result == DialogResult.Cancel)
+                    return;
                 foreach (var device in hwc.SelectedDevices)
                     devices.Add(device);
             }
