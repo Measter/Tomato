@@ -80,6 +80,7 @@ namespace Tomato
                 }
             }
         }
+        private object LockObject = new object();
 
         public ushort InstructionLength(ushort address)
         {
@@ -119,7 +120,7 @@ namespace Tomato
                     {
                         if (breakpoint.Address == PC)
                         {
-                            BreakpointEventArgs bea = new BreakpointEventArgs(breakpoint);
+                            var bea = new BreakpointEventArgs(breakpoint);
                             BreakpointHit(this, bea);
                             if (!bea.ContinueExecution)
                                 return;
