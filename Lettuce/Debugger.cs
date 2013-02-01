@@ -482,19 +482,6 @@ namespace Lettuce
         public static Dictionary<ushort, string> KnownLabels;
         public static Dictionary<ushort, string> KnownCode;
 
-        private void organicToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Load organic listing
-            var ofd = new OpenFileDialog();
-            ofd.Filter = "Listing files (*.lst)|*.lst|Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            ofd.FileName = "";
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-            LoadOrganicListing(ofd.FileName);
-            Program.lastlistingFilepath = ofd.FileName;
-            ResetLayout();
-        }
-
         public static void LoadOrganicListing(string file)
         {
             if (KnownCode == null)
@@ -713,9 +700,17 @@ namespace Lettuce
             ResetLayout();
         }
 
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        private void loadListingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            // Load organic listing
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "Listing files (*.lst)|*.lst|Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            ofd.FileName = "";
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+            LoadOrganicListing(ofd.FileName);
+            Program.lastlistingFilepath = ofd.FileName;
+            ResetLayout();
         }
     }
 }

@@ -98,8 +98,6 @@ namespace Lettuce
             this.stepIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepOverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadListingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.organicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.blueDASToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defineValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.memoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -756,7 +754,7 @@ namespace Lettuce
             // 
             this.stepIntoToolStripMenuItem.Name = "stepIntoToolStripMenuItem";
             this.stepIntoToolStripMenuItem.ShortcutKeyDisplayString = "F6";
-            this.stepIntoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.stepIntoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.stepIntoToolStripMenuItem.Text = "Step Into";
             this.stepIntoToolStripMenuItem.Click += new System.EventHandler(this.buttonStepInto_Click);
             // 
@@ -764,43 +762,28 @@ namespace Lettuce
             // 
             this.stepOverToolStripMenuItem.Name = "stepOverToolStripMenuItem";
             this.stepOverToolStripMenuItem.ShortcutKeyDisplayString = "F7";
-            this.stepOverToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.stepOverToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.stepOverToolStripMenuItem.Text = "Step Over";
             this.stepOverToolStripMenuItem.Click += new System.EventHandler(this.buttonStepOver_Click);
             // 
             // loadListingToolStripMenuItem
             // 
-            this.loadListingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.organicToolStripMenuItem,
-            this.blueDASToolStripMenuItem});
             this.loadListingToolStripMenuItem.Name = "loadListingToolStripMenuItem";
-            this.loadListingToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.loadListingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loadListingToolStripMenuItem.Text = "Load Listing";
-            // 
-            // organicToolStripMenuItem
-            // 
-            this.organicToolStripMenuItem.Name = "organicToolStripMenuItem";
-            this.organicToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.organicToolStripMenuItem.Text = "Organic";
-            this.organicToolStripMenuItem.Click += new System.EventHandler(this.organicToolStripMenuItem_Click);
-            // 
-            // blueDASToolStripMenuItem
-            // 
-            this.blueDASToolStripMenuItem.Name = "blueDASToolStripMenuItem";
-            this.blueDASToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.blueDASToolStripMenuItem.Text = "BlueDAS";
+            this.loadListingToolStripMenuItem.Click += new System.EventHandler(this.loadListingToolStripMenuItem_Click);
             // 
             // defineValueToolStripMenuItem
             // 
             this.defineValueToolStripMenuItem.Name = "defineValueToolStripMenuItem";
-            this.defineValueToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.defineValueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.defineValueToolStripMenuItem.Text = "Define Value";
             this.defineValueToolStripMenuItem.Click += new System.EventHandler(this.defineValueToolStripMenuItem_Click);
             // 
             // reloadToolStripMenuItem
             // 
             this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.reloadToolStripMenuItem.Text = "Reload";
             this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
@@ -1011,8 +994,6 @@ namespace Lettuce
         private MemoryDisplay stackDisplay;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ToolStripMenuItem loadListingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem organicToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem blueDASToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem defineValueToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem speedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
