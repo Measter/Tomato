@@ -6,8 +6,13 @@ using Tomato.Hardware;
 
 namespace Tomato
 {
-    public partial class DCPU
+    public class DCPU
     {
+        static DCPU()
+        {
+            Random = new Random();
+        }
+
         public DCPU()
         {
             Devices = new List<Device>();
@@ -16,8 +21,7 @@ namespace Tomato
             Memory = new ushort[0x10000];
             InterruptQueueEnabled = IsOnFire = false;
             IsRunning = true;
-            if (Random == null)
-                Random = new Random();
+            TotalCycles = 0;
         }
 
         public List<Device> Devices;
@@ -38,6 +42,7 @@ namespace Tomato
         }
         public int ClockSpeed = 100000;
         public bool IsRunning;
+        public int TotalCycles { get; private set; }
         /// <summary>
         /// Called when a breakpoint is hit, before it is executed.
         /// </summary>
@@ -389,6 +394,7 @@ namespace Tomato
                 if (!IsRunning)
                     return;
             }
+            TotalCycles += oldCycles - Cycles;
             if (CyclesToExecute == -1)
                 Cycles = oldCycles;
         }
