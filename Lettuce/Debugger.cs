@@ -180,6 +180,7 @@ namespace Lettuce
                 checkBoxInterruptQueue.Checked = CPU.InterruptQueueEnabled;
                 labelQueuedInterrupts.Text = "Queued Interrupts: " + CPU.InterruptQueue.Count.ToString();
                 checkBoxOnFire.Checked = CPU.IsOnFire;
+                cycleCountLabel.Text = "Cycles: " + CPU.TotalCycles;
                 rawMemoryDisplay.Invalidate();
                 disassemblyDisplay1.Invalidate();
                 propertyGrid1.SelectedObject = propertyGrid1.SelectedObject; // Forces update, intentionally redundant

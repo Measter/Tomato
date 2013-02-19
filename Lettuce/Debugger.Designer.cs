@@ -111,6 +111,7 @@ namespace Lettuce
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.warningLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cycleCountLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.watchesContextMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -290,6 +291,7 @@ namespace Lettuce
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.cycleCountLabel);
             this.groupBox2.Controls.Add(this.checkBoxOnFire);
             this.groupBox2.Controls.Add(this.labelQueuedInterrupts);
             this.groupBox2.Controls.Add(this.buttonStepOver);
@@ -907,6 +909,15 @@ namespace Lettuce
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
             // 
+            // cycleCountLabel
+            // 
+            this.cycleCountLabel.AutoSize = true;
+            this.cycleCountLabel.Location = new System.Drawing.Point(69, 20);
+            this.cycleCountLabel.Name = "cycleCountLabel";
+            this.cycleCountLabel.Size = new System.Drawing.Size(50, 13);
+            this.cycleCountLabel.TabIndex = 31;
+            this.cycleCountLabel.Text = "Cycles: 0";
+            // 
             // Debugger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1021,5 +1032,6 @@ namespace Lettuce
         private System.Windows.Forms.ColumnHeader resultHeader;
         private System.Windows.Forms.ContextMenuStrip watchesContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem removeWatchToolStripMenuItem;
+        private System.Windows.Forms.Label cycleCountLabel;
     }
 }

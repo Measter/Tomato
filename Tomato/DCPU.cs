@@ -391,12 +391,16 @@ namespace Tomato
                             break;
                     }
                 }
-                if (!IsRunning)
+                if (!IsRunning && CyclesToExecute != -1)
                     return;
             }
-            TotalCycles += oldCycles - Cycles;
             if (CyclesToExecute == -1)
+            {
+                TotalCycles += -(Cycles - 1);
                 Cycles = oldCycles;
+            }
+            else
+                TotalCycles += CyclesToExecute;
         }
 
         private void SkipIfChain()
@@ -637,6 +641,19 @@ namespace Tomato
 
             foreach (var device in Devices)
                 device.Reset();
+        }
+
+        public int CalculateCycles(ushort address, ushort length)
+        {
+            int cycles = 0;
+            ushort target = (ushort)(address + length);
+            while (address < target)
+            {
+                ushort instruction = Memory[address];
+
+                address++;
+            }
+            return cycles;
         }
     }
 }
