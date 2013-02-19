@@ -635,7 +635,7 @@ namespace Tomato
 
         public void Reset()
         {
-            A = B = C = X = Y = Z = I = J = PC = EX = IA = SP = 0;
+            TotalCycles = A = B = C = X = Y = Z = I = J = PC = EX = IA = SP = 0;
             InterruptQueueEnabled = IsOnFire = false;
             InterruptQueue.Clear();
 
