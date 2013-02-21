@@ -140,7 +140,7 @@ namespace Lettuce
 
         public static string GetHexString(uint value, int numDigits)
         {
-            string result = value.ToString( "X" ).PadLeft( numDigits, '0' );
+            string result = value.ToString("X4");
             return result;
         }
 

@@ -90,14 +90,14 @@ namespace Lettuce
             int Width = this.Width;
             if (DisplayScrollBar) Width -= vScrollBar.Width;
 			
-			Size cell = TextRenderer.MeasureText( "0000", font );
-			Size gutter = TextRenderer.MeasureText( "0000:", font );
+            Size cell = TextRenderer.MeasureText("0000", font);
+            Size gutter = TextRenderer.MeasureText("0000:", font);
 			
-			Brush greyBrush = Brushes.Gray;
+            Brush greyBrush = Brushes.Gray;
             Brush blackBrush = Brushes.Black;
             Brush blueBrush = Brushes.LightBlue;
             Pen blackPen = Pens.Black;
-            SolidBrush lightGreyBrush = new SolidBrush( Color.FromArgb( 255, 230, 230, 230 ) );
+            SolidBrush lightGreyBrush = new SolidBrush(Color.FromArgb(255, 230, 230, 230));
 
             e.Graphics.FillRectangle(Brushes.White, this.ClientRectangle);
             ushort address = SelectedAddress;
