@@ -19,6 +19,9 @@ namespace Lettuce
         private Point MouseLocation;
         private bool IsMouseWithin;
 
+        private Size gutterSize;
+        private Font genericMonoFont;
+
         public DisassemblyDisplay()
         {
             this.CPU = new DCPU();
@@ -30,6 +33,9 @@ namespace Lettuce
             this.KeyDown += new KeyEventHandler(DisassemblyDisplay_KeyDown);
             EnableUpdates = true;
             vScrollBar.Maximum = 65535;
+
+            genericMonoFont = new Font(FontFamily.GenericMonospace, 12);
+            gutterSize = TextRenderer.MeasureText("0000: ", genericMonoFont);
         }
 
         void DisassemblyDisplay_KeyDown(object sender, KeyEventArgs e)
@@ -113,38 +119,39 @@ namespace Lettuce
 
         private void DisassemblyDisplay_Paint(object sender, PaintEventArgs e)
         {
-            Font font = new Font(FontFamily.GenericMonospace, 12);
-
             e.Graphics.FillRectangle(Brushes.White, this.ClientRectangle);
             if (this.DesignMode)
             {
                 e.Graphics.DrawRectangle(Pens.Black, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
                 return;
             }
-
+            
             FastDisassembler disassembler = new FastDisassembler(Debugger.KnownLabels);
             Disassembly = disassembler.FastDisassemble(ref CPU.Memory, SelectedAddress, (ushort)(SelectedAddress + 100));
 
             int index = 0;
             bool setLast = false, dark = SelectedAddress % 2 == 0;
 
-            Size baseFontSize = TextRenderer.MeasureText("0000", font);
-            Size addressFontSize;
-
-            for (int y = 0; y < this.Height; y += baseFontSize.Height + 2)
+            Brush yellowBrush = Brushes.Yellow;
+            Brush blackBrush = Brushes.Black;
+            Brush darkRedBrush = Brushes.DarkRed;
+            Brush lightBlueBrush = Brushes.LightBlue;
+            Brush greyBrush = Brushes.Gray;
+            Brush lightGreyBrush = new SolidBrush(Color.FromArgb(255, 230, 230, 230));
+                                                                                
+            for (int y = 0; y < this.Height; y += gutterSize.Height + 2)
             {
                 string address = Debugger.GetHexString(Disassembly[index].Address, 4) + ": ";
-                addressFontSize = TextRenderer.MeasureText(address, font);
-                Brush foreground = Brushes.Black;
+                Brush foreground = blackBrush;
                 if (dark)
-                    e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 230, 230, 230)), new Rectangle(0, y, this.Width, addressFontSize.Height + 2));
+                    e.Graphics.FillRectangle(lightGreyBrush, new Rectangle(0, y, this.Width, gutterSize.Height + 2));
                 dark = !dark;
 
                 int breakPointCount = CPU.Breakpoints.Where(b => b.Address == Disassembly[index].Address).Count();
 
                 if (breakPointCount != 0)
                 {
-                    e.Graphics.FillRectangle(Brushes.DarkRed, new Rectangle(0, y, this.Width, addressFontSize.Height + 2));
+                    e.Graphics.FillRectangle(darkRedBrush, new Rectangle(0, y, this.Width, gutterSize.Height + 2));
                     foreground = Brushes.White;
                 }
                 if (Disassembly[index].Address == CPU.PC)
@@ -152,34 +159,34 @@ namespace Lettuce
                     if (breakPointCount != 0)
                     {
                         if (Disassembly[index].IsLabel)
-                            e.Graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, y + 2, this.Width, addressFontSize.Height));
+                            e.Graphics.FillRectangle(yellowBrush, new Rectangle(0, y + 2, this.Width, gutterSize.Height));
                         else
                         {
                             if (index != 0)
                             {
                                 if (Disassembly[index - 1].IsLabel)
-                                    e.Graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, y, this.Width, addressFontSize.Height));
+                                    e.Graphics.FillRectangle(yellowBrush, new Rectangle(0, y, this.Width, gutterSize.Height));
                                 else
-                                    e.Graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, y + 2, this.Width, addressFontSize.Height - 2));
+                                    e.Graphics.FillRectangle(yellowBrush, new Rectangle(0, y + 2, this.Width, gutterSize.Height - 2));
                             }
                             else
-                                e.Graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, y + 2, this.Width, addressFontSize.Height - 2));
+                                e.Graphics.FillRectangle(yellowBrush, new Rectangle(0, y + 2, this.Width, gutterSize.Height - 2));
                         }
                     }
                     else
-                        e.Graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, y, this.Width, addressFontSize.Height + 2));
-                    foreground = Brushes.Black;
+                        e.Graphics.FillRectangle(yellowBrush, new Rectangle(0, y, this.Width, gutterSize.Height + 2));
+                    foreground = blackBrush;
                 }
 
-                e.Graphics.DrawString(address, font, Brushes.Gray, 2, y);
+                e.Graphics.DrawString(address, genericMonoFont, greyBrush, 2, y);
 
                 if (!Debugger.KnownCode.ContainsKey(Disassembly[index].Address) || Disassembly[index].IsLabel)
-                    e.Graphics.DrawString(Disassembly[index].Code, font, foreground, 2 + addressFontSize.Width + 3, y);
+                    e.Graphics.DrawString(Disassembly[index].Code, genericMonoFont, foreground, 2 + gutterSize.Width + 3, y);
                 else
-                    e.Graphics.DrawString(Debugger.KnownCode[Disassembly[index].Address], font, foreground,
-                        2 + addressFontSize.Width + 3, y );
+                    e.Graphics.DrawString(Debugger.KnownCode[Disassembly[index].Address], genericMonoFont, foreground,
+                        2 + gutterSize.Width + 3, y );
 
-                if(y + addressFontSize.Height > this.Height)
+                if(y + gutterSize.Height > this.Height)
                 {
                     setLast = true;
                     EndAddress = Disassembly[index].Address;
@@ -193,14 +200,14 @@ namespace Lettuce
             if (IsMouseWithin && !CPU.IsRunning) // TODO: Make this more versatile, probably integrate with organic
             {
                 int x = MouseLocation.X;
-                for( int y = 0; y < this.Height; y += baseFontSize.Height + 2 )
+                for( int y = 0; y < this.Height; y += gutterSize.Height + 2 )
                 {
                     if (Disassembly[index].IsLabel || Disassembly[index].Code.StartsWith("DAT"))
                     {
                         index++;
                         continue;
                     }
-                    Size size = TextRenderer.MeasureText("0000: " + Disassembly[index].Code, font);
+                    Size size = TextRenderer.MeasureText("0000: " + Disassembly[index].Code, genericMonoFont);
                     size.Width += 5;
                     if (new Rectangle(new Point(0, y), size).IntersectsWith(
                         new Rectangle(new Point(x, MouseLocation.Y), new Size(1, 1))))
@@ -214,31 +221,31 @@ namespace Lettuce
                         if (Disassembly[index].Opcode == 0)
                         {
                             valueB = int.MaxValue;
-                            valueA = TextRenderer.MeasureText("0000: " + Disassembly[index].OpcodeText + " ", font).Width + 4;
+                            valueA = TextRenderer.MeasureText("0000: " + Disassembly[index].OpcodeText + " ", genericMonoFont).Width + 4;
                         }
                         else
                         {
-                            valueB = TextRenderer.MeasureText("0000: " + Disassembly[index].OpcodeText + " ", font).Width + 4;
-                            valueA = valueB + TextRenderer.MeasureText(Disassembly[index].ValueBText + ", ", font).Width - 8;
+                            valueB = TextRenderer.MeasureText("0000: " + Disassembly[index].OpcodeText + " ", genericMonoFont).Width + 4;
+                            valueA = valueB + TextRenderer.MeasureText(Disassembly[index].ValueBText + ", ", genericMonoFont).Width - 8;
                         }
                         if (x >= valueB && x <= valueA)
                         {
                             // hovering over value B
                             if (Disassembly[index].ValueB <= 0x1E)
                             {
-                                e.Graphics.FillRectangle(Brushes.LightBlue, new Rectangle(new Point(valueB, y),
-                                    TextRenderer.MeasureText(Disassembly[index].ValueBText, font)));
-                                e.Graphics.DrawString(Disassembly[index].ValueBText, font, Brushes.Black, new PointF(valueB, y));
+                                e.Graphics.FillRectangle(lightBlueBrush, new Rectangle(new Point(valueB, y),
+                                    TextRenderer.MeasureText(Disassembly[index].ValueBText, genericMonoFont)));
+                                e.Graphics.DrawString(Disassembly[index].ValueBText, genericMonoFont, blackBrush, new PointF(valueB, y));
                                 int locationY = y + size.Height;
                                 if (this.Height / 2 < y)
                                     locationY = y - size.Height;
                                 string text = Disassembly[index].ValueBText + " = 0x" + Debugger.GetHexString(valueBcalc, 4);
-                                Size hoverSize = TextRenderer.MeasureText(text, font);
-                                e.Graphics.FillRectangle(Brushes.LightBlue, new Rectangle(new Point(
-                                    (valueB + (TextRenderer.MeasureText(Disassembly[index].ValueBText, font).Width / 2)) -
+                                Size hoverSize = TextRenderer.MeasureText(text, genericMonoFont);
+                                e.Graphics.FillRectangle(lightBlueBrush, new Rectangle(new Point(
+                                    (valueB + (TextRenderer.MeasureText(Disassembly[index].ValueBText, genericMonoFont).Width / 2)) -
                                     (hoverSize.Width / 2), locationY), hoverSize));
-                                e.Graphics.DrawString(text, font, Brushes.Black, new Point(
-                                    (valueB + (TextRenderer.MeasureText(Disassembly[index].ValueBText, font).Width / 2)) -
+                                e.Graphics.DrawString(text, genericMonoFont, blackBrush, new Point(
+                                    (valueB + (TextRenderer.MeasureText(Disassembly[index].ValueBText, genericMonoFont).Width / 2)) -
                                     (hoverSize.Width / 2), locationY));
                             }
                         }
@@ -247,19 +254,19 @@ namespace Lettuce
                             // hovering over value A
                             if (Disassembly[index].ValueA <= 0x1E)
                             {
-                                e.Graphics.FillRectangle(Brushes.LightBlue, new Rectangle(new Point(valueA, y),
-                                    TextRenderer.MeasureText(Disassembly[index].ValueAText, font)));
-                                e.Graphics.DrawString(Disassembly[index].ValueAText, font, Brushes.Black, new PointF(valueA, y));
+                                e.Graphics.FillRectangle(lightBlueBrush, new Rectangle(new Point(valueA, y),
+                                    TextRenderer.MeasureText(Disassembly[index].ValueAText, genericMonoFont)));
+                                e.Graphics.DrawString(Disassembly[index].ValueAText, genericMonoFont, blackBrush, new PointF(valueA, y));
                                 int locationY = y + size.Height;
                                 if (this.Height / 2 < y)
                                     locationY = y - size.Height;
                                 string text = Disassembly[index].ValueAText + " = 0x" + Debugger.GetHexString(valueAcalc, 4);
-                                Size hoverSize = TextRenderer.MeasureText(text, font);
-                                e.Graphics.FillRectangle(Brushes.LightBlue, new Rectangle(new Point(
-                                    (valueA + (TextRenderer.MeasureText(Disassembly[index].ValueAText, font).Width / 2)) -
+                                Size hoverSize = TextRenderer.MeasureText(text, genericMonoFont);
+                                e.Graphics.FillRectangle(lightBlueBrush, new Rectangle(new Point(
+                                    (valueA + (TextRenderer.MeasureText(Disassembly[index].ValueAText, genericMonoFont).Width / 2)) -
                                     (hoverSize.Width / 2), locationY), hoverSize));
-                                e.Graphics.DrawString(text, font, Brushes.Black, new Point(
-                                    (valueA + (TextRenderer.MeasureText(Disassembly[index].ValueAText, font).Width / 2)) -
+                                e.Graphics.DrawString(text, genericMonoFont, blackBrush, new Point(
+                                    (valueA + (TextRenderer.MeasureText(Disassembly[index].ValueAText, genericMonoFont).Width / 2)) -
                                     (hoverSize.Width / 2), locationY));
                             }
                         }
@@ -285,9 +292,8 @@ namespace Lettuce
 
         private void setPCToAddressToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Font font = new Font(FontFamily.GenericMonospace, 12);
             ushort address = SelectedAddress;
-            int offset = MouseLocation.Y / (TextRenderer.MeasureText("0", font).Height + 2);
+            int offset = MouseLocation.Y / (TextRenderer.MeasureText("0", genericMonoFont).Height + 2);
             int index = 0;
             while (offset != 0)
             {

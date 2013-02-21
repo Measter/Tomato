@@ -30,10 +30,19 @@ namespace Lettuce
             }
         }
 
+        private Font genericMonoFont;
+        private Size cellSize;
+        private Size gutterSize;
+
         public MemoryDisplay()
         {
             AsStack = false;
             this.CPU = new DCPU();
+
+            genericMonoFont = new Font( FontFamily.GenericMonospace, 12 );
+            cellSize = TextRenderer.MeasureText("0000", genericMonoFont);
+            gutterSize = TextRenderer.MeasureText("0000:", genericMonoFont);
+
             InitializeComponent();
             wordsWide = 8;
             this.MouseMove += new MouseEventHandler(MemoryDisplay_MouseMove);
@@ -76,6 +85,11 @@ namespace Lettuce
         public MemoryDisplay(ref DCPU CPU)
         {
             AsStack = false;
+
+            genericMonoFont = new Font( FontFamily.GenericMonospace, 12 );
+            cellSize = TextRenderer.MeasureText("0000", genericMonoFont);
+            gutterSize = TextRenderer.MeasureText("0000:", genericMonoFont);
+
             InitializeComponent();
             this.CPU = CPU;
             wordsWide = 8;
@@ -85,13 +99,10 @@ namespace Lettuce
         {
             if (wordsWide <= 0)
                 return;
-            Font font = new Font(FontFamily.GenericMonospace, 12);
+            
             bool dark = (int)(SelectedAddress / wordsWide) % 2 == 0;
             int Width = this.Width;
             if (DisplayScrollBar) Width -= vScrollBar.Width;
-			
-            Size cell = TextRenderer.MeasureText("0000", font);
-            Size gutter = TextRenderer.MeasureText("0000:", font);
 			
             Brush greyBrush = Brushes.Gray;
             Brush blackBrush = Brushes.Black;
@@ -101,29 +112,28 @@ namespace Lettuce
 
             e.Graphics.FillRectangle(Brushes.White, this.ClientRectangle);
             ushort address = SelectedAddress;
-            for (int y = 0; y < this.Height; y += cell.Height + 2)
+            for (int y = 0; y < this.Height; y += cellSize.Height + 2)
             {
                 if (dark)
-                    e.Graphics.FillRectangle(lightGreyBrush, 0, y, Width, cell.Height);
+                    e.Graphics.FillRectangle(lightGreyBrush, 0, y, Width, cellSize.Height);
                 dark = !dark;
 
-                e.Graphics.DrawString(Debugger.GetHexString(address, 4) + ":", font, greyBrush, 2, y);
+                e.Graphics.DrawString(Debugger.GetHexString(address, 4) + ":", genericMonoFont, greyBrush, 2, y);
                 wordsWide = 0;
-                for (int x = 4 + gutter.Width; x < Width; )
+                for (int x = 4 + gutterSize.Width; x < Width; )
                 {
                     string value = Debugger.GetHexString(CPU.Memory[address], 4);
-                    Size size = TextRenderer.MeasureText(value, font);
-                    if (x + size.Width < Width)
+                    if (x + cellSize.Width < Width)
                     {
                         if (CPU.SP == address && AsStack)
-                            e.Graphics.FillRectangle(blueBrush, new Rectangle(x, y, size.Width - 4, size.Height - 1));
+                            e.Graphics.FillRectangle(blueBrush, new Rectangle(x, y, cellSize.Width - 4, cellSize.Height - 1));
                         if (outlinedAddress == address && !AsStack)
-                            e.Graphics.DrawRectangle(blackPen, new Rectangle(x, y, size.Width - 4, size.Height - 1));
-                        e.Graphics.DrawString(value, font, blackBrush, x, y);
+                            e.Graphics.DrawRectangle(blackPen, new Rectangle(x, y, cellSize.Width - 4, cellSize.Height - 1));
+                        e.Graphics.DrawString(value, genericMonoFont, blackBrush, x, y);
                         address++;
                         wordsWide++;
                     }
-                    x += size.Width;
+                    x += cellSize.Width;
                 }
             }
             e.Graphics.DrawRectangle(blackPen, new Rectangle(0, 0, Width - 1, this.Height - 1));
@@ -135,11 +145,10 @@ namespace Lettuce
 
         private void MemoryDisplay_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Font font = new Font(FontFamily.GenericMonospace, 12);
             if (this.Controls.Contains(textBox))
                 this.Controls.Remove(textBox);
-            Size cell = TextRenderer.MeasureText("0000", font);
-            Size gutter = TextRenderer.MeasureText("0000:", font);
+            Size cell = cellSize;
+            Size gutter = gutterSize;
             gutter.Width += 2;
             cell.Height += 2;
             if (e.X > gutter.Width)
@@ -220,8 +229,8 @@ namespace Lettuce
             if (this.Controls.Contains(textBox))
                 this.Controls.Remove(textBox);
 
-            Size cell = TextRenderer.MeasureText("0000", this.Font);
-            Size gutter = TextRenderer.MeasureText("0000:", this.Font);
+            Size cell = cellSize;
+            Size gutter = gutterSize;
             gutter.Width += 2;
             cell.Height += 2;
             outlinedAddress = (ushort)(
