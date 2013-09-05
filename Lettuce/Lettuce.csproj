@@ -33,11 +33,16 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>tomato.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DCPU-DWordMaths, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\C#\Projects\DCPU-DWordMaths\DCPU-DWordMaths\bin\Release\DCPU-DWordMaths.dll</HintPath>
+    </Reference>
     <Reference Include="Gif.Components">
       <HintPath>..\Gif.Components.dll</HintPath>
     </Reference>
@@ -60,97 +65,103 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClockSpeedForm.cs">
+    <Compile Include="Config\ClockSpeedForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ClockSpeedForm.Designer.cs">
+    <Compile Include="Config\ClockSpeedForm.Designer.cs">
       <DependentUpon>ClockSpeedForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Debugger.cs">
+    <Compile Include="DebugWindow\Debugger.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Debugger.Designer.cs">
+    <Compile Include="DebugWindow\Debugger.Designer.cs">
       <DependentUpon>Debugger.cs</DependentUpon>
     </Compile>
-    <Compile Include="DeferredGifEncoder.cs" />
-    <Compile Include="DefineValueForm.cs">
+    <Compile Include="DebugWindow\DisassemblyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DefineValueForm.Designer.cs">
+    <Compile Include="DebugWindow\DisassemblyWindow.Designer.cs">
+      <DependentUpon>DisassemblyWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeferredGifEncoder.cs" />
+    <Compile Include="Config\DefineValueForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\DefineValueForm.Designer.cs">
       <DependentUpon>DefineValueForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DisassemblyDisplay.cs">
+    <Compile Include="DebugWindow\DisassemblyDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DisassemblyDisplay.Designer.cs">
+    <Compile Include="DebugWindow\DisassemblyDisplay.Designer.cs">
       <DependentUpon>DisassemblyDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
-    <Compile Include="GenericKeyboardWindow.cs">
+    <Compile Include="Hardware\GenericKeyboardWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenericKeyboardWindow.Designer.cs">
+    <Compile Include="Hardware\GenericKeyboardWindow.Designer.cs">
       <DependentUpon>GenericKeyboardWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="GoToAddressForm.cs">
+    <Compile Include="Config\GoToAddressForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GoToAddressForm.Designer.cs">
+    <Compile Include="Config\GoToAddressForm.Designer.cs">
       <DependentUpon>GoToAddressForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="HardwareConfiguration.cs">
+    <Compile Include="Startup\HardwareConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HardwareConfiguration.Designer.cs">
+    <Compile Include="Startup\HardwareConfiguration.Designer.cs">
       <DependentUpon>HardwareConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DeviceController.cs">
+    <Compile Include="Hardware\DeviceController.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DeviceHostForm.cs">
+    <Compile Include="Hardware\DeviceHostForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IDeviceHost.cs" />
+    <Compile Include="Hardware\IDeviceHost.cs" />
     <Compile Include="INIFile.cs" />
-    <Compile Include="KeyboardConfiguration.cs">
+    <Compile Include="Config\KeyboardConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KeyboardConfiguration.Designer.cs">
+    <Compile Include="Config\KeyboardConfiguration.Designer.cs">
       <DependentUpon>KeyboardConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="LEM1802Window.cs">
+    <Compile Include="Hardware\LEM1802Window.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LEM1802Window.Designer.cs">
+    <Compile Include="Hardware\LEM1802Window.Designer.cs">
       <DependentUpon>LEM1802Window.cs</DependentUpon>
     </Compile>
-    <Compile Include="M35FDTypeEditor.cs" />
-    <Compile Include="M35FDWindow.cs">
+    <Compile Include="Hardware\M35FDTypeEditor.cs" />
+    <Compile Include="Hardware\M35FDWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="M35FDWindow.Designer.cs">
+    <Compile Include="Hardware\M35FDWindow.Designer.cs">
       <DependentUpon>M35FDWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemoryConfiguration.cs">
+    <Compile Include="Startup\MemoryConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MemoryConfiguration.Designer.cs">
+    <Compile Include="Startup\MemoryConfiguration.Designer.cs">
       <DependentUpon>MemoryConfiguration.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemoryDisplay.cs">
+    <Compile Include="DebugWindow\MemoryDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MemoryDisplay.Designer.cs">
+    <Compile Include="DebugWindow\MemoryDisplay.Designer.cs">
       <DependentUpon>MemoryDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeInfo.cs" />
-    <Compile Include="SPED3Window.cs">
+    <Compile Include="Hardware\SPED3Window.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SPED3Window.Designer.cs">
+    <Compile Include="Hardware\SPED3Window.Designer.cs">
       <DependentUpon>SPED3Window.cs</DependentUpon>
     </Compile>
     <Compile Include="UnhandledExceptionForm.cs">
@@ -160,40 +171,43 @@
       <DependentUpon>UnhandledExceptionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Watch.cs" />
-    <EmbeddedResource Include="ClockSpeedForm.resx">
+    <EmbeddedResource Include="Config\ClockSpeedForm.resx">
       <DependentUpon>ClockSpeedForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Debugger.resx">
+    <EmbeddedResource Include="DebugWindow\Debugger.resx">
       <DependentUpon>Debugger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DefineValueForm.resx">
+    <EmbeddedResource Include="Config\DefineValueForm.resx">
       <DependentUpon>DefineValueForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DisassemblyDisplay.resx">
+    <EmbeddedResource Include="DebugWindow\DisassemblyDisplay.resx">
       <DependentUpon>DisassemblyDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GenericKeyboardWindow.resx">
+    <EmbeddedResource Include="DebugWindow\DisassemblyWindow.resx">
+      <DependentUpon>DisassemblyWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Hardware\GenericKeyboardWindow.resx">
       <DependentUpon>GenericKeyboardWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GoToAddressForm.resx">
+    <EmbeddedResource Include="Config\GoToAddressForm.resx">
       <DependentUpon>GoToAddressForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HardwareConfiguration.resx">
+    <EmbeddedResource Include="Startup\HardwareConfiguration.resx">
       <DependentUpon>HardwareConfiguration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeyboardConfiguration.resx">
+    <EmbeddedResource Include="Config\KeyboardConfiguration.resx">
       <DependentUpon>KeyboardConfiguration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LEM1802Window.resx">
+    <EmbeddedResource Include="Hardware\LEM1802Window.resx">
       <DependentUpon>LEM1802Window.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="M35FDWindow.resx">
+    <EmbeddedResource Include="Hardware\M35FDWindow.resx">
       <DependentUpon>M35FDWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MemoryConfiguration.resx">
+    <EmbeddedResource Include="Startup\MemoryConfiguration.resx">
       <DependentUpon>MemoryConfiguration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MemoryDisplay.resx">
+    <EmbeddedResource Include="DebugWindow\MemoryDisplay.resx">
       <DependentUpon>MemoryDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -206,7 +220,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SPED3Window.resx">
+    <EmbeddedResource Include="Hardware\SPED3Window.resx">
       <DependentUpon>SPED3Window.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UnhandledExceptionForm.resx">
