@@ -301,6 +301,7 @@ namespace Lettuce
 			uef.ShowDialog();
 		}
 
+		private static double cycleCount = 0;
 		private static void FetchExecute( object o )
 		{
 			if( !CPU.IsRunning )
@@ -310,9 +311,17 @@ namespace Lettuce
 				return;
 			}
 			TimeSpan timeToEmulate = DateTime.Now - LastTick;
+			cycleCount = timeToEmulate.TotalMilliseconds*( CPU.ClockSpeed/1000f );
+			if ( cycleCount < 1 )
+			{
+				timer = new System.Threading.Timer( FetchExecute, null, 10, Timeout.Infinite );
+				return;
+			}
+			int cyclesToRun = (int)cycleCount;
+			cycleCount -= cyclesToRun;
 			LastTick = DateTime.Now;
 
-			CPU.Execute( (int)( timeToEmulate.TotalMilliseconds * ( CPU.ClockSpeed / 1000 ) ) );
+			CPU.Execute( cyclesToRun );
 			debugger.ResetLayout();
 			timer = new System.Threading.Timer( FetchExecute, null, 10, Timeout.Infinite );
 		}
