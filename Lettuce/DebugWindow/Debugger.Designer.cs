@@ -29,14 +29,7 @@ namespace Lettuce
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			Tomato.DCPU dcpu1 = new Tomato.DCPU();
-			Tomato.DCPU dcpu2 = new Tomato.DCPU();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debugger));
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.stackDisplay = new Lettuce.MemoryDisplay();
-			this.label18 = new System.Windows.Forms.Label();
-			this.rawMemoryDisplay = new Lettuce.MemoryDisplay();
-			this.label1 = new System.Windows.Forms.Label();
 			this.watchTextBox = new System.Windows.Forms.TextBox();
 			this.addWatchButton = new System.Windows.Forms.Button();
 			this.label16 = new System.Windows.Forms.Label();
@@ -106,12 +99,12 @@ namespace Lettuce
 			this.resetToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.keyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.disassemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.memoryToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
 			this.warningLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.disassemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.groupBox1.SuspendLayout();
 			this.watchesContextMenuStrip.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -119,72 +112,10 @@ namespace Lettuce
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// groupBox1
-			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Controls.Add(this.stackDisplay);
-			this.groupBox1.Controls.Add(this.label18);
-			this.groupBox1.Controls.Add(this.rawMemoryDisplay);
-			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Location = new System.Drawing.Point(12, 27);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(735, 563);
-			this.groupBox1.TabIndex = 0;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Memory";
-			// 
-			// stackDisplay
-			// 
-			this.stackDisplay.AsStack = true;
-			this.stackDisplay.CPU = dcpu1;
-			this.stackDisplay.DisplayScrollBar = false;
-			this.stackDisplay.Font = new System.Drawing.Font("Courier New", 12F);
-			this.stackDisplay.Location = new System.Drawing.Point(8, 32);
-			this.stackDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-			this.stackDisplay.Name = "stackDisplay";
-			this.stackDisplay.SelectedAddress = ((ushort)(0));
-			this.stackDisplay.Size = new System.Drawing.Size(84, 524);
-			this.stackDisplay.TabIndex = 7;
-			// 
-			// label18
-			// 
-			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(6, 16);
-			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(35, 13);
-			this.label18.TabIndex = 6;
-			this.label18.Text = "Stack";
-			// 
-			// rawMemoryDisplay
-			// 
-			this.rawMemoryDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.rawMemoryDisplay.AsStack = false;
-			this.rawMemoryDisplay.CPU = dcpu2;
-			this.rawMemoryDisplay.DisplayScrollBar = true;
-			this.rawMemoryDisplay.Font = new System.Drawing.Font("Courier New", 12F);
-			this.rawMemoryDisplay.Location = new System.Drawing.Point(102, 32);
-			this.rawMemoryDisplay.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-			this.rawMemoryDisplay.Name = "rawMemoryDisplay";
-			this.rawMemoryDisplay.SelectedAddress = ((ushort)(0));
-			this.rawMemoryDisplay.Size = new System.Drawing.Size(624, 524);
-			this.rawMemoryDisplay.TabIndex = 4;
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(99, 15);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(69, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Raw Memory";
-			// 
 			// watchTextBox
 			// 
-			this.watchTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.watchTextBox.Location = new System.Drawing.Point(756, 575);
+			this.watchTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.watchTextBox.Location = new System.Drawing.Point(12, 575);
 			this.watchTextBox.Name = "watchTextBox";
 			this.watchTextBox.Size = new System.Drawing.Size(120, 20);
 			this.watchTextBox.TabIndex = 11;
@@ -192,8 +123,8 @@ namespace Lettuce
 			// 
 			// addWatchButton
 			// 
-			this.addWatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.addWatchButton.Location = new System.Drawing.Point(882, 572);
+			this.addWatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.addWatchButton.Location = new System.Drawing.Point(138, 572);
 			this.addWatchButton.Name = "addWatchButton";
 			this.addWatchButton.Size = new System.Drawing.Size(46, 23);
 			this.addWatchButton.TabIndex = 10;
@@ -203,10 +134,8 @@ namespace Lettuce
 			// 
 			// label16
 			// 
-			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.label16.AutoSize = true;
-			this.label16.Location = new System.Drawing.Point(753, 308);
+			this.label16.Location = new System.Drawing.Point(9, 308);
 			this.label16.Name = "label16";
 			this.label16.Size = new System.Drawing.Size(50, 13);
 			this.label16.TabIndex = 9;
@@ -215,12 +144,12 @@ namespace Lettuce
 			// watchesListView
 			// 
 			this.watchesListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.watchesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.expressionHeader,
             this.resultHeader});
 			this.watchesListView.ContextMenuStrip = this.watchesContextMenuStrip;
-			this.watchesListView.Location = new System.Drawing.Point(756, 324);
+			this.watchesListView.Location = new System.Drawing.Point(12, 324);
 			this.watchesListView.MultiSelect = false;
 			this.watchesListView.Name = "watchesListView";
 			this.watchesListView.Size = new System.Drawing.Size(172, 242);
@@ -255,8 +184,6 @@ namespace Lettuce
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox2.Controls.Add(this.cycleCountLabel);
 			this.groupBox2.Controls.Add(this.checkBoxOnFire);
 			this.groupBox2.Controls.Add(this.labelQueuedInterrupts);
@@ -289,7 +216,7 @@ namespace Lettuce
 			this.groupBox2.Controls.Add(this.label4);
 			this.groupBox2.Controls.Add(this.label3);
 			this.groupBox2.Controls.Add(this.checkBoxRunning);
-			this.groupBox2.Location = new System.Drawing.Point(756, 27);
+			this.groupBox2.Location = new System.Drawing.Point(12, 27);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(172, 278);
 			this.groupBox2.TabIndex = 1;
@@ -607,14 +534,14 @@ namespace Lettuce
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox3.Controls.Add(this.checkBoxBreakOnInterrupt);
 			this.groupBox3.Controls.Add(this.listBoxConnectedDevices);
 			this.groupBox3.Controls.Add(this.label17);
-			this.groupBox3.Location = new System.Drawing.Point(934, 27);
+			this.groupBox3.Location = new System.Drawing.Point(190, 27);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(204, 279);
+			this.groupBox3.Size = new System.Drawing.Size(250, 279);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Hardware";
@@ -636,7 +563,7 @@ namespace Lettuce
 			this.listBoxConnectedDevices.FormattingEnabled = true;
 			this.listBoxConnectedDevices.Location = new System.Drawing.Point(6, 32);
 			this.listBoxConnectedDevices.Name = "listBoxConnectedDevices";
-			this.listBoxConnectedDevices.Size = new System.Drawing.Size(192, 212);
+			this.listBoxConnectedDevices.Size = new System.Drawing.Size(238, 212);
 			this.listBoxConnectedDevices.TabIndex = 1;
 			this.listBoxConnectedDevices.SelectedIndexChanged += new System.EventHandler(this.listBoxConnectedDevices_SelectedIndexChanged);
 			this.listBoxConnectedDevices.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxConnectedDevices_MouseDoubleClick);
@@ -660,7 +587,7 @@ namespace Lettuce
             this.windowsToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(1150, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(452, 24);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -850,13 +777,36 @@ namespace Lettuce
 			this.keyboardToolStripMenuItem.Text = "Keyboard";
 			this.keyboardToolStripMenuItem.Click += new System.EventHandler(this.keyboardToolStripMenuItem_Click);
 			// 
+			// windowsToolStripMenuItem
+			// 
+			this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.disassemblyToolStripMenuItem,
+            this.memoryToolStripMenuItem1});
+			this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
+			this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+			this.windowsToolStripMenuItem.Text = "Windows";
+			// 
+			// disassemblyToolStripMenuItem
+			// 
+			this.disassemblyToolStripMenuItem.Name = "disassemblyToolStripMenuItem";
+			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.disassemblyToolStripMenuItem.Text = "Disassembly";
+			this.disassemblyToolStripMenuItem.Click += new System.EventHandler(this.disassemblyToolStripMenuItem_Click);
+			// 
+			// memoryToolStripMenuItem1
+			// 
+			this.memoryToolStripMenuItem1.Name = "memoryToolStripMenuItem1";
+			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
+			this.memoryToolStripMenuItem1.Text = "Memory";
+			this.memoryToolStripMenuItem1.Click += new System.EventHandler(this.memoryToolStripMenuItem1_Click);
+			// 
 			// propertyGrid1
 			// 
 			this.propertyGrid1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.propertyGrid1.Location = new System.Drawing.Point(934, 312);
+			this.propertyGrid1.Location = new System.Drawing.Point(190, 312);
 			this.propertyGrid1.Name = "propertyGrid1";
-			this.propertyGrid1.Size = new System.Drawing.Size(204, 278);
+			this.propertyGrid1.Size = new System.Drawing.Size(250, 278);
 			this.propertyGrid1.TabIndex = 4;
 			this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
 			// 
@@ -864,11 +814,11 @@ namespace Lettuce
 			// 
 			this.warningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.warningLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
-			this.warningLabel.Location = new System.Drawing.Point(917, 2);
+			this.warningLabel.Location = new System.Drawing.Point(331, 2);
 			this.warningLabel.Name = "warningLabel";
-			this.warningLabel.Size = new System.Drawing.Size(204, 19);
+			this.warningLabel.Size = new System.Drawing.Size(92, 19);
 			this.warningLabel.TabIndex = 5;
-			this.warningLabel.Text = "Invalid instruction detected!";
+			this.warningLabel.Text = "Invalid instruction!";
 			this.warningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.warningLabel.Visible = false;
 			// 
@@ -877,7 +827,7 @@ namespace Lettuce
 			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
 			this.pictureBox1.Image = global::Lettuce.Properties.Resources.warning;
-			this.pictureBox1.Location = new System.Drawing.Point(1122, 2);
+			this.pictureBox1.Location = new System.Drawing.Point(424, 2);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -885,26 +835,11 @@ namespace Lettuce
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Visible = false;
 			// 
-			// windowsToolStripMenuItem
-			// 
-			this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.disassemblyToolStripMenuItem});
-			this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
-			this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-			this.windowsToolStripMenuItem.Text = "Windows";
-			// 
-			// disassemblyToolStripMenuItem
-			// 
-			this.disassemblyToolStripMenuItem.Name = "disassemblyToolStripMenuItem";
-			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.disassemblyToolStripMenuItem.Text = "Disassembly";
-			this.disassemblyToolStripMenuItem.Click += new System.EventHandler(this.disassemblyToolStripMenuItem_Click);
-			// 
 			// Debugger
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1150, 602);
+			this.ClientSize = new System.Drawing.Size(452, 602);
 			this.Controls.Add(this.watchTextBox);
 			this.Controls.Add(this.addWatchButton);
 			this.Controls.Add(this.pictureBox1);
@@ -914,19 +849,19 @@ namespace Lettuce
 			this.Controls.Add(this.propertyGrid1);
 			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.menuStrip1);
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
+			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(468, 1000);
+			this.MinimumSize = new System.Drawing.Size(468, 523);
 			this.Name = "Debugger";
 			this.Text = "Debugger";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Debugger_FormClosing);
 			this.Shown += new System.EventHandler(this.Debugger_Shown);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Debugger_KeyDown);
 			this.Resize += new System.EventHandler(this.Debugger_Resize);
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
 			this.watchesContextMenuStrip.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
@@ -942,9 +877,7 @@ namespace Lettuce
 
         #endregion
 
-		private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label labelQueuedInterrupts;
         private System.Windows.Forms.Button buttonStepOver;
         private System.Windows.Forms.Button buttonStepInto;
@@ -985,13 +918,10 @@ namespace Lettuce
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stepIntoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stepOverToolStripMenuItem;
-        private MemoryDisplay rawMemoryDisplay;
+		private System.Windows.Forms.ToolStripMenuItem stepOverToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem memoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gotoAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem1;
-        private MemoryDisplay stackDisplay;
-        private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ToolStripMenuItem loadListingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem defineValueToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem speedToolStripMenuItem;
@@ -1021,5 +951,6 @@ namespace Lettuce
         private System.Windows.Forms.Label cycleCountLabel;
 		private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem disassemblyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem memoryToolStripMenuItem1;
     }
 }

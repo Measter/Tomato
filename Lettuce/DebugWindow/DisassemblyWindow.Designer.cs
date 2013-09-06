@@ -61,8 +61,8 @@ namespace Lettuce
 			this.ClientSize = new System.Drawing.Size(358, 317);
 			this.Controls.Add(this.disassemblyDisplay1);
 			this.MinimumSize = new System.Drawing.Size(374, 355);
-			this.Name = "DisassemblyWindow";
-			this.Text = "DisassemblyWindow";
+			this.Name = "Disassembly";
+			this.Text = "Disassembly";
 			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DisassemblyWindow_FormClosing);
 			this.ResumeLayout(false);

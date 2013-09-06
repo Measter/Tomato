@@ -225,7 +225,9 @@ namespace Lettuce
 				CPU.ConnectDevice( device );
 
 			DisassemblyWindow disWin = new DisassemblyWindow();
-			debugger = new Debugger( ref CPU, ref disWin );
+			MemoryWindow memWin = new MemoryWindow();
+			debugger = new Debugger( ref CPU, ref disWin, ref memWin );
+
 			if( EnableAutomaticArrangement )
 			{
 				debugger.StartPosition = FormStartPosition.Manual;
@@ -240,6 +242,10 @@ namespace Lettuce
 			screenLocation.Y = debugger.Location.Y + 4;
 			screenLocation.X = debugger.Location.X + debugger.Width + 5;
 
+			// Add disassembly and memory windows.
+			AddWindow( memWin );
+			AddWindow( disWin );
+			
 			foreach( Device d in CPU.Devices )
 			{
 				if( d is LEM1802 )
@@ -256,9 +262,6 @@ namespace Lettuce
 				if( CPU.Devices[i] is GenericKeyboard && !LEM1802Window.AssignedKeyboards.Contains( i ) )
 					AddWindow( new GenericKeyboardWindow( CPU.Devices[i] as GenericKeyboard, CPU ) );
 			}
-
-			// Add disassembly window.
-			AddWindow( disWin );
 
 			debugger.Focus();
 			LastTick = DateTime.Now;

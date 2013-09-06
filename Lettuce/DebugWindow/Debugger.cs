@@ -22,6 +22,7 @@ namespace Lettuce
         public List<string> Watches { get; set; }
 
 	    private DisassemblyWindow m_disWindow;
+	    private MemoryWindow m_memWindow;
 
         private List<bool> InterruptBreakDevices { get; set; }
 
@@ -30,10 +31,11 @@ namespace Lettuce
         public const string FUNC_CHANGE_RUNNING = "change_run";
         public const string FUNC_GOTO_ADDRESS = "goto_addr";
 
-        public Debugger(ref DCPU CPU, ref DisassemblyWindow disWindow)
+        public Debugger(ref DCPU CPU, ref DisassemblyWindow disWindow, ref MemoryWindow memWindow)
         {
             InitializeComponent();
 	        m_disWindow = disWindow;
+	        m_memWindow = memWindow;
 
             if (KnownCode == null)
                 KnownCode = new Dictionary<ushort, string>();
@@ -45,9 +47,9 @@ namespace Lettuce
             KeyPreview = true;
             this.CPU = CPU;
             this.CPU.BreakpointHit += this.CPU_BreakpointHit;
-            this.CPU.InvalidInstruction += CpuOnInvalidInstruction; 
-            rawMemoryDisplay.CPU = this.CPU;
-            stackDisplay.CPU = this.CPU;
+            this.CPU.InvalidInstruction += CpuOnInvalidInstruction;
+			m_memWindow.Memory.CPU = this.CPU;
+            m_memWindow.Stack.CPU = this.CPU;
             m_disWindow.Disassembly.CPU = this.CPU;
 
             Watches = new List<string>();
@@ -183,7 +185,7 @@ namespace Lettuce
                 labelQueuedInterrupts.Text = "Queued Interrupts: " + CPU.InterruptQueue.Count.ToString();
                 checkBoxOnFire.Checked = CPU.IsOnFire;
                 cycleCountLabel.Text = "Cycles: " + CPU.TotalCycles;
-                rawMemoryDisplay.Invalidate();
+                m_memWindow.Memory.Invalidate();
 				m_disWindow.Disassembly.Invalidate();
                 propertyGrid1.SelectedObject = propertyGrid1.SelectedObject; // Forces update, intentionally redundant
                 UpdateWatches();
@@ -233,7 +235,7 @@ namespace Lettuce
             buttonStepInto.Enabled = false;
             buttonStepOver.Enabled = false;
             stopToolStripMenuItem.Text = "Stop";
-            rawMemoryDisplay.Enabled = false;
+            m_memWindow.Memory.Enabled = false;
         }
 
         private void EnableAll()
@@ -255,7 +257,7 @@ namespace Lettuce
             buttonStepInto.Enabled = true;
             buttonStepOver.Enabled = true;
             stopToolStripMenuItem.Text = "Start";
-            rawMemoryDisplay.Enabled = true;
+            m_memWindow.Memory.Enabled = true;
         }
 
         private void listBoxConnectedDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -337,56 +339,56 @@ namespace Lettuce
         {
             if (textBoxRegisterA.Text.Length != 0)
                 CPU.A = ushort.Parse(textBoxRegisterA.Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+            m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterB_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.B = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+            m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterC_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.C = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+            m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterX_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.X = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+            m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterY_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.Y = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterZ_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.Z = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterI_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.I = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterJ_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.J = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterPC_TextChanged(object sender, EventArgs e)
@@ -395,7 +397,8 @@ namespace Lettuce
                 CPU.PC = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
 			if( !( m_disWindow.Disassembly.SelectedAddress < CPU.PC && m_disWindow.Disassembly.EndAddress > CPU.PC ) && m_disWindow.Disassembly.EnableUpdates )
 				m_disWindow.Disassembly.SelectedAddress = CPU.PC;
-            rawMemoryDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
+			m_memWindow.Stack.Invalidate();
 			m_disWindow.Disassembly.Invalidate();
         }
 
@@ -403,23 +406,23 @@ namespace Lettuce
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.EX = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
         }
 
         private void textBoxRegisterSP_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.SP = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
-            stackDisplay.SelectedAddress = CPU.SP;
-            stackDisplay.Invalidate();
+			m_memWindow.Memory.Invalidate();
+            m_memWindow.Stack.SelectedAddress = CPU.SP;
+			m_memWindow.Stack.Invalidate();
         }
 
         private void textBoxRegisterIA_TextChanged(object sender, EventArgs e)
         {
             if ((sender as TextBox).Text.Length != 0)
                 CPU.IA = ushort.Parse((sender as TextBox).Text, NumberStyles.HexNumber);
-            rawMemoryDisplay.Invalidate();
+            m_memWindow.Memory.Invalidate();
         }
 
         ushort stepOverAddress = 0;
@@ -492,7 +495,7 @@ namespace Lettuce
 
         private void gotoAddressToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            rawMemoryDisplay.gotoAddressToolStripMenuItem_Click(sender, e);
+            m_memWindow.Memory.gotoAddressToolStripMenuItem_Click(sender, e);
         }
 
         private void resetToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -767,6 +770,12 @@ namespace Lettuce
 		{
 			if ( !m_disWindow.Visible )
 				m_disWindow.Show();
+		}
+
+		private void memoryToolStripMenuItem1_Click( object sender, EventArgs e )
+		{
+			if ( !m_memWindow.Visible )
+				m_memWindow.Show();
 		}
     }
 }
