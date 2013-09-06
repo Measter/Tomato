@@ -45,29 +45,37 @@ namespace Lettuce
 		private Size cellSize;
 		private Size gutterSize;
 
-		public MemoryDisplay()
+		TextBox m_memEditBox;
+
+		private void BaseSetup()
 		{
 			AsStack = false;
-			this.CPU = new DCPU();
-
 			cellSize = TextRenderer.MeasureText( "0000", Program.MonoFont );
 			gutterSize = TextRenderer.MeasureText( "0000:", Program.MonoFont );
 
 			InitializeComponent();
 			wordsWide = 8;
+
+			m_memEditBox = new TextBox();
+			m_memEditBox.KeyDown += MemEditBoxRegisterX_KeyDown;
+			m_memEditBox.Size = cellSize;
+			m_memEditBox.MaxLength = 4;
+			m_memEditBox.Font = Program.MonoFont;
+
 			this.MouseMove += new MouseEventHandler( MemoryDisplay_MouseMove );
 			this.KeyDown += new KeyEventHandler( MemoryDisplay_KeyDown );
+		}
+		
+		public MemoryDisplay()
+		{
+			BaseSetup();
+			this.CPU = new DCPU();
 		}
 
 		public MemoryDisplay( ref DCPU cpu )
 		{
-			AsStack = false;
-			cellSize = TextRenderer.MeasureText( "0000", Program.MonoFont );
-			gutterSize = TextRenderer.MeasureText( "0000:", Program.MonoFont );
-
-			InitializeComponent();
+			BaseSetup();
 			this.CPU = cpu;
-			wordsWide = 8;
 		}
 
 		void MemoryDisplay_KeyDown( object sender, KeyEventArgs e )
@@ -149,36 +157,30 @@ namespace Lettuce
 				vScrollBar.Maximum = 65535 / wordsWide;
 		}
 
-		TextBox textBox;
-
 		private void MemoryDisplay_MouseDoubleClick( object sender, MouseEventArgs e )
 		{
-			if( this.Controls.Contains( textBox ) )
-				this.Controls.Remove( textBox );
+			if( this.Controls.Contains( m_memEditBox ) )
+				this.Controls.Remove( m_memEditBox );
 			Size cell = cellSize;
 			Size gutter = gutterSize;
 			gutter.Width += 2;
 			cell.Height += 2;
 			if( e.X > gutter.Width )
 			{
-				textBox = new TextBox();
 				ushort address = (ushort)(
 					( e.Y / cell.Height ) * wordsWide +
 					( ( e.X - gutter.Width ) / cell.Width )
 					+ SelectedAddress );
-				textBox.Tag = address;
-				textBox.KeyDown += textBoxRegisterX_KeyDown;
-				textBox.Location = new Point(
-					( ( e.X - gutter.Width ) / cell.Width ) * cell.Width + gutter.Width,
-					e.Y / cell.Height * cell.Height );
-				textBox.Text = Debugger.GetHexString( CPU.Memory[address], 4 );
-				textBox.Size = cell;
-				textBox.MaxLength = 4;
-				this.Controls.Add( textBox );
+				m_memEditBox.Tag = address;
+				m_memEditBox.Location = new Point(
+					( ( e.X - gutter.Width ) / cell.Width ) * cell.Width + gutter.Width + 2,
+					(e.Y / cell.Height * cell.Height) - 3 );
+				m_memEditBox.Text = Debugger.GetHexString( CPU.Memory[address], 4 );
+				this.Controls.Add( m_memEditBox );
 			}
 		}
 
-		private void textBoxRegisterX_KeyDown( object sender, KeyEventArgs e )
+		private void MemEditBoxRegisterX_KeyDown( object sender, KeyEventArgs e )
 		{
 			if( e.Control || e.Alt )
 			{
@@ -188,9 +190,9 @@ namespace Lettuce
 			}
 			if( e.KeyCode == Keys.Enter )
 			{
-				this.Controls.Remove( textBox );
-				ushort address = (ushort)textBox.Tag;
-				CPU.Memory[address] = ushort.Parse( textBox.Text, NumberStyles.HexNumber );
+				this.Controls.Remove( m_memEditBox );
+				ushort address = (ushort)m_memEditBox.Tag;
+				CPU.Memory[address] = ushort.Parse( m_memEditBox.Text, NumberStyles.HexNumber );
 				this.Invalidate();
 				return;
 			}
@@ -234,8 +236,8 @@ namespace Lettuce
 		private ushort outlinedAddress = 0;
 		private void MemoryDisplay_MouseClick( object sender, MouseEventArgs e )
 		{
-			if( this.Controls.Contains( textBox ) )
-				this.Controls.Remove( textBox );
+			if( this.Controls.Contains( m_memEditBox ) )
+				this.Controls.Remove( m_memEditBox );
 
 			Size cell = cellSize;
 			Size gutter = gutterSize;
