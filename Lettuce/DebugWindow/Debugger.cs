@@ -23,6 +23,7 @@ namespace Lettuce
 
 	    private DisassemblyWindow m_disWindow;
 	    private MemoryWindow m_memWindow;
+	    private HardwareWindow m_hardWindow;
 
         private List<bool> InterruptBreakDevices { get; set; }
 
@@ -31,17 +32,21 @@ namespace Lettuce
         public const string FUNC_CHANGE_RUNNING = "change_run";
         public const string FUNC_GOTO_ADDRESS = "goto_addr";
 
-        public Debugger(ref DCPU CPU, ref DisassemblyWindow disWindow, ref MemoryWindow memWindow)
+        public Debugger(ref DCPU CPU, ref DisassemblyWindow disWindow, ref MemoryWindow memWindow, ref HardwareWindow hardWindow )
         {
             InitializeComponent();
 	        m_disWindow = disWindow;
 	        m_memWindow = memWindow;
+	        m_hardWindow = hardWindow;
+	        m_hardWindow.CPU = CPU;
+	        
 
             if (KnownCode == null)
                 KnownCode = new Dictionary<ushort, string>();
             if (KnownLabels == null)
                 KnownLabels = new Dictionary<ushort, string>();
-            InterruptBreakDevices = new List<bool>();
+			InterruptBreakDevices = new List<bool>();
+			m_hardWindow.InterruptBreakDevices = InterruptBreakDevices;
             FixKeyConfig();
 
             KeyPreview = true;
@@ -55,7 +60,7 @@ namespace Lettuce
             Watches = new List<string>();
             foreach (Device d in CPU.Devices)
             {
-                listBoxConnectedDevices.Items.Add(d.FriendlyName);
+				m_hardWindow.ConnectedDevices.Items.Add( d.FriendlyName );
                 InterruptBreakDevices.Add(false);
                 d.InterruptFired += OnDeviceInterrupt;
             }
@@ -187,7 +192,7 @@ namespace Lettuce
                 cycleCountLabel.Text = "Cycles: " + CPU.TotalCycles;
                 m_memWindow.Memory.Invalidate();
 				m_disWindow.Disassembly.Invalidate();
-                propertyGrid1.SelectedObject = propertyGrid1.SelectedObject; // Forces update, intentionally redundant
+				m_hardWindow.PropertyGrid.SelectedObject = m_hardWindow.PropertyGrid.SelectedObject; // Forces update, intentionally redundant
                 UpdateWatches();
                 if (CPU.IsRunning)
                     DisableAll();
@@ -259,29 +264,7 @@ namespace Lettuce
             stopToolStripMenuItem.Text = "Start";
             m_memWindow.Memory.Enabled = true;
         }
-
-        private void listBoxConnectedDevices_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            checkBoxBreakOnInterrupt.Enabled = (listBoxConnectedDevices.SelectedIndex != -1);
-            if (listBoxConnectedDevices.SelectedIndex == -1)
-                return;
-            Device selected = CPU.Devices[listBoxConnectedDevices.SelectedIndex];
-            propertyGrid1.SelectedObject = selected;
-            checkBoxBreakOnInterrupt.Checked = InterruptBreakDevices[listBoxConnectedDevices.SelectedIndex];
-        }
-        
-        private void listBoxConnectedDevices_MouseDoubleClick(object sender, EventArgs e)
-        {
-            Device selected = (Device)propertyGrid1.SelectedObject;
-            if (selected != null && Lettuce.Program.Windows.ContainsKey(selected))
-            {
-                Form window = Lettuce.Program.Windows[selected];
-                window.Show();
-                window.BringToFront();
-                window.Focus();
-            }
-            
-        }
+		
 
         private void checkBoxRunning_CheckedChanged(object sender, EventArgs e)
         {
@@ -511,7 +494,7 @@ namespace Lettuce
 
         private void buttonEditDevice_Click(object sender, EventArgs e)
         {
-            if (listBoxConnectedDevices.SelectedIndex == -1)
+            if (m_hardWindow.ConnectedDevices.SelectedIndex == -1)
                 return;
             CPU.IsRunning = false;
             ResetLayout();
@@ -751,10 +734,6 @@ namespace Lettuce
             ResetLayout();
         }
 
-        private void checkBoxBreakOnInterrupt_CheckedChanged(object sender, EventArgs e)
-        {
-            InterruptBreakDevices[listBoxConnectedDevices.SelectedIndex] = checkBoxBreakOnInterrupt.Checked;
-        }
 
 		private void Debugger_Shown( object sender, EventArgs e )
 		{
@@ -776,6 +755,12 @@ namespace Lettuce
 		{
 			if ( !m_memWindow.Visible )
 				m_memWindow.Show();
+		}
+
+		private void hardwareToolStripMenuItem_Click( object sender, EventArgs e )
+		{
+			if ( !m_hardWindow.Visible )
+				m_hardWindow.Show();
 		}
     }
 }

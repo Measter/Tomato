@@ -71,10 +71,6 @@ namespace Lettuce
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.checkBoxRunning = new System.Windows.Forms.CheckBox();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.checkBoxBreakOnInterrupt = new System.Windows.Forms.CheckBox();
-			this.listBoxConnectedDevices = new System.Windows.Forms.ListBox();
-			this.label17 = new System.Windows.Forms.Label();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.emulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,20 +98,19 @@ namespace Lettuce
 			this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.disassemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
 			this.warningLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.hardwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.watchesContextMenuStrip.SuspendLayout();
 			this.groupBox2.SuspendLayout();
-			this.groupBox3.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// watchTextBox
 			// 
-			this.watchTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.watchTextBox.Location = new System.Drawing.Point(12, 575);
+			this.watchTextBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.watchTextBox.Location = new System.Drawing.Point(193, 291);
 			this.watchTextBox.Name = "watchTextBox";
 			this.watchTextBox.Size = new System.Drawing.Size(120, 20);
 			this.watchTextBox.TabIndex = 11;
@@ -123,8 +118,8 @@ namespace Lettuce
 			// 
 			// addWatchButton
 			// 
-			this.addWatchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.addWatchButton.Location = new System.Drawing.Point(138, 572);
+			this.addWatchButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.addWatchButton.Location = new System.Drawing.Point(319, 291);
 			this.addWatchButton.Name = "addWatchButton";
 			this.addWatchButton.Size = new System.Drawing.Size(46, 23);
 			this.addWatchButton.TabIndex = 10;
@@ -135,7 +130,7 @@ namespace Lettuce
 			// label16
 			// 
 			this.label16.AutoSize = true;
-			this.label16.Location = new System.Drawing.Point(9, 308);
+			this.label16.Location = new System.Drawing.Point(190, 27);
 			this.label16.Name = "label16";
 			this.label16.Size = new System.Drawing.Size(50, 13);
 			this.label16.TabIndex = 9;
@@ -143,13 +138,11 @@ namespace Lettuce
 			// 
 			// watchesListView
 			// 
-			this.watchesListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
 			this.watchesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.expressionHeader,
             this.resultHeader});
 			this.watchesListView.ContextMenuStrip = this.watchesContextMenuStrip;
-			this.watchesListView.Location = new System.Drawing.Point(12, 324);
+			this.watchesListView.Location = new System.Drawing.Point(193, 43);
 			this.watchesListView.MultiSelect = false;
 			this.watchesListView.Name = "watchesListView";
 			this.watchesListView.Size = new System.Drawing.Size(172, 242);
@@ -532,51 +525,6 @@ namespace Lettuce
 			this.checkBoxRunning.UseVisualStyleBackColor = true;
 			this.checkBoxRunning.CheckedChanged += new System.EventHandler(this.checkBoxRunning_CheckedChanged);
 			// 
-			// groupBox3
-			// 
-			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox3.Controls.Add(this.checkBoxBreakOnInterrupt);
-			this.groupBox3.Controls.Add(this.listBoxConnectedDevices);
-			this.groupBox3.Controls.Add(this.label17);
-			this.groupBox3.Location = new System.Drawing.Point(190, 27);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(250, 279);
-			this.groupBox3.TabIndex = 2;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Hardware";
-			// 
-			// checkBoxBreakOnInterrupt
-			// 
-			this.checkBoxBreakOnInterrupt.AutoSize = true;
-			this.checkBoxBreakOnInterrupt.Enabled = false;
-			this.checkBoxBreakOnInterrupt.Location = new System.Drawing.Point(6, 252);
-			this.checkBoxBreakOnInterrupt.Name = "checkBoxBreakOnInterrupt";
-			this.checkBoxBreakOnInterrupt.Size = new System.Drawing.Size(111, 17);
-			this.checkBoxBreakOnInterrupt.TabIndex = 2;
-			this.checkBoxBreakOnInterrupt.Text = "Break on Interrupt";
-			this.checkBoxBreakOnInterrupt.UseVisualStyleBackColor = true;
-			this.checkBoxBreakOnInterrupt.CheckedChanged += new System.EventHandler(this.checkBoxBreakOnInterrupt_CheckedChanged);
-			// 
-			// listBoxConnectedDevices
-			// 
-			this.listBoxConnectedDevices.FormattingEnabled = true;
-			this.listBoxConnectedDevices.Location = new System.Drawing.Point(6, 32);
-			this.listBoxConnectedDevices.Name = "listBoxConnectedDevices";
-			this.listBoxConnectedDevices.Size = new System.Drawing.Size(238, 212);
-			this.listBoxConnectedDevices.TabIndex = 1;
-			this.listBoxConnectedDevices.SelectedIndexChanged += new System.EventHandler(this.listBoxConnectedDevices_SelectedIndexChanged);
-			this.listBoxConnectedDevices.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxConnectedDevices_MouseDoubleClick);
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(6, 16);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(104, 13);
-			this.label17.TabIndex = 0;
-			this.label17.Text = "Connected Devices:";
-			// 
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -587,7 +535,7 @@ namespace Lettuce
             this.windowsToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(452, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(381, 24);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -781,7 +729,8 @@ namespace Lettuce
 			// 
 			this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.disassemblyToolStripMenuItem,
-            this.memoryToolStripMenuItem1});
+            this.memoryToolStripMenuItem1,
+            this.hardwareToolStripMenuItem});
 			this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
 			this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
 			this.windowsToolStripMenuItem.Text = "Windows";
@@ -789,34 +738,24 @@ namespace Lettuce
 			// disassemblyToolStripMenuItem
 			// 
 			this.disassemblyToolStripMenuItem.Name = "disassemblyToolStripMenuItem";
-			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.disassemblyToolStripMenuItem.Text = "Disassembly";
 			this.disassemblyToolStripMenuItem.Click += new System.EventHandler(this.disassemblyToolStripMenuItem_Click);
 			// 
 			// memoryToolStripMenuItem1
 			// 
 			this.memoryToolStripMenuItem1.Name = "memoryToolStripMenuItem1";
-			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
+			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.memoryToolStripMenuItem1.Text = "Memory";
 			this.memoryToolStripMenuItem1.Click += new System.EventHandler(this.memoryToolStripMenuItem1_Click);
-			// 
-			// propertyGrid1
-			// 
-			this.propertyGrid1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.propertyGrid1.Location = new System.Drawing.Point(190, 312);
-			this.propertyGrid1.Name = "propertyGrid1";
-			this.propertyGrid1.Size = new System.Drawing.Size(250, 278);
-			this.propertyGrid1.TabIndex = 4;
-			this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
 			// 
 			// warningLabel
 			// 
 			this.warningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.warningLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
-			this.warningLabel.Location = new System.Drawing.Point(331, 2);
+			this.warningLabel.BackColor = System.Drawing.SystemColors.Control;
+			this.warningLabel.Location = new System.Drawing.Point(12, 320);
 			this.warningLabel.Name = "warningLabel";
-			this.warningLabel.Size = new System.Drawing.Size(92, 19);
+			this.warningLabel.Size = new System.Drawing.Size(331, 19);
 			this.warningLabel.TabIndex = 5;
 			this.warningLabel.Text = "Invalid instruction!";
 			this.warningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -827,7 +766,7 @@ namespace Lettuce
 			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
 			this.pictureBox1.Image = global::Lettuce.Properties.Resources.warning;
-			this.pictureBox1.Location = new System.Drawing.Point(424, 2);
+			this.pictureBox1.Location = new System.Drawing.Point(349, 320);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -835,19 +774,24 @@ namespace Lettuce
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Visible = false;
 			// 
+			// hardwareToolStripMenuItem
+			// 
+			this.hardwareToolStripMenuItem.Name = "hardwareToolStripMenuItem";
+			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.hardwareToolStripMenuItem.Text = "Hardware";
+			this.hardwareToolStripMenuItem.Click += new System.EventHandler(this.hardwareToolStripMenuItem_Click);
+			// 
 			// Debugger
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(452, 602);
+			this.ClientSize = new System.Drawing.Size(381, 355);
 			this.Controls.Add(this.watchTextBox);
 			this.Controls.Add(this.addWatchButton);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.watchesListView);
 			this.Controls.Add(this.label16);
 			this.Controls.Add(this.warningLabel);
-			this.Controls.Add(this.propertyGrid1);
-			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.menuStrip1);
 			this.DoubleBuffered = true;
@@ -855,7 +799,6 @@ namespace Lettuce
 			this.MainMenuStrip = this.menuStrip1;
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(468, 1000);
-			this.MinimumSize = new System.Drawing.Size(468, 523);
 			this.Name = "Debugger";
 			this.Text = "Debugger";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Debugger_FormClosing);
@@ -865,8 +808,6 @@ namespace Lettuce
 			this.watchesContextMenuStrip.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -907,10 +848,7 @@ namespace Lettuce
         private System.Windows.Forms.TextBox textBoxRegisterA;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBoxRunning;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ListBox listBoxConnectedDevices;
-        private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.CheckBox checkBoxRunning;
         private System.Windows.Forms.CheckBox checkBoxOnFire;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem emulationToolStripMenuItem;
@@ -929,11 +867,9 @@ namespace Lettuce
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
+		private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
-        private System.Windows.Forms.CheckBox checkBoxBreakOnInterrupt;
+		private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem breakOnInvalidInstructionToolStripMenuItem;
         private System.Windows.Forms.Label warningLabel;
@@ -952,5 +888,6 @@ namespace Lettuce
 		private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem disassemblyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem memoryToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem hardwareToolStripMenuItem;
     }
 }
