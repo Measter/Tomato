@@ -105,9 +105,8 @@ namespace Lettuce
 
 		void DisassemblyDisplay_MouseDoubleClick( object sender, MouseEventArgs e )
 		{
-			Font font = new Font( FontFamily.GenericMonospace, 12 );
 			ushort address = SelectedAddress;
-			int offset = e.Y / ( TextRenderer.MeasureText( "0000", font ).Height + 2 );
+			int offset = e.Y / ( gutterSize.Height + 2 );
 			int index = 0;
 			while( offset != 0 )
 			{
@@ -116,8 +115,8 @@ namespace Lettuce
 				index++;
 				offset--;
 			}
-			if( CPU.Breakpoints.Where( b => b.Address == address ).Count() != 0 )
-				CPU.Breakpoints.Remove( CPU.Breakpoints.Where( b => b.Address == address ).First() );
+			if( CPU.Breakpoints.Any( b => b.Address == address ) )
+				CPU.Breakpoints.Remove( CPU.Breakpoints.First(b => b.Address == address) );
 			else
 				CPU.Breakpoints.Add( new Breakpoint()
 				{
@@ -156,6 +155,7 @@ namespace Lettuce
 			Brush greyBrush = Brushes.Gray;
 			Brush lightGreyBrush = new SolidBrush( Color.FromArgb( 255, 230, 230, 230 ) );
 
+			#region Draw Loop
 			for( int y = 0; y < this.Height; y += gutterSize.Height + 2 )
 			{
 				string address = Debugger.GetHexString( Disassembly[index].Address, 4 ) + ": ";
@@ -164,16 +164,16 @@ namespace Lettuce
 					e.Graphics.FillRectangle( lightGreyBrush, new Rectangle( 0, y, this.Width, gutterSize.Height + 2 ) );
 				dark = !dark;
 
-				int breakPointCount = CPU.Breakpoints.Where( b => b.Address == Disassembly[index].Address ).Count();
+				bool isBreakPoint = CPU.Breakpoints.Any( b => b.Address == Disassembly[index].Address );
 
-				if( breakPointCount != 0 )
+				if( isBreakPoint )
 				{
 					e.Graphics.FillRectangle( darkRedBrush, new Rectangle( 0, y, this.Width, gutterSize.Height + 2 ) );
 					foreground = Brushes.White;
 				}
 				if( Disassembly[index].Address == CPU.PC )
 				{
-					if( breakPointCount != 0 )
+					if( isBreakPoint )
 					{
 						if( Disassembly[index].IsLabel )
 							e.Graphics.FillRectangle( yellowBrush, new Rectangle( 0, y + 2, this.Width, gutterSize.Height ) );
@@ -208,10 +208,12 @@ namespace Lettuce
 				}
 
 				index++;
-			}
+			} 
+			#endregion
 			if( !setLast )
 				EndAddress = Disassembly[index--].Address;
 			index = 0;
+			#region Mouse Over
 			if( IsMouseWithin && !CPU.IsRunning ) // TODO: Make this more versatile, probably integrate with organic
 			{
 				int x = MouseLocation.X;
@@ -264,7 +266,7 @@ namespace Lettuce
 									( left + ( TextRenderer.MeasureText( Disassembly[index].ValueBText, Program.MonoFont ).Width / 2 ) ) -
 									( hoverSize.Width / 2 ), locationY ) );
 							}
-						} else if( x >= right+8 )
+						} else if( x >= right + 8 )
 						{
 							// hovering over value A
 							if( Disassembly[index].ValueA <= 0x1E )
@@ -291,7 +293,8 @@ namespace Lettuce
 					}
 					index++;
 				}
-			}
+			} 
+			#endregion
 			e.Graphics.DrawRectangle( Pens.Black, new Rectangle( 0, 0, this.Width - 1 - vScrollBar.Width, this.Height - 1 ) );
 		}
 
@@ -308,7 +311,7 @@ namespace Lettuce
 		private void setPCToAddressToolStripMenuItem_Click( object sender, EventArgs e )
 		{
 			ushort address = SelectedAddress;
-			int offset = MouseLocation.Y / ( TextRenderer.MeasureText( "0", Program.MonoFont ).Height + 2 );
+			int offset = MouseLocation.Y / ( gutterSize.Height + 2 );
 			int index = 0;
 			while( offset != 0 )
 			{
