@@ -70,6 +70,7 @@ namespace Lettuce
 
 			CPU = new DCPU();
 			string binFile = null;
+			string listFile = null;
 			bool littleEndian = false, pairKeyboards = true;
 			List<Device> devices = new List<Device>();
 			CPU.IsRunning = false;
@@ -139,7 +140,7 @@ namespace Lettuce
 								Console.Error.WriteLine( "Could not find listing-file: " + file );
 								return;
 							}
-							Debugger.LoadOrganicListing( file );
+							listFile = file;
 							break;
 						case "--little-endian":
 							littleEndian = true;
@@ -184,7 +185,8 @@ namespace Lettuce
 					return;
 				if( result == DialogResult.OK )
 				{
-					binFile = mc.FileName;
+					binFile = mc.BinName;
+					listFile = mc.ListName;
 					littleEndian = mc.LittleEndian;
 				}
 			}
@@ -203,6 +205,10 @@ namespace Lettuce
 
 			if( !string.IsNullOrEmpty( binFile ) )
 			{
+				// Load list file
+				if( listFile != null )
+					Debugger.LoadOrganicListing( listFile );
+				
 				lastbinFilepath = binFile;
 				// Load binary file
 				List<ushort> data = new List<ushort>();
@@ -218,7 +224,7 @@ namespace Lettuce
 							data.Add( (ushort)( b | ( a << 8 ) ) );
 					}
 				}
-				CPU.FlashMemory( data.ToArray() );
+				CPU.FlashMemory( data.ToArray() );	 
 			} else
 				CPU.IsRunning = false;
 			foreach( var device in devices )
@@ -245,7 +251,7 @@ namespace Lettuce
 			// Add disassembly and memory windows.
 			AddWindow( memWin );
 			AddWindow( disWin );
-			
+
 			foreach( Device d in CPU.Devices )
 			{
 				if( d is LEM1802 )
@@ -314,8 +320,8 @@ namespace Lettuce
 				return;
 			}
 			TimeSpan timeToEmulate = DateTime.Now - LastTick;
-			cycleCount = timeToEmulate.TotalMilliseconds*( CPU.ClockSpeed/1000f );
-			if ( cycleCount < 1 )
+			cycleCount = timeToEmulate.TotalMilliseconds * ( CPU.ClockSpeed / 1000f );
+			if( cycleCount < 1 )
 			{
 				timer = new System.Threading.Timer( FetchExecute, null, 10, Timeout.Infinite );
 				return;

@@ -3,53 +3,79 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Lettuce
 {
-    public partial class MemoryConfiguration : Form
-    {
-        public bool LittleEndian
-        {
-            get { return checkBox1.Checked; }
-        }
+	public partial class MemoryConfiguration : Form
+	{
+		public bool LittleEndian
+		{
+			get
+			{
+				return cbLittleEndian.Checked;
+			}
+		}
 
-        public string FileName
-        {
-            get { return textBox1.Text; }
-        }
+		public string BinName
+		{
+			get
+			{
+				return tbBinFile.Text;
+			}
+		}
 
-        public MemoryConfiguration()
-        {
-            InitializeComponent();
-            StartPosition = FormStartPosition.CenterScreen;
-            DialogResult = DialogResult.Cancel;
-        }
+		public string ListName
+		{
+			get
+			{
+				return File.Exists( tbListFile.Text ) ? tbListFile.Text : null;
+			}
+		}
 
-        private void browseButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Binary Files (*.bin)|*.bin|All Files(*.*)|*.*";
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-            textBox1.Text = ofd.FileName;
-        }
+		public MemoryConfiguration()
+		{
+			InitializeComponent();
+			StartPosition = FormStartPosition.CenterScreen;
+			DialogResult = DialogResult.Cancel;
+		}
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Ignore;
-            Close();
-        }
+		private void btnOpenBin_Click( object sender, EventArgs e )
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Filter = "Binary Files (*.bin)|*.bin|All Files(*.*)|*.*";
+			if( ofd.ShowDialog() != DialogResult.OK )
+				return;
+			tbBinFile.Text = ofd.FileName;
+		}
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Program.lastbinFilepath = textBox1.Text;
+		private void btnOpenList_Click( object sender, EventArgs e )
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Filter = "Listing Files (*.lst)|*.lst|All Files (*.*)|*.*";
+			if( ofd.ShowDialog() != DialogResult.OK )
+				return;
 
-            DialogResult = DialogResult.OK;
-            Close();
-            Program.lastlittleEndian = checkBox1.Checked;
-        }
-    }
+			tbListFile.Text = ofd.FileName;
+		}
+
+		private void btnSkip_Click( object sender, EventArgs e )
+		{
+			DialogResult = DialogResult.Ignore;
+			Close();
+		}
+
+		private void btnOK_Click( object sender, EventArgs e )
+		{
+			Program.lastbinFilepath = tbBinFile.Text;
+
+			DialogResult = DialogResult.OK;
+			Close();
+			Program.lastlittleEndian = cbLittleEndian.Checked;
+		}
+
+	}
 }

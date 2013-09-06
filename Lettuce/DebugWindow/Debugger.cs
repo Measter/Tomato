@@ -638,7 +638,7 @@ namespace Lettuce
             var mc = new MemoryConfiguration();
             if (mc.ShowDialog() == DialogResult.OK)
             {
-                binFile = mc.FileName;
+                binFile = mc.BinName;
                 littleEndian = mc.LittleEndian;
             }
             if (!string.IsNullOrEmpty(binFile))
