@@ -84,12 +84,6 @@ namespace Lettuce
 			this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.breakOnInvalidInstructionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.stepIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.stepOverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.loadListingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.defineValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.gotoAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resetToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,9 +92,9 @@ namespace Lettuce
 			this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.disassemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.hardwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.warningLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.hardwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.watchesContextMenuStrip.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -529,7 +523,6 @@ namespace Lettuce
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.emulationToolStripMenuItem,
-            this.debugToolStripMenuItem,
             this.memoryToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.windowsToolStripMenuItem});
@@ -637,55 +630,6 @@ namespace Lettuce
 			this.breakOnInvalidInstructionToolStripMenuItem.Text = "Break on Invalid Instruction";
 			this.breakOnInvalidInstructionToolStripMenuItem.Click += new System.EventHandler(this.breakOnInvalidInstructionToolStripMenuItem_Click);
 			// 
-			// debugToolStripMenuItem
-			// 
-			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stepIntoToolStripMenuItem,
-            this.stepOverToolStripMenuItem,
-            this.loadListingToolStripMenuItem,
-            this.defineValueToolStripMenuItem,
-            this.reloadToolStripMenuItem});
-			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-			this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-			this.debugToolStripMenuItem.Text = "Debug";
-			// 
-			// stepIntoToolStripMenuItem
-			// 
-			this.stepIntoToolStripMenuItem.Name = "stepIntoToolStripMenuItem";
-			this.stepIntoToolStripMenuItem.ShortcutKeyDisplayString = "F6";
-			this.stepIntoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-			this.stepIntoToolStripMenuItem.Text = "Step Into";
-			this.stepIntoToolStripMenuItem.Click += new System.EventHandler(this.buttonStepInto_Click);
-			// 
-			// stepOverToolStripMenuItem
-			// 
-			this.stepOverToolStripMenuItem.Name = "stepOverToolStripMenuItem";
-			this.stepOverToolStripMenuItem.ShortcutKeyDisplayString = "F7";
-			this.stepOverToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-			this.stepOverToolStripMenuItem.Text = "Step Over";
-			this.stepOverToolStripMenuItem.Click += new System.EventHandler(this.buttonStepOver_Click);
-			// 
-			// loadListingToolStripMenuItem
-			// 
-			this.loadListingToolStripMenuItem.Name = "loadListingToolStripMenuItem";
-			this.loadListingToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-			this.loadListingToolStripMenuItem.Text = "Load Listing";
-			this.loadListingToolStripMenuItem.Click += new System.EventHandler(this.loadListingToolStripMenuItem_Click);
-			// 
-			// defineValueToolStripMenuItem
-			// 
-			this.defineValueToolStripMenuItem.Name = "defineValueToolStripMenuItem";
-			this.defineValueToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-			this.defineValueToolStripMenuItem.Text = "Define Value";
-			this.defineValueToolStripMenuItem.Click += new System.EventHandler(this.defineValueToolStripMenuItem_Click);
-			// 
-			// reloadToolStripMenuItem
-			// 
-			this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-			this.reloadToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-			this.reloadToolStripMenuItem.Text = "Reload";
-			this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
-			// 
 			// memoryToolStripMenuItem
 			// 
 			this.memoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -738,16 +682,23 @@ namespace Lettuce
 			// disassemblyToolStripMenuItem
 			// 
 			this.disassemblyToolStripMenuItem.Name = "disassemblyToolStripMenuItem";
-			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
 			this.disassemblyToolStripMenuItem.Text = "Disassembly";
 			this.disassemblyToolStripMenuItem.Click += new System.EventHandler(this.disassemblyToolStripMenuItem_Click);
 			// 
 			// memoryToolStripMenuItem1
 			// 
 			this.memoryToolStripMenuItem1.Name = "memoryToolStripMenuItem1";
-			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
 			this.memoryToolStripMenuItem1.Text = "Memory";
 			this.memoryToolStripMenuItem1.Click += new System.EventHandler(this.memoryToolStripMenuItem1_Click);
+			// 
+			// hardwareToolStripMenuItem
+			// 
+			this.hardwareToolStripMenuItem.Name = "hardwareToolStripMenuItem";
+			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.hardwareToolStripMenuItem.Text = "Hardware";
+			this.hardwareToolStripMenuItem.Click += new System.EventHandler(this.hardwareToolStripMenuItem_Click);
 			// 
 			// warningLabel
 			// 
@@ -773,13 +724,6 @@ namespace Lettuce
 			this.pictureBox1.TabIndex = 6;
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Visible = false;
-			// 
-			// hardwareToolStripMenuItem
-			// 
-			this.hardwareToolStripMenuItem.Name = "hardwareToolStripMenuItem";
-			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.hardwareToolStripMenuItem.Text = "Hardware";
-			this.hardwareToolStripMenuItem.Click += new System.EventHandler(this.hardwareToolStripMenuItem_Click);
 			// 
 			// Debugger
 			// 
@@ -853,23 +797,17 @@ namespace Lettuce
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem emulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stepIntoToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem stepOverToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem memoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gotoAddressToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem loadListingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem defineValueToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem speedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem breakOnInvalidInstructionToolStripMenuItem;
         private System.Windows.Forms.Label warningLabel;

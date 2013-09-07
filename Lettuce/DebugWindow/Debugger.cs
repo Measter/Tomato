@@ -36,9 +36,14 @@ namespace Lettuce
         {
             InitializeComponent();
 	        m_disWindow = disWindow;
+	        m_disWindow.CPU = CPU;
+	        m_disWindow.Debugger = this;
+
 	        m_memWindow = memWindow;
+
 	        m_hardWindow = hardWindow;
 	        m_hardWindow.CPU = CPU;
+	        m_hardWindow.Debugger = this;
 	        
 
             if (KnownCode == null)
@@ -408,17 +413,25 @@ namespace Lettuce
             m_memWindow.Memory.Invalidate();
         }
 
-        ushort stepOverAddress = 0;
-        bool stepOverEnabled = false;
+	    ushort stepOverAddress = 0;
+		bool stepOverEnabled = false;
+		public void StepOver()
+		{
+			// Set a breakpoint ahead of PC
+			ushort length = CPU.InstructionLength( CPU.PC );
+			CPU.Breakpoints.Add( new Breakpoint()
+			{
+				Address = (ushort)( CPU.PC + length )
+			} );
+			stepOverAddress = (ushort)( CPU.PC + length );
+			stepOverEnabled = true;
+			m_disWindow.Disassembly.EnableUpdates = false;
+			checkBoxRunning.Checked = !checkBoxRunning.Checked; // Run the CPU
+		} 
+        
         private void buttonStepOver_Click(object sender, EventArgs e)
         {
-            // Set a breakpoint ahead of PC
-            ushort length = CPU.InstructionLength(CPU.PC);
-            CPU.Breakpoints.Add(new Breakpoint() { Address = (ushort)(CPU.PC + length) });
-            stepOverAddress = (ushort)(CPU.PC + length);
-            stepOverEnabled = true;
-			m_disWindow.Disassembly.EnableUpdates = false;
-            checkBoxRunning.Checked = !checkBoxRunning.Checked; // Run the CPU
+	        StepOver();
         }
 
         private void buttonStepInto_Click(object sender, EventArgs e)
@@ -549,15 +562,7 @@ namespace Lettuce
                 }
             }
         }
-
-        private void defineValueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DefineValueForm dvf = new DefineValueForm();
-            var res = dvf.ShowDialog();
-            if (res == DialogResult.OK && !KnownLabels.ContainsKey(dvf.Value))
-                KnownLabels.Add(dvf.Value, dvf.Name);
-        }
-
+		
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             foreach (var item in speedToolStripMenuItem.DropDownItems)
@@ -601,13 +606,7 @@ namespace Lettuce
             if(result == DialogResult.OK)
                 CPU.ClockSpeed = csf.Value;
         }
-
-        private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            CPU.IsRunning = false;
-            ResetLayout();
-        }
-
+		
         private void checkBoxInterruptQueue_CheckedChanged(object sender, EventArgs e)
         {
             CPU.InterruptQueueEnabled = checkBoxInterruptQueue.Checked;
@@ -643,41 +642,7 @@ namespace Lettuce
                 Program.CPU.FlashMemory(data.ToArray());
             }
         }
-
-        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CPU.Reset();
-            CPU.Memory = new ushort[0x10000];
-
-            // Load binary file
-            List<ushort> data = new List<ushort>();
-            if (!string.IsNullOrEmpty(Lettuce.Program.lastbinFilepath))
-            {
-                using (Stream stream = File.OpenRead(Lettuce.Program.lastbinFilepath))
-                {
-                    for (int i = 0; i < stream.Length; i += 2)
-                    {
-                        byte a = (byte)stream.ReadByte();
-                        byte b = (byte)stream.ReadByte();
-                        if (Lettuce.Program.lastlittleEndian)
-                            data.Add((ushort)(a | (b << 8)));
-                        else
-                            data.Add((ushort)(b | (a << 8)));
-                    }
-                }
-            }
-            Lettuce.Program.CPU.FlashMemory(data.ToArray());
-            Clearlisting();
-            if (!string.IsNullOrEmpty(Program.lastlistingFilepath))
-                LoadOrganicListing(Program.lastlistingFilepath);
-            ResetLayout();
-        }
-
-        private void Clearlisting()
-        {
-            KnownCode = new Dictionary<ushort,string>();
-            KnownLabels = new Dictionary<ushort,string>();
-        }
+		
 
         private void Debugger_Resize(object sender, EventArgs e)
         {
@@ -720,20 +685,7 @@ namespace Lettuce
                 Watches.RemoveAt(watchesListView.SelectedIndices[0]);
             ResetLayout();
         }
-
-        private void loadListingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Load organic listing
-            var ofd = new OpenFileDialog();
-            ofd.Filter = "Listing files (*.lst)|*.lst|Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            ofd.FileName = "";
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-            LoadOrganicListing(ofd.FileName);
-            Program.lastlistingFilepath = ofd.FileName;
-            ResetLayout();
-        }
-
+		
 
 		private void Debugger_Shown( object sender, EventArgs e )
 		{
@@ -743,6 +695,8 @@ namespace Lettuce
 		private void Debugger_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			m_disWindow.Close();
+			m_memWindow.Close();
+			m_hardWindow.Close();
 		}
 
 		private void disassemblyToolStripMenuItem_Click( object sender, EventArgs e )
@@ -762,5 +716,5 @@ namespace Lettuce
 			if ( !m_hardWindow.Visible )
 				m_hardWindow.Show();
 		}
-    }
+	}
 }
