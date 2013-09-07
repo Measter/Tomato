@@ -28,6 +28,11 @@ namespace Lettuce
 			get;
 			set;
 		}
+		public Debugger Debugger
+		{
+			get;
+			set;
+		}
 		public List<bool> InterruptBreakDevices
 		{
 			get;
@@ -83,6 +88,12 @@ namespace Lettuce
 			InterruptBreakDevices[listBoxConnectedDevices.SelectedIndex] = checkBoxBreakOnInterrupt.Checked;
 		}
 
+		private void PropertyGrid1OnPropertyValueChanged( object o, PropertyValueChangedEventArgs e )
+		{
+			CPU.IsRunning = false;
+			Debugger.ResetLayout();
+		}
+
 		#region Overrides of DeviceHostForm
 
 		public override Device[] ManagedDevices
@@ -92,6 +103,8 @@ namespace Lettuce
 				return new Device[] { };
 			}
 		}
+
+		
 
 		#endregion
 	}

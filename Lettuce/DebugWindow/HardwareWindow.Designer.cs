@@ -83,6 +83,7 @@ namespace Lettuce
 			this.propertyGrid1.Name = "propertyGrid1";
 			this.propertyGrid1.Size = new System.Drawing.Size(237, 261);
 			this.propertyGrid1.TabIndex = 6;
+			this.propertyGrid1.PropertyValueChanged += PropertyGrid1OnPropertyValueChanged;
 			// 
 			// Hardware
 			// 
@@ -101,7 +102,7 @@ namespace Lettuce
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
-		}
+		}  
 
 		#endregion
 
