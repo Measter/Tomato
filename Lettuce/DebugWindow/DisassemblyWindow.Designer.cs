@@ -76,6 +76,7 @@ namespace Lettuce
 			this.Text = "Disassembly";
 			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DisassemblyWindow_FormClosing);
+			this.KeyDown += OnKeyDown;
 			this.ResumeLayout(false);
 			//
 			// menuStrip1
@@ -137,7 +138,7 @@ namespace Lettuce
 			this.reloadToolStripMenuItem.Size = new Size( 144, 22 );
 			this.reloadToolStripMenuItem.Text = "Reload";
 			this.reloadToolStripMenuItem.Click += ReloadToolStripMenuItemOnClick;
-		}			  
+		}				   
 
 		#endregion
 

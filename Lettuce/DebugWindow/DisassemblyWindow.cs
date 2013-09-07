@@ -23,12 +23,38 @@ namespace Lettuce
 		{
 			InitializeComponent();
 			Disassembly = disassemblyDisplay1;
+			disassemblyDisplay1.KeyDown += OnKeyDown;
 		}
 
 		private void DisassemblyWindow_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			e.Cancel = true;
 			Hide();
+		}
+
+		private void OnKeyDown( object sender, KeyEventArgs e )
+		{
+			foreach ( var keybinding in Program.Configuration.Keybindings )
+			{
+				if ( e.KeyCode == keybinding.Value.Item1 && e.Modifiers == keybinding.Value.Item2 )
+				{
+					switch ( keybinding.Key )
+					{
+						case Debugger.FUNC_STEP_INTO:
+							StepIntoToolStripMenuItemOnClick( sender, e );
+							break;
+						case Debugger.FUNC_STEP_OVER:
+							StepOverToolStripMenuItemOnClick( sender, e );
+							break;
+						case Debugger.FUNC_CHANGE_RUNNING:
+							Debugger.ToggleRunning();
+							break;
+						case Debugger.FUNC_GOTO_ADDRESS:
+							Debugger.GotoAddress( sender, e );
+							break;
+					}
+				}
+			}
 		}
 
 		private void StepIntoToolStripMenuItemOnClick( object sender, EventArgs eventArgs )

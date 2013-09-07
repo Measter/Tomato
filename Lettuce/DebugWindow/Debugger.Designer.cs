@@ -745,8 +745,6 @@ namespace Lettuce
 			this.MaximumSize = new System.Drawing.Size(468, 1000);
 			this.Name = "Debugger";
 			this.Text = "Debugger";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Debugger_FormClosing);
-			this.Shown += new System.EventHandler(this.Debugger_Shown);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Debugger_KeyDown);
 			this.Resize += new System.EventHandler(this.Debugger_Resize);
 			this.watchesContextMenuStrip.ResumeLayout(false);

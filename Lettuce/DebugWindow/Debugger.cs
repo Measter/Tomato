@@ -413,6 +413,12 @@ namespace Lettuce
             m_memWindow.Memory.Invalidate();
         }
 
+		public void ToggleRunning()
+		{
+			m_disWindow.Disassembly.EnableUpdates = false;
+			checkBoxRunning.Checked = !checkBoxRunning.Checked; // Run the CPU
+		}
+
 	    ushort stepOverAddress = 0;
 		bool stepOverEnabled = false;
 		public void StepOver()
@@ -425,8 +431,7 @@ namespace Lettuce
 			} );
 			stepOverAddress = (ushort)( CPU.PC + length );
 			stepOverEnabled = true;
-			m_disWindow.Disassembly.EnableUpdates = false;
-			checkBoxRunning.Checked = !checkBoxRunning.Checked; // Run the CPU
+			ToggleRunning();
 		} 
         
         private void buttonStepOver_Click(object sender, EventArgs e)
@@ -491,10 +496,15 @@ namespace Lettuce
 
         private void gotoAddressToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_memWindow.Memory.gotoAddressToolStripMenuItem_Click(sender, e);
+	        GotoAddress( sender, e );
         }
 
-        private void resetToolStripMenuItem1_Click(object sender, EventArgs e)
+	    public void GotoAddress( object sender, EventArgs e )
+	    {
+		    m_memWindow.Memory.gotoAddressToolStripMenuItem_Click( sender, e );
+	    }
+
+	    private void resetToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             CPU.Memory = new ushort[0x10000];
             ResetLayout();
@@ -684,20 +694,8 @@ namespace Lettuce
             if (watchesListView.SelectedIndices.Count != 0)
                 Watches.RemoveAt(watchesListView.SelectedIndices[0]);
             ResetLayout();
-        }
-		
-
-		private void Debugger_Shown( object sender, EventArgs e )
-		{
-			m_disWindow.Show();
 		}
 
-		private void Debugger_FormClosing( object sender, FormClosingEventArgs e )
-		{
-			m_disWindow.Close();
-			m_memWindow.Close();
-			m_hardWindow.Close();
-		}
 
 		private void disassemblyToolStripMenuItem_Click( object sender, EventArgs e )
 		{
