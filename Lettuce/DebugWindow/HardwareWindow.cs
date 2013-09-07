@@ -42,6 +42,14 @@ namespace Lettuce
 			BreakOnInterrupt = checkBoxBreakOnInterrupt;
 		}
 
+		public override bool OpenByDefault
+		{
+			get
+			{
+				return false;
+			}
+		}
+
 		private void Hardware_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			e.Cancel = true;

@@ -36,6 +36,7 @@ namespace Lettuce
 			this.listBoxConnectedDevices = new System.Windows.Forms.ListBox();
 			this.label17 = new System.Windows.Forms.Label();
 			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+			ComponentResourceManager resources = new ComponentResourceManager( typeof( LEM1802Window ) );
 			this.SuspendLayout();
 			// 
 			// checkBoxBreakOnInterrupt
@@ -56,9 +57,10 @@ namespace Lettuce
 			this.listBoxConnectedDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.listBoxConnectedDevices.FormattingEnabled = true;
+			this.listBoxConnectedDevices.IntegralHeight = false;
 			this.listBoxConnectedDevices.Location = new System.Drawing.Point(12, 25);
 			this.listBoxConnectedDevices.Name = "listBoxConnectedDevices";
-			this.listBoxConnectedDevices.Size = new System.Drawing.Size(183, 186);
+			this.listBoxConnectedDevices.Size = new System.Drawing.Size(183, 183);
 			this.listBoxConnectedDevices.TabIndex = 4;
 			this.listBoxConnectedDevices.SelectedIndexChanged += ListBoxConnectedDevicesOnSelectedIndexChanged;
 			this.listBoxConnectedDevices.MouseDoubleClick += ListBoxConnectedDevicesOnMouseDoubleClick;
@@ -79,20 +81,22 @@ namespace Lettuce
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.propertyGrid1.Location = new System.Drawing.Point(201, 9);
 			this.propertyGrid1.Name = "propertyGrid1";
-			this.propertyGrid1.Size = new System.Drawing.Size(183, 261);
+			this.propertyGrid1.Size = new System.Drawing.Size(237, 261);
 			this.propertyGrid1.TabIndex = 6;
 			// 
 			// Hardware
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(396, 282);
+			this.ClientSize = new System.Drawing.Size(450, 282);
+			this.MinimumSize = ClientSize;
 			this.Controls.Add(this.propertyGrid1);
 			this.Controls.Add(this.checkBoxBreakOnInterrupt);
 			this.Controls.Add(this.listBoxConnectedDevices);
 			this.Controls.Add(this.label17);
 			this.Name = "Hardware";
 			this.Text = "Hardware";
+			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Hardware_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();
