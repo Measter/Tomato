@@ -23,7 +23,7 @@ namespace Lettuce
 		public string BinName
 		{
 			get {
-				return File.Exists( tbListFile.Text ) ? tbBinFile.Text : null;
+				return File.Exists( tbBinFile.Text ) ? tbBinFile.Text : null;
 			}
 		}
 
