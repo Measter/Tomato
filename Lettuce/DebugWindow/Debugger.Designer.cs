@@ -28,16 +28,7 @@ namespace Lettuce
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debugger));
-			this.watchTextBox = new System.Windows.Forms.TextBox();
-			this.addWatchButton = new System.Windows.Forms.Button();
-			this.label16 = new System.Windows.Forms.Label();
-			this.watchesListView = new System.Windows.Forms.ListView();
-			this.expressionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.resultHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.watchesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.removeWatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.cycleCountLabel = new System.Windows.Forms.Label();
 			this.checkBoxOnFire = new System.Windows.Forms.CheckBox();
@@ -95,79 +86,11 @@ namespace Lettuce
 			this.hardwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.warningLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.watchesContextMenuStrip.SuspendLayout();
+			this.watchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox2.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// watchTextBox
-			// 
-			this.watchTextBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.watchTextBox.Location = new System.Drawing.Point(193, 291);
-			this.watchTextBox.Name = "watchTextBox";
-			this.watchTextBox.Size = new System.Drawing.Size(120, 20);
-			this.watchTextBox.TabIndex = 11;
-			this.watchTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.watchTextBox_KeyUp);
-			// 
-			// addWatchButton
-			// 
-			this.addWatchButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.addWatchButton.Location = new System.Drawing.Point(319, 291);
-			this.addWatchButton.Name = "addWatchButton";
-			this.addWatchButton.Size = new System.Drawing.Size(46, 23);
-			this.addWatchButton.TabIndex = 10;
-			this.addWatchButton.Text = "Add";
-			this.addWatchButton.UseVisualStyleBackColor = true;
-			this.addWatchButton.Click += new System.EventHandler(this.addWatchButton_Click);
-			// 
-			// label16
-			// 
-			this.label16.AutoSize = true;
-			this.label16.Location = new System.Drawing.Point(190, 27);
-			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(50, 13);
-			this.label16.TabIndex = 9;
-			this.label16.Text = "Watches";
-			// 
-			// watchesListView
-			// 
-			this.watchesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.expressionHeader,
-            this.resultHeader});
-			this.watchesListView.ContextMenuStrip = this.watchesContextMenuStrip;
-			this.watchesListView.Location = new System.Drawing.Point(193, 43);
-			this.watchesListView.MultiSelect = false;
-			this.watchesListView.Name = "watchesListView";
-			this.watchesListView.Size = new System.Drawing.Size(172, 242);
-			this.watchesListView.TabIndex = 8;
-			this.watchesListView.UseCompatibleStateImageBehavior = false;
-			this.watchesListView.View = System.Windows.Forms.View.Details;
-			// 
-			// expressionHeader
-			// 
-			this.expressionHeader.Text = "Expression";
-			this.expressionHeader.Width = 70;
-			// 
-			// resultHeader
-			// 
-			this.resultHeader.Text = "Result";
-			this.resultHeader.Width = 100;
-			// 
-			// watchesContextMenuStrip
-			// 
-			this.watchesContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeWatchToolStripMenuItem});
-			this.watchesContextMenuStrip.Name = "watchesContextMenuStrip";
-			this.watchesContextMenuStrip.Size = new System.Drawing.Size(155, 26);
-			this.watchesContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.watchesContextMenuStrip_Opening);
-			// 
-			// removeWatchToolStripMenuItem
-			// 
-			this.removeWatchToolStripMenuItem.Name = "removeWatchToolStripMenuItem";
-			this.removeWatchToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-			this.removeWatchToolStripMenuItem.Text = "Remove Watch";
-			this.removeWatchToolStripMenuItem.Click += new System.EventHandler(this.removeWatchToolStripMenuItem_Click);
 			// 
 			// groupBox2
 			// 
@@ -528,7 +451,7 @@ namespace Lettuce
             this.windowsToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(381, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(283, 24);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -674,7 +597,8 @@ namespace Lettuce
 			this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.disassemblyToolStripMenuItem,
             this.memoryToolStripMenuItem1,
-            this.hardwareToolStripMenuItem});
+            this.hardwareToolStripMenuItem,
+            this.watchesToolStripMenuItem});
 			this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
 			this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
 			this.windowsToolStripMenuItem.Text = "Windows";
@@ -682,31 +606,30 @@ namespace Lettuce
 			// disassemblyToolStripMenuItem
 			// 
 			this.disassemblyToolStripMenuItem.Name = "disassemblyToolStripMenuItem";
-			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.disassemblyToolStripMenuItem.Text = "Disassembly";
 			this.disassemblyToolStripMenuItem.Click += new System.EventHandler(this.disassemblyToolStripMenuItem_Click);
 			// 
 			// memoryToolStripMenuItem1
 			// 
 			this.memoryToolStripMenuItem1.Name = "memoryToolStripMenuItem1";
-			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
+			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.memoryToolStripMenuItem1.Text = "Memory";
 			this.memoryToolStripMenuItem1.Click += new System.EventHandler(this.memoryToolStripMenuItem1_Click);
 			// 
 			// hardwareToolStripMenuItem
 			// 
 			this.hardwareToolStripMenuItem.Name = "hardwareToolStripMenuItem";
-			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.hardwareToolStripMenuItem.Text = "Hardware";
 			this.hardwareToolStripMenuItem.Click += new System.EventHandler(this.hardwareToolStripMenuItem_Click);
 			// 
 			// warningLabel
 			// 
-			this.warningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.warningLabel.BackColor = System.Drawing.SystemColors.Control;
-			this.warningLabel.Location = new System.Drawing.Point(12, 320);
+			this.warningLabel.Location = new System.Drawing.Point(12, 311);
 			this.warningLabel.Name = "warningLabel";
-			this.warningLabel.Size = new System.Drawing.Size(331, 19);
+			this.warningLabel.Size = new System.Drawing.Size(150, 19);
 			this.warningLabel.TabIndex = 5;
 			this.warningLabel.Text = "Invalid instruction!";
 			this.warningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -714,10 +637,9 @@ namespace Lettuce
 			// 
 			// pictureBox1
 			// 
-			this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
 			this.pictureBox1.Image = global::Lettuce.Properties.Resources.warning;
-			this.pictureBox1.Location = new System.Drawing.Point(349, 320);
+			this.pictureBox1.Location = new System.Drawing.Point(168, 311);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -725,16 +647,19 @@ namespace Lettuce
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Visible = false;
 			// 
+			// watchesToolStripMenuItem
+			// 
+			this.watchesToolStripMenuItem.Name = "watchesToolStripMenuItem";
+			this.watchesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.watchesToolStripMenuItem.Text = "Watches";
+			this.watchesToolStripMenuItem.Click += new System.EventHandler(this.watchesToolStripMenuItem_Click);
+			// 
 			// Debugger
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(381, 355);
-			this.Controls.Add(this.watchTextBox);
-			this.Controls.Add(this.addWatchButton);
+			this.ClientSize = new System.Drawing.Size(283, 337);
 			this.Controls.Add(this.pictureBox1);
-			this.Controls.Add(this.watchesListView);
-			this.Controls.Add(this.label16);
 			this.Controls.Add(this.warningLabel);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.menuStrip1);
@@ -747,7 +672,6 @@ namespace Lettuce
 			this.Text = "Debugger";
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Debugger_KeyDown);
 			this.Resize += new System.EventHandler(this.Debugger_Resize);
-			this.watchesContextMenuStrip.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
@@ -811,19 +735,12 @@ namespace Lettuce
         private System.Windows.Forms.Label warningLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem keyboardToolStripMenuItem;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.ListView watchesListView;
-        private System.Windows.Forms.TextBox watchTextBox;
-        private System.Windows.Forms.Button addWatchButton;
-        private System.Windows.Forms.ColumnHeader expressionHeader;
-        private System.Windows.Forms.ColumnHeader resultHeader;
-        private System.Windows.Forms.ContextMenuStrip watchesContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem removeWatchToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem keyboardToolStripMenuItem;
         private System.Windows.Forms.Label cycleCountLabel;
 		private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem disassemblyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem memoryToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem hardwareToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem watchesToolStripMenuItem;
     }
 }

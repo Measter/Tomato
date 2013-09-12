@@ -233,7 +233,8 @@ namespace Lettuce
 			DisassemblyWindow disWin = new DisassemblyWindow();
 			MemoryWindow memWin = new MemoryWindow();
 			HardwareWindow hardWin = new HardwareWindow();
-			debugger = new Debugger( ref CPU, ref disWin, ref memWin, ref hardWin );
+			WatchWindow watchWin = new WatchWindow();
+			debugger = new Debugger( ref CPU, ref disWin, ref memWin, ref hardWin, ref watchWin );
 
 			if( EnableAutomaticArrangement )
 			{
@@ -253,6 +254,7 @@ namespace Lettuce
 			AddWindow( memWin );
 			AddWindow( disWin );
 			AddWindow( hardWin );
+			AddWindow( watchWin );
 
 			foreach( Device d in CPU.Devices )
 			{

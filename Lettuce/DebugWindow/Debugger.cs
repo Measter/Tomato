@@ -24,6 +24,7 @@ namespace Lettuce
 	    private DisassemblyWindow m_disWindow;
 	    private MemoryWindow m_memWindow;
 	    private HardwareWindow m_hardWindow;
+	    private WatchWindow m_watchWindow;
 
         private List<bool> InterruptBreakDevices { get; set; }
 
@@ -32,7 +33,8 @@ namespace Lettuce
         public const string FUNC_CHANGE_RUNNING = "change_run";
         public const string FUNC_GOTO_ADDRESS = "goto_addr";
 
-        public Debugger(ref DCPU CPU, ref DisassemblyWindow disWindow, ref MemoryWindow memWindow, ref HardwareWindow hardWindow )
+        public Debugger(ref DCPU CPU, ref DisassemblyWindow disWindow, ref MemoryWindow memWindow,
+						ref HardwareWindow hardWindow, ref WatchWindow watchWin )
         {
             InitializeComponent();
 	        m_disWindow = disWindow;
@@ -41,12 +43,15 @@ namespace Lettuce
 
 	        m_memWindow = memWindow;
 
+			m_watchWindow = watchWin;
+	        m_watchWindow.Debugger = this;
+	        m_watchWindow.CPU = CPU;
+
 	        m_hardWindow = hardWindow;
 	        m_hardWindow.CPU = CPU;
 	        m_hardWindow.Debugger = this;
-	        
 
-            if (KnownCode == null)
+	        if (KnownCode == null)
                 KnownCode = new Dictionary<ushort, string>();
             if (KnownLabels == null)
                 KnownLabels = new Dictionary<ushort, string>();
@@ -198,7 +203,7 @@ namespace Lettuce
                 m_memWindow.Memory.Invalidate();
 				m_disWindow.Disassembly.Invalidate();
 				m_hardWindow.PropertyGrid.SelectedObject = m_hardWindow.PropertyGrid.SelectedObject; // Forces update, intentionally redundant
-                UpdateWatches();
+                m_watchWindow.UpdateWatches();
                 if (CPU.IsRunning)
                     DisableAll();
                 else
@@ -207,25 +212,7 @@ namespace Lettuce
                 MayUpdateLayout = true;
             }
         }
-
-        private void UpdateWatches()
-        {
-            watchesListView.Items.Clear();
-            foreach (var watch in Watches)
-            {
-                var item = new ListViewItem(watch);
-                try
-                {
-                    item.SubItems.Add("0x" + Watch.Evaluate(watch, CPU).ToString("X4"));
-                }
-                catch (Exception e)
-                {
-                    item.SubItems.Add(e.Message);
-                }
-                watchesListView.Items.Add(item);
-            }
-        }
-
+		
         private void DisableAll()
         {
             textBoxRegisterA.Enabled = false;
@@ -670,33 +657,7 @@ namespace Lettuce
             keyboardForm.ShowDialog(this);
         }
 
-        private void addWatchButton_Click(object sender, EventArgs e)
-        {
-            Watches.Add(watchTextBox.Text);
-            watchTextBox.Text = string.Empty;
-            ResetLayout();
-        }
-
-        private void watchTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                addWatchButton_Click(sender, e);
-        }
-
-        private void watchesContextMenuStrip_Opening(object sender, CancelEventArgs e)
-        {
-            if (watchesListView.SelectedIndices.Count == 0)
-                e.Cancel = true;
-        }
-
-        private void removeWatchToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (watchesListView.SelectedIndices.Count != 0)
-                Watches.RemoveAt(watchesListView.SelectedIndices[0]);
-            ResetLayout();
-		}
-
-
+		
 		private void disassemblyToolStripMenuItem_Click( object sender, EventArgs e )
 		{
 			if ( !m_disWindow.Visible )
@@ -713,6 +674,12 @@ namespace Lettuce
 		{
 			if ( !m_hardWindow.Visible )
 				m_hardWindow.Show();
+		}
+
+		private void watchesToolStripMenuItem_Click( object sender, EventArgs e )
+		{
+			if ( !m_watchWindow.Visible )
+				m_watchWindow.Show();
 		}
 	}
 }

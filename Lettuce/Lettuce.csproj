@@ -96,6 +96,12 @@
     <Compile Include="DebugWindow\MemoryWindow.Designer.cs">
       <DependentUpon>MemoryWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugWindow\WatchWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugWindow\WatchWindow.Designer.cs">
+      <DependentUpon>WatchWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="DeferredGifEncoder.cs" />
     <Compile Include="Config\DefineValueForm.cs">
       <SubType>Form</SubType>
@@ -203,6 +209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DebugWindow\MemoryWindow.resx">
       <DependentUpon>MemoryWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugWindow\WatchWindow.resx">
+      <DependentUpon>WatchWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Hardware\GenericKeyboardWindow.resx">
       <DependentUpon>GenericKeyboardWindow.cs</DependentUpon>
