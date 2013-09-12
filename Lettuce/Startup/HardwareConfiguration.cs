@@ -74,7 +74,7 @@ namespace Lettuce
 						d.DeviceID == int.Parse( part, NumberStyles.HexNumber ) );
 					if( device == null )
 						throw new Exception();
-					selectedListBox.Items.Add( device );
+					selectedListBox.Items.Add( Activator.CreateInstance( device.GetType() ) );
 				}
 			} catch
 			{
