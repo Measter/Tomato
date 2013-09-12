@@ -74,9 +74,6 @@ namespace Lettuce
 			this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.breakOnInvalidInstructionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.memoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.gotoAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.resetToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.keyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -403,7 +400,6 @@ namespace Lettuce
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.emulationToolStripMenuItem,
-            this.memoryToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.windowsToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -509,30 +505,7 @@ namespace Lettuce
 			this.breakOnInvalidInstructionToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
 			this.breakOnInvalidInstructionToolStripMenuItem.Text = "Break on Invalid Instruction";
 			this.breakOnInvalidInstructionToolStripMenuItem.Click += new System.EventHandler(this.breakOnInvalidInstructionToolStripMenuItem_Click);
-			// 
-			// memoryToolStripMenuItem
-			// 
-			this.memoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gotoAddressToolStripMenuItem,
-            this.resetToolStripMenuItem1});
-			this.memoryToolStripMenuItem.Name = "memoryToolStripMenuItem";
-			this.memoryToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-			this.memoryToolStripMenuItem.Text = "Memory";
-			// 
-			// gotoAddressToolStripMenuItem
-			// 
-			this.gotoAddressToolStripMenuItem.Name = "gotoAddressToolStripMenuItem";
-			this.gotoAddressToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+G";
-			this.gotoAddressToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-			this.gotoAddressToolStripMenuItem.Text = "Goto Address";
-			this.gotoAddressToolStripMenuItem.Click += new System.EventHandler(this.gotoAddressToolStripMenuItem_Click);
-			// 
-			// resetToolStripMenuItem1
-			// 
-			this.resetToolStripMenuItem1.Name = "resetToolStripMenuItem1";
-			this.resetToolStripMenuItem1.Size = new System.Drawing.Size(187, 22);
-			this.resetToolStripMenuItem1.Text = "Reset";
-			this.resetToolStripMenuItem1.Click += new System.EventHandler(this.resetToolStripMenuItem1_Click);
+			
 			// 
 			// settingsToolStripMenuItem
 			// 
@@ -705,9 +678,6 @@ namespace Lettuce
         private System.Windows.Forms.ToolStripMenuItem emulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem memoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gotoAddressToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem speedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
