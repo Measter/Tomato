@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Tomato.Hardware;
 
 namespace Lettuce
@@ -27,6 +28,11 @@ namespace Lettuce
 		{
 			e.Cancel = true;
 			Hide();
+		}
+		private void OnResize( object sender, EventArgs eventArgs )
+		{
+			rawMemoryDisplay.Invalidate();
+			stackDisplay.Invalidate();
 		}
 
 		#region Overrides of DeviceHostForm

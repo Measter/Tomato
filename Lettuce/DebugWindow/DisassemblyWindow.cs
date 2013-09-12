@@ -31,6 +31,10 @@ namespace Lettuce
 			e.Cancel = true;
 			Hide();
 		}
+		private void OnResize( object sender, EventArgs eventArgs )
+		{
+			disassemblyDisplay1.Invalidate();
+		}
 
 		private void OnKeyDown( object sender, KeyEventArgs e )
 		{

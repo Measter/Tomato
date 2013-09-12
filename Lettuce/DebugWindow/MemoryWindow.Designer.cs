@@ -104,7 +104,7 @@ namespace Lettuce
 			this.ResumeLayout( false );
 			this.PerformLayout();
 			this.FormClosing += MemoryWindow_OnFormClosing;
-
+			this.Resize += OnResize;
 		}
 
 		#endregion
