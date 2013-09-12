@@ -29,7 +29,6 @@ namespace Lettuce
         private void InitializeComponent()
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debugger));
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.cycleCountLabel = new System.Windows.Forms.Label();
 			this.checkBoxOnFire = new System.Windows.Forms.CheckBox();
 			this.labelQueuedInterrupts = new System.Windows.Forms.Label();
@@ -84,59 +83,17 @@ namespace Lettuce
 			this.disassemblyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.memoryToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.hardwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.watchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.warningLabel = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.watchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.groupBox2.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// groupBox2
-			// 
-			this.groupBox2.Controls.Add(this.cycleCountLabel);
-			this.groupBox2.Controls.Add(this.checkBoxOnFire);
-			this.groupBox2.Controls.Add(this.labelQueuedInterrupts);
-			this.groupBox2.Controls.Add(this.buttonStepOver);
-			this.groupBox2.Controls.Add(this.buttonStepInto);
-			this.groupBox2.Controls.Add(this.checkBoxInterruptQueue);
-			this.groupBox2.Controls.Add(this.textBoxRegisterPC);
-			this.groupBox2.Controls.Add(this.textBoxRegisterIA);
-			this.groupBox2.Controls.Add(this.textBoxRegisterEX);
-			this.groupBox2.Controls.Add(this.textBoxRegisterSP);
-			this.groupBox2.Controls.Add(this.label15);
-			this.groupBox2.Controls.Add(this.label14);
-			this.groupBox2.Controls.Add(this.label13);
-			this.groupBox2.Controls.Add(this.label12);
-			this.groupBox2.Controls.Add(this.textBoxRegisterJ);
-			this.groupBox2.Controls.Add(this.label11);
-			this.groupBox2.Controls.Add(this.textBoxRegisterI);
-			this.groupBox2.Controls.Add(this.label10);
-			this.groupBox2.Controls.Add(this.textBoxRegisterZ);
-			this.groupBox2.Controls.Add(this.label9);
-			this.groupBox2.Controls.Add(this.textBoxRegisterC);
-			this.groupBox2.Controls.Add(this.label8);
-			this.groupBox2.Controls.Add(this.textBoxRegisterY);
-			this.groupBox2.Controls.Add(this.label7);
-			this.groupBox2.Controls.Add(this.textBoxRegisterB);
-			this.groupBox2.Controls.Add(this.label6);
-			this.groupBox2.Controls.Add(this.textBoxRegisterX);
-			this.groupBox2.Controls.Add(this.label5);
-			this.groupBox2.Controls.Add(this.textBoxRegisterA);
-			this.groupBox2.Controls.Add(this.label4);
-			this.groupBox2.Controls.Add(this.label3);
-			this.groupBox2.Controls.Add(this.checkBoxRunning);
-			this.groupBox2.Location = new System.Drawing.Point(12, 27);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(172, 278);
-			this.groupBox2.TabIndex = 1;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Machine";
-			// 
 			// cycleCountLabel
 			// 
 			this.cycleCountLabel.AutoSize = true;
-			this.cycleCountLabel.Location = new System.Drawing.Point(74, 20);
+			this.cycleCountLabel.Location = new System.Drawing.Point(75, 28);
 			this.cycleCountLabel.Name = "cycleCountLabel";
 			this.cycleCountLabel.Size = new System.Drawing.Size(50, 13);
 			this.cycleCountLabel.TabIndex = 31;
@@ -145,7 +102,7 @@ namespace Lettuce
 			// checkBoxOnFire
 			// 
 			this.checkBoxOnFire.AutoSize = true;
-			this.checkBoxOnFire.Location = new System.Drawing.Point(11, 229);
+			this.checkBoxOnFire.Location = new System.Drawing.Point(12, 237);
 			this.checkBoxOnFire.Name = "checkBoxOnFire";
 			this.checkBoxOnFire.Size = new System.Drawing.Size(60, 17);
 			this.checkBoxOnFire.TabIndex = 30;
@@ -156,7 +113,7 @@ namespace Lettuce
 			// labelQueuedInterrupts
 			// 
 			this.labelQueuedInterrupts.AutoSize = true;
-			this.labelQueuedInterrupts.Location = new System.Drawing.Point(11, 213);
+			this.labelQueuedInterrupts.Location = new System.Drawing.Point(12, 221);
 			this.labelQueuedInterrupts.Name = "labelQueuedInterrupts";
 			this.labelQueuedInterrupts.Size = new System.Drawing.Size(104, 13);
 			this.labelQueuedInterrupts.TabIndex = 29;
@@ -164,7 +121,7 @@ namespace Lettuce
 			// 
 			// buttonStepOver
 			// 
-			this.buttonStepOver.Location = new System.Drawing.Point(91, 247);
+			this.buttonStepOver.Location = new System.Drawing.Point(92, 255);
 			this.buttonStepOver.Name = "buttonStepOver";
 			this.buttonStepOver.Size = new System.Drawing.Size(75, 23);
 			this.buttonStepOver.TabIndex = 28;
@@ -174,7 +131,7 @@ namespace Lettuce
 			// 
 			// buttonStepInto
 			// 
-			this.buttonStepInto.Location = new System.Drawing.Point(8, 247);
+			this.buttonStepInto.Location = new System.Drawing.Point(9, 255);
 			this.buttonStepInto.Name = "buttonStepInto";
 			this.buttonStepInto.Size = new System.Drawing.Size(75, 23);
 			this.buttonStepInto.TabIndex = 27;
@@ -185,7 +142,7 @@ namespace Lettuce
 			// checkBoxInterruptQueue
 			// 
 			this.checkBoxInterruptQueue.AutoSize = true;
-			this.checkBoxInterruptQueue.Location = new System.Drawing.Point(11, 193);
+			this.checkBoxInterruptQueue.Location = new System.Drawing.Point(12, 201);
 			this.checkBoxInterruptQueue.Name = "checkBoxInterruptQueue";
 			this.checkBoxInterruptQueue.Size = new System.Drawing.Size(100, 17);
 			this.checkBoxInterruptQueue.TabIndex = 26;
@@ -195,7 +152,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterPC
 			// 
-			this.textBoxRegisterPC.Location = new System.Drawing.Point(29, 144);
+			this.textBoxRegisterPC.Location = new System.Drawing.Point(30, 138);
 			this.textBoxRegisterPC.MaxLength = 4;
 			this.textBoxRegisterPC.Name = "textBoxRegisterPC";
 			this.textBoxRegisterPC.Size = new System.Drawing.Size(57, 20);
@@ -206,7 +163,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterIA
 			// 
-			this.textBoxRegisterIA.Location = new System.Drawing.Point(109, 167);
+			this.textBoxRegisterIA.Location = new System.Drawing.Point(110, 164);
 			this.textBoxRegisterIA.MaxLength = 4;
 			this.textBoxRegisterIA.Name = "textBoxRegisterIA";
 			this.textBoxRegisterIA.Size = new System.Drawing.Size(57, 20);
@@ -217,7 +174,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterEX
 			// 
-			this.textBoxRegisterEX.Location = new System.Drawing.Point(109, 144);
+			this.textBoxRegisterEX.Location = new System.Drawing.Point(110, 138);
 			this.textBoxRegisterEX.MaxLength = 4;
 			this.textBoxRegisterEX.Name = "textBoxRegisterEX";
 			this.textBoxRegisterEX.Size = new System.Drawing.Size(57, 20);
@@ -228,7 +185,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterSP
 			// 
-			this.textBoxRegisterSP.Location = new System.Drawing.Point(29, 167);
+			this.textBoxRegisterSP.Location = new System.Drawing.Point(30, 164);
 			this.textBoxRegisterSP.MaxLength = 4;
 			this.textBoxRegisterSP.Name = "textBoxRegisterSP";
 			this.textBoxRegisterSP.Size = new System.Drawing.Size(57, 20);
@@ -239,7 +196,7 @@ namespace Lettuce
 			// 
 			// label15
 			// 
-			this.label15.Location = new System.Drawing.Point(88, 170);
+			this.label15.Location = new System.Drawing.Point(89, 167);
 			this.label15.Name = "label15";
 			this.label15.Size = new System.Drawing.Size(23, 17);
 			this.label15.TabIndex = 24;
@@ -247,7 +204,7 @@ namespace Lettuce
 			// 
 			// label14
 			// 
-			this.label14.Location = new System.Drawing.Point(85, 147);
+			this.label14.Location = new System.Drawing.Point(86, 141);
 			this.label14.Name = "label14";
 			this.label14.Size = new System.Drawing.Size(36, 17);
 			this.label14.TabIndex = 22;
@@ -255,7 +212,7 @@ namespace Lettuce
 			// 
 			// label13
 			// 
-			this.label13.Location = new System.Drawing.Point(5, 170);
+			this.label13.Location = new System.Drawing.Point(6, 167);
 			this.label13.Name = "label13";
 			this.label13.Size = new System.Drawing.Size(26, 17);
 			this.label13.TabIndex = 20;
@@ -263,7 +220,7 @@ namespace Lettuce
 			// 
 			// label12
 			// 
-			this.label12.Location = new System.Drawing.Point(5, 147);
+			this.label12.Location = new System.Drawing.Point(6, 141);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(39, 17);
 			this.label12.TabIndex = 18;
@@ -271,7 +228,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterJ
 			// 
-			this.textBoxRegisterJ.Location = new System.Drawing.Point(109, 121);
+			this.textBoxRegisterJ.Location = new System.Drawing.Point(110, 86);
 			this.textBoxRegisterJ.MaxLength = 4;
 			this.textBoxRegisterJ.Name = "textBoxRegisterJ";
 			this.textBoxRegisterJ.Size = new System.Drawing.Size(57, 20);
@@ -282,7 +239,7 @@ namespace Lettuce
 			// 
 			// label11
 			// 
-			this.label11.Location = new System.Drawing.Point(91, 124);
+			this.label11.Location = new System.Drawing.Point(92, 89);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(20, 17);
 			this.label11.TabIndex = 16;
@@ -290,7 +247,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterI
 			// 
-			this.textBoxRegisterI.Location = new System.Drawing.Point(29, 121);
+			this.textBoxRegisterI.Location = new System.Drawing.Point(30, 86);
 			this.textBoxRegisterI.MaxLength = 4;
 			this.textBoxRegisterI.Name = "textBoxRegisterI";
 			this.textBoxRegisterI.Size = new System.Drawing.Size(57, 20);
@@ -301,7 +258,7 @@ namespace Lettuce
 			// 
 			// label10
 			// 
-			this.label10.Location = new System.Drawing.Point(11, 124);
+			this.label10.Location = new System.Drawing.Point(12, 89);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(20, 17);
 			this.label10.TabIndex = 14;
@@ -309,7 +266,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterZ
 			// 
-			this.textBoxRegisterZ.Location = new System.Drawing.Point(109, 98);
+			this.textBoxRegisterZ.Location = new System.Drawing.Point(191, 112);
 			this.textBoxRegisterZ.MaxLength = 4;
 			this.textBoxRegisterZ.Name = "textBoxRegisterZ";
 			this.textBoxRegisterZ.Size = new System.Drawing.Size(57, 20);
@@ -320,7 +277,7 @@ namespace Lettuce
 			// 
 			// label9
 			// 
-			this.label9.Location = new System.Drawing.Point(91, 101);
+			this.label9.Location = new System.Drawing.Point(173, 115);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(20, 17);
 			this.label9.TabIndex = 12;
@@ -328,7 +285,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterC
 			// 
-			this.textBoxRegisterC.Location = new System.Drawing.Point(29, 98);
+			this.textBoxRegisterC.Location = new System.Drawing.Point(192, 60);
 			this.textBoxRegisterC.MaxLength = 4;
 			this.textBoxRegisterC.Name = "textBoxRegisterC";
 			this.textBoxRegisterC.Size = new System.Drawing.Size(57, 20);
@@ -339,7 +296,7 @@ namespace Lettuce
 			// 
 			// label8
 			// 
-			this.label8.Location = new System.Drawing.Point(11, 101);
+			this.label8.Location = new System.Drawing.Point(174, 63);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(20, 17);
 			this.label8.TabIndex = 10;
@@ -347,7 +304,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterY
 			// 
-			this.textBoxRegisterY.Location = new System.Drawing.Point(109, 75);
+			this.textBoxRegisterY.Location = new System.Drawing.Point(110, 112);
 			this.textBoxRegisterY.MaxLength = 4;
 			this.textBoxRegisterY.Name = "textBoxRegisterY";
 			this.textBoxRegisterY.Size = new System.Drawing.Size(57, 20);
@@ -358,7 +315,7 @@ namespace Lettuce
 			// 
 			// label7
 			// 
-			this.label7.Location = new System.Drawing.Point(91, 78);
+			this.label7.Location = new System.Drawing.Point(92, 115);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(20, 17);
 			this.label7.TabIndex = 8;
@@ -366,7 +323,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterB
 			// 
-			this.textBoxRegisterB.Location = new System.Drawing.Point(29, 75);
+			this.textBoxRegisterB.Location = new System.Drawing.Point(111, 60);
 			this.textBoxRegisterB.MaxLength = 4;
 			this.textBoxRegisterB.Name = "textBoxRegisterB";
 			this.textBoxRegisterB.Size = new System.Drawing.Size(57, 20);
@@ -377,7 +334,7 @@ namespace Lettuce
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(11, 78);
+			this.label6.Location = new System.Drawing.Point(93, 63);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(20, 17);
 			this.label6.TabIndex = 6;
@@ -385,7 +342,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterX
 			// 
-			this.textBoxRegisterX.Location = new System.Drawing.Point(109, 52);
+			this.textBoxRegisterX.Location = new System.Drawing.Point(30, 112);
 			this.textBoxRegisterX.MaxLength = 4;
 			this.textBoxRegisterX.Name = "textBoxRegisterX";
 			this.textBoxRegisterX.Size = new System.Drawing.Size(57, 20);
@@ -396,7 +353,7 @@ namespace Lettuce
 			// 
 			// label5
 			// 
-			this.label5.Location = new System.Drawing.Point(91, 55);
+			this.label5.Location = new System.Drawing.Point(12, 115);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(20, 17);
 			this.label5.TabIndex = 4;
@@ -404,7 +361,7 @@ namespace Lettuce
 			// 
 			// textBoxRegisterA
 			// 
-			this.textBoxRegisterA.Location = new System.Drawing.Point(29, 52);
+			this.textBoxRegisterA.Location = new System.Drawing.Point(30, 60);
 			this.textBoxRegisterA.MaxLength = 4;
 			this.textBoxRegisterA.Name = "textBoxRegisterA";
 			this.textBoxRegisterA.Size = new System.Drawing.Size(57, 20);
@@ -415,7 +372,7 @@ namespace Lettuce
 			// 
 			// label4
 			// 
-			this.label4.Location = new System.Drawing.Point(11, 55);
+			this.label4.Location = new System.Drawing.Point(12, 63);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(20, 17);
 			this.label4.TabIndex = 2;
@@ -425,7 +382,7 @@ namespace Lettuce
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(11, 39);
+			this.label3.Location = new System.Drawing.Point(12, 47);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(60, 13);
 			this.label3.TabIndex = 1;
@@ -434,7 +391,7 @@ namespace Lettuce
 			// checkBoxRunning
 			// 
 			this.checkBoxRunning.AutoSize = true;
-			this.checkBoxRunning.Location = new System.Drawing.Point(11, 19);
+			this.checkBoxRunning.Location = new System.Drawing.Point(12, 27);
 			this.checkBoxRunning.Name = "checkBoxRunning";
 			this.checkBoxRunning.Size = new System.Drawing.Size(66, 17);
 			this.checkBoxRunning.TabIndex = 0;
@@ -451,7 +408,7 @@ namespace Lettuce
             this.windowsToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(283, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(262, 24);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -606,30 +563,37 @@ namespace Lettuce
 			// disassemblyToolStripMenuItem
 			// 
 			this.disassemblyToolStripMenuItem.Name = "disassemblyToolStripMenuItem";
-			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.disassemblyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
 			this.disassemblyToolStripMenuItem.Text = "Disassembly";
 			this.disassemblyToolStripMenuItem.Click += new System.EventHandler(this.disassemblyToolStripMenuItem_Click);
 			// 
 			// memoryToolStripMenuItem1
 			// 
 			this.memoryToolStripMenuItem1.Name = "memoryToolStripMenuItem1";
-			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.memoryToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
 			this.memoryToolStripMenuItem1.Text = "Memory";
 			this.memoryToolStripMenuItem1.Click += new System.EventHandler(this.memoryToolStripMenuItem1_Click);
 			// 
 			// hardwareToolStripMenuItem
 			// 
 			this.hardwareToolStripMenuItem.Name = "hardwareToolStripMenuItem";
-			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.hardwareToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
 			this.hardwareToolStripMenuItem.Text = "Hardware";
 			this.hardwareToolStripMenuItem.Click += new System.EventHandler(this.hardwareToolStripMenuItem_Click);
+			// 
+			// watchesToolStripMenuItem
+			// 
+			this.watchesToolStripMenuItem.Name = "watchesToolStripMenuItem";
+			this.watchesToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.watchesToolStripMenuItem.Text = "Watches";
+			this.watchesToolStripMenuItem.Click += new System.EventHandler(this.watchesToolStripMenuItem_Click);
 			// 
 			// warningLabel
 			// 
 			this.warningLabel.BackColor = System.Drawing.SystemColors.Control;
-			this.warningLabel.Location = new System.Drawing.Point(12, 311);
+			this.warningLabel.Location = new System.Drawing.Point(9, 286);
 			this.warningLabel.Name = "warningLabel";
-			this.warningLabel.Size = new System.Drawing.Size(150, 19);
+			this.warningLabel.Size = new System.Drawing.Size(217, 19);
 			this.warningLabel.TabIndex = 5;
 			this.warningLabel.Text = "Invalid instruction!";
 			this.warningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -639,7 +603,7 @@ namespace Lettuce
 			// 
 			this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
 			this.pictureBox1.Image = global::Lettuce.Properties.Resources.warning;
-			this.pictureBox1.Location = new System.Drawing.Point(168, 311);
+			this.pictureBox1.Location = new System.Drawing.Point(232, 287);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -647,22 +611,46 @@ namespace Lettuce
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Visible = false;
 			// 
-			// watchesToolStripMenuItem
-			// 
-			this.watchesToolStripMenuItem.Name = "watchesToolStripMenuItem";
-			this.watchesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.watchesToolStripMenuItem.Text = "Watches";
-			this.watchesToolStripMenuItem.Click += new System.EventHandler(this.watchesToolStripMenuItem_Click);
-			// 
 			// Debugger
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(283, 337);
+			this.ClientSize = new System.Drawing.Size(262, 310);
+			this.Controls.Add(this.cycleCountLabel);
 			this.Controls.Add(this.pictureBox1);
+			this.Controls.Add(this.checkBoxOnFire);
 			this.Controls.Add(this.warningLabel);
-			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.labelQueuedInterrupts);
+			this.Controls.Add(this.buttonStepOver);
 			this.Controls.Add(this.menuStrip1);
+			this.Controls.Add(this.buttonStepInto);
+			this.Controls.Add(this.checkBoxRunning);
+			this.Controls.Add(this.checkBoxInterruptQueue);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.textBoxRegisterPC);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.textBoxRegisterIA);
+			this.Controls.Add(this.textBoxRegisterA);
+			this.Controls.Add(this.textBoxRegisterEX);
+			this.Controls.Add(this.label5);
+			this.Controls.Add(this.textBoxRegisterSP);
+			this.Controls.Add(this.textBoxRegisterX);
+			this.Controls.Add(this.label15);
+			this.Controls.Add(this.label6);
+			this.Controls.Add(this.label14);
+			this.Controls.Add(this.textBoxRegisterB);
+			this.Controls.Add(this.label13);
+			this.Controls.Add(this.label7);
+			this.Controls.Add(this.label12);
+			this.Controls.Add(this.textBoxRegisterY);
+			this.Controls.Add(this.textBoxRegisterJ);
+			this.Controls.Add(this.label8);
+			this.Controls.Add(this.label11);
+			this.Controls.Add(this.textBoxRegisterC);
+			this.Controls.Add(this.textBoxRegisterI);
+			this.Controls.Add(this.label9);
+			this.Controls.Add(this.label10);
+			this.Controls.Add(this.textBoxRegisterZ);
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
@@ -672,8 +660,6 @@ namespace Lettuce
 			this.Text = "Debugger";
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Debugger_KeyDown);
 			this.Resize += new System.EventHandler(this.Debugger_Resize);
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -684,8 +670,7 @@ namespace Lettuce
 
         #endregion
 
-		private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label labelQueuedInterrupts;
+		private System.Windows.Forms.Label labelQueuedInterrupts;
         private System.Windows.Forms.Button buttonStepOver;
         private System.Windows.Forms.Button buttonStepInto;
         private System.Windows.Forms.CheckBox checkBoxInterruptQueue;
