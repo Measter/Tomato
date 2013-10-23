@@ -74,6 +74,8 @@ namespace Lettuce
 			bool littleEndian = false, pairKeyboards = true;
 			List<Device> devices = new List<Device>();
 			CPU.IsRunning = false;
+			
+			#region Arguments
 			for( int i = 0; i < args.Length; i++ )
 			{
 				string arg = args[i];
@@ -176,7 +178,9 @@ namespace Lettuce
 					else
 						Debugger.LoadOrganicListing( args[i] );
 				}
-			}
+			} 
+			#endregion
+			
 			if( binFile == null )
 			{
 				var mc = new MemoryConfiguration();
