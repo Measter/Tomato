@@ -45,6 +45,7 @@ namespace Lettuce
 		{
 			ConfigFilePath = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData );
 			ConfigFilePath = Path.Combine( ConfigFilePath, ".lettuce" );
+			ConfigFilePath = Path.Combine( ConfigFilePath, "config.ini" );
 			Configuration = ConfigurationManager.LoadConfiguration( ConfigFilePath );
 
 			Application.EnableVisualStyles();
@@ -282,6 +283,8 @@ namespace Lettuce
 			timer = new System.Threading.Timer( FetchExecute, null, 10, Timeout.Infinite );
 			Application.Run( debugger );
 			timer.Dispose();
+
+			ConfigurationManager.SaveConfiguration( Configuration, ConfigFilePath );
 		}
 
 		static void AddWindow( DeviceHostForm window )

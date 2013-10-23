@@ -42,7 +42,6 @@ namespace Lettuce
         private void btnSave_Click(object sender, EventArgs e)
         {
             Program.Configuration.Keybindings = _bindings;
-            ConfigurationManager.SaveConfiguration(Program.Configuration, Program.ConfigFilePath);
             this.Close();
         }
     }
