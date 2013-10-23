@@ -49,6 +49,7 @@ namespace Lettuce
 						ref HardwareWindow hardWindow, ref WatchWindow watchWin )
 		{
 			InitializeComponent();
+
 			m_disWindow = disWindow;
 			m_disWindow.CPU = CPU;
 			m_disWindow.Debugger = this;
@@ -416,7 +417,6 @@ namespace Lettuce
 
 		public void ToggleRunning()
 		{
-			m_disWindow.Disassembly.EnableUpdates = false;
 			checkBoxRunning.Checked = !checkBoxRunning.Checked; // Run the CPU
 		}
 
@@ -682,6 +682,11 @@ namespace Lettuce
 		{
 			if( !m_watchWindow.Visible )
 				m_watchWindow.Show();
+		}
+
+		private void Debugger_FormClosed( object sender, FormClosedEventArgs e )
+		{
+			Program.Configuration.WindowPositions["debugWindow"] = this.Location;
 		}
 	}
 }

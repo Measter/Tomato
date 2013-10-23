@@ -505,7 +505,6 @@ namespace Lettuce
 			this.breakOnInvalidInstructionToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
 			this.breakOnInvalidInstructionToolStripMenuItem.Text = "Break on Invalid Instruction";
 			this.breakOnInvalidInstructionToolStripMenuItem.Click += new System.EventHandler(this.breakOnInvalidInstructionToolStripMenuItem_Click);
-			
 			// 
 			// settingsToolStripMenuItem
 			// 
@@ -631,6 +630,7 @@ namespace Lettuce
 			this.MaximumSize = new System.Drawing.Size(468, 1000);
 			this.Name = "Debugger";
 			this.Text = "Debugger";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Debugger_FormClosed);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Debugger_KeyDown);
 			this.Resize += new System.EventHandler(this.Debugger_Resize);
 			this.menuStrip1.ResumeLayout(false);

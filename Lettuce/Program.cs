@@ -244,7 +244,9 @@ namespace Lettuce
 			if( EnableAutomaticArrangement )
 			{
 				debugger.StartPosition = FormStartPosition.Manual;
-				if( RuntimeInfo.IsMacOSX )
+				if ( Configuration.WindowPositions.ContainsKey( "debugWindow" ) )
+					debugger.Location = Configuration.WindowPositions["debugWindow"];
+				else if ( RuntimeInfo.IsMacOSX )
 					debugger.Location = new Point( 0, 22 );
 				else
 					debugger.Location = new Point( 0, 0 );
