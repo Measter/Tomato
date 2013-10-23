@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -13,9 +14,12 @@ namespace Lettuce.Config
         //              function        Key    Mod
         public Dictionary<string, Tuple<Keys, Keys>> Keybindings;
 
+	    public Dictionary<string, Point> WindowPositions;
+
         public Configuration()
         {
             Keybindings = new Dictionary<string, Tuple<Keys, Keys>>();
+			WindowPositions = new Dictionary<string, Point>();
         }
     }
 
@@ -27,6 +31,11 @@ namespace Lettuce.Config
             {
                 config._iniFile["keys", bind.Key] = bind.Value.Item1 + "," + bind.Value.Item2;
             }
+	        foreach ( var bind in config.WindowPositions )
+	        {
+		        config._iniFile["positions", bind.Key] = bind.Value.X + "," + bind.Value.Y;
+	        }
+
             return INIFile.Write(path, config._iniFile);
         }
 
@@ -35,8 +44,8 @@ namespace Lettuce.Config
             var config = new Configuration();
             config._iniFile = INIFile.Read(path);
 
-            var keyBindings = config._iniFile.GetValuesInSection("keys");
-            foreach (var kvp in keyBindings)
+            var bindings = config._iniFile.GetValuesInSection("keys");
+            foreach (var kvp in bindings)
             {
                 var func = kvp.Key;
                 var rawKey = kvp.Value.Split(',');
@@ -45,6 +54,15 @@ namespace Lettuce.Config
 
                 config.Keybindings.Add(func, Tuple.Create(key1, key2));
             }
+	        bindings = config._iniFile.GetValuesInSection( "positions" );
+	        foreach ( var kvp in bindings )
+	        {
+		        var window = kvp.Key;
+		        var rawPos = kvp.Value.Split( ',' );
+		        var x = Int32.Parse( rawPos[0] );
+		        var y = Int32.Parse( rawPos[1] );
+		        config.WindowPositions.Add( window, new Point( x, y ) );
+	        }
             return config;
         }
     }
