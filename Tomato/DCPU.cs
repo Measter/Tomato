@@ -117,6 +117,8 @@ namespace Tomato
 				Cycles = 1;
 			else
 				Cycles += CyclesToExecute;
+			
+			#region Instruction Execution
 			while( Cycles > 0 )
 			{
 				if( IsOnFire )
@@ -395,7 +397,9 @@ namespace Tomato
 				}
 				if( !IsRunning && CyclesToExecute != -1 )
 					return;
-			}
+			} 
+			#endregion
+			
 			if( CyclesToExecute == -1 )
 			{
 				TotalCycles += -( Cycles - 1 );
