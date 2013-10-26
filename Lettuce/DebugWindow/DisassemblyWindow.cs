@@ -24,12 +24,22 @@ namespace Lettuce
 			InitializeComponent();
 			Disassembly = disassemblyDisplay1;
 			disassemblyDisplay1.KeyDown += OnKeyDown;
+
+			if( Program.Configuration.WindowSizes.ContainsKey( "disWindow" ) )
+				this.Size = Program.Configuration.WindowSizes["disWindow"];
+			if( Program.Configuration.WindowPositions.ContainsKey( "disWindow" ) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = Program.Configuration.WindowPositions["disWindow"];
+			}
 		}
 
 		private void DisassemblyWindow_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			e.Cancel = true;
 			Hide();
+			Program.Configuration.WindowSizes["disWindow"] = this.Size;
+			Program.Configuration.WindowPositions["disWindow"] = this.Location;
 		}
 		private void OnResize( object sender, EventArgs eventArgs )
 		{

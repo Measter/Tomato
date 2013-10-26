@@ -45,6 +45,14 @@ namespace Lettuce
 			ConnectedDevices = listBoxConnectedDevices;
 			PropertyGrid = propertyGrid1;
 			BreakOnInterrupt = checkBoxBreakOnInterrupt;
+
+			if( Program.Configuration.WindowSizes.ContainsKey( "hardWindow" ) )
+				this.Size = Program.Configuration.WindowSizes["hardWindow"];
+			if( Program.Configuration.WindowPositions.ContainsKey( "hardWindow" ) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = Program.Configuration.WindowPositions["hardWindow"];
+			}
 		}
 
 		public override bool OpenByDefault
@@ -59,6 +67,8 @@ namespace Lettuce
 		{
 			e.Cancel = true;
 			Hide();
+			Program.Configuration.WindowSizes["hardWindow"] = this.Size;
+			Program.Configuration.WindowPositions["hardWindow"] = this.Location;
 		}
 
 		private void ListBoxConnectedDevicesOnSelectedIndexChanged( object sender, EventArgs eventArgs )

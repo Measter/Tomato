@@ -35,12 +35,23 @@ namespace Lettuce
 			InitializeComponent();
 			Stack = stackDisplay;
 			Memory = rawMemoryDisplay;
+
+			if( Program.Configuration.WindowSizes.ContainsKey( "memWindow" ) )
+				this.Size = Program.Configuration.WindowSizes["memWindow"];
+			if( Program.Configuration.WindowPositions.ContainsKey( "memWindow" ) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = Program.Configuration.WindowPositions["memWindow"];
+			}
 		}
 
 		private void MemoryWindow_OnFormClosing( object sender, FormClosingEventArgs e )
 		{
 			e.Cancel = true;
 			Hide();
+
+			Program.Configuration.WindowSizes["memWindow"] = this.Size;
+			Program.Configuration.WindowPositions["memWindow"] = this.Location;
 		}
 		private void OnResize( object sender, EventArgs eventArgs )
 		{

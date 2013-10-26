@@ -37,6 +37,14 @@ namespace Lettuce
 		{
 			InitializeComponent();
 			WatchesList = watchesListView;
+
+			if( Program.Configuration.WindowSizes.ContainsKey( "watchWindow" ) )
+				this.Size = Program.Configuration.WindowSizes["watchWindow"];
+			if( Program.Configuration.WindowPositions.ContainsKey( "watchWindow" ) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = Program.Configuration.WindowPositions["watchWindow"];
+			}
 		}
 
 		public void UpdateWatches()
@@ -86,6 +94,9 @@ namespace Lettuce
 		{
 			e.Cancel = true;
 			this.Hide();
+
+			Program.Configuration.WindowSizes["watchWindow"] = this.Size;
+			Program.Configuration.WindowPositions["watchWindow"] = this.Location;
 		}
 
 		#region Overrides of DeviceHostForm
