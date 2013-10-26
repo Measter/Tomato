@@ -16,12 +16,14 @@ namespace Lettuce.Config
 
 	    public Dictionary<string, Point> WindowPositions;
 	    public Dictionary<string, Size> WindowSizes;
+	    public Dictionary<string, string> Misc;
 
 	    public Configuration()
         {
             Keybindings = new Dictionary<string, Tuple<Keys, Keys>>();
 			WindowPositions = new Dictionary<string, Point>();
 			WindowSizes = new Dictionary<string, Size>();
+			Misc = new Dictionary<string, string>();
         }
     }
 
@@ -35,6 +37,8 @@ namespace Lettuce.Config
 		        config._iniFile["positions", bind.Key] = bind.Value.X + "," + bind.Value.Y;
 	        foreach ( var bind in config.WindowSizes )
 		        config._iniFile["sizes", bind.Key] = bind.Value.Width + "," + bind.Value.Height;
+	        foreach ( var bind in config.Misc )
+		        config._iniFile["misc", bind.Key] = bind.Value;
 
 	        return INIFile.Write(path, config._iniFile);
         }
@@ -72,7 +76,11 @@ namespace Lettuce.Config
 				var y = Int32.Parse( rawPos[1] );
 				config.WindowSizes.Add( window, new Size(x, y) );
 			}
-            return config;
+			bindings = config._iniFile.GetValuesInSection( "misc" );
+	        foreach ( var kvp in bindings )
+		        config.Misc.Add( kvp.Key, kvp.Value );
+
+	        return config;
         }
     }
 }
