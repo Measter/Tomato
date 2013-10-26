@@ -83,6 +83,14 @@ namespace Lettuce
 			m_disWindow.Disassembly.CPU = this.CPU;
 
 			Watches = new List<string>();
+
+			if ( Program.Configuration.Misc.ContainsKey( "watches" ) )
+			{
+				string rawWatchList = Program.Configuration.Misc["watches"];
+				string[] splitWatches = rawWatchList.Split( new[] {','}, StringSplitOptions.RemoveEmptyEntries );
+				Watches.AddRange( splitWatches );
+			}
+
 			foreach( Device d in CPU.Devices )
 			{
 				m_hardWindow.ConnectedDevices.Items.Add( d.FriendlyName );
@@ -691,6 +699,15 @@ namespace Lettuce
 			m_hardWindow.Close();
 			m_watchWindow.Close();
 			m_disWindow.Close();
+
+			StringBuilder watchBuilder = new StringBuilder();
+			foreach ( string watch in Watches )
+			{
+				watchBuilder.Append( watch );
+				watchBuilder.Append( ',' );
+			}
+
+			Program.Configuration.Misc["watches"] = watchBuilder.ToString();
 		}
 	}
 }
