@@ -257,11 +257,8 @@ namespace Lettuce
 			screenLocation.Y = debugger.Location.Y + 4;
 			screenLocation.X = debugger.Location.X + debugger.Width + 5;
 
-			// Add disassembly and memory windows.
-			AddWindow( memWin );
-			AddWindow( disWin );
-			AddWindow( hardWin );
-			AddWindow( watchWin );
+			disWin.Show();
+			memWin.Show();
 
 			foreach( Device d in CPU.Devices )
 			{
