@@ -15,11 +15,13 @@ namespace Lettuce.Config
         public Dictionary<string, Tuple<Keys, Keys>> Keybindings;
 
 	    public Dictionary<string, Point> WindowPositions;
+	    public Dictionary<string, Size> WindowSizes;
 
-        public Configuration()
+	    public Configuration()
         {
             Keybindings = new Dictionary<string, Tuple<Keys, Keys>>();
 			WindowPositions = new Dictionary<string, Point>();
+			WindowSizes = new Dictionary<string, Size>();
         }
     }
 
@@ -27,16 +29,14 @@ namespace Lettuce.Config
     {
         public static bool SaveConfiguration(Configuration config, string path)
         {
-            foreach (var bind in config.Keybindings)
-            {
-                config._iniFile["keys", bind.Key] = bind.Value.Item1 + "," + bind.Value.Item2;
-            }
+	        foreach ( var bind in config.Keybindings )
+		        config._iniFile["keys", bind.Key] = bind.Value.Item1 + "," + bind.Value.Item2;
 	        foreach ( var bind in config.WindowPositions )
-	        {
 		        config._iniFile["positions", bind.Key] = bind.Value.X + "," + bind.Value.Y;
-	        }
+	        foreach ( var bind in config.WindowSizes )
+		        config._iniFile["sizes", bind.Key] = bind.Value.Width + "," + bind.Value.Height;
 
-            return INIFile.Write(path, config._iniFile);
+	        return INIFile.Write(path, config._iniFile);
         }
 
         public static Configuration LoadConfiguration(string path)
@@ -63,6 +63,15 @@ namespace Lettuce.Config
 		        var y = Int32.Parse( rawPos[1] );
 		        config.WindowPositions.Add( window, new Point( x, y ) );
 	        }
+			bindings = config._iniFile.GetValuesInSection( "sizes" );
+			foreach( var kvp in bindings )
+			{
+				var window = kvp.Key;
+				var rawPos = kvp.Value.Split( ',' );
+				var x = Int32.Parse( rawPos[0] );
+				var y = Int32.Parse( rawPos[1] );
+				config.WindowSizes.Add( window, new Size(x, y) );
+			}
             return config;
         }
     }
