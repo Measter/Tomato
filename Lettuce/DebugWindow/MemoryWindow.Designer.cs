@@ -144,6 +144,8 @@ namespace Lettuce
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size( 483, 365 );
 			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
+			this.FormClosing += MemoryWindow_OnFormClosing;
+			this.Resize += OnResize;
 			this.Name = "MemoryWindow";
 			this.Text = "Memory";
 			this.menuStrip1.ResumeLayout( false );
