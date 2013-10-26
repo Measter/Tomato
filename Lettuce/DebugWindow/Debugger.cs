@@ -687,6 +687,10 @@ namespace Lettuce
 		private void Debugger_FormClosed( object sender, FormClosedEventArgs e )
 		{
 			Program.Configuration.WindowPositions["debugWindow"] = this.Location;
+			m_memWindow.Close();
+			m_hardWindow.Close();
+			m_watchWindow.Close();
+			m_disWindow.Close();
 		}
 	}
 }
