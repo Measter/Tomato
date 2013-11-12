@@ -212,6 +212,8 @@ namespace Lettuce
 			if( IsMouseWithin && !CPU.IsRunning ) // TODO: Make this more versatile, probably integrate with organic
 			{
 				int x = MouseLocation.X;
+				List<string> tooltipLines = new List<string>();
+				int len = this.Width;
 				for( int y = 0; y < this.Height; y += gutterSize.Height + 2 )
 				{
 					if( Disassembly[index].IsLabel || Disassembly[index].Code.StartsWith( "DAT" ) )
@@ -219,68 +221,54 @@ namespace Lettuce
 						index++;
 						continue;
 					}
-					Size size = TextRenderer.MeasureText( "0000: " + Disassembly[index].Code, Program.MonoFont );
-					size.Width += 12;
-					Rectangle textRect = new Rectangle( new Point( 0, y ), size );
+
+					string dispCode;
+					if ( !Debugger.KnownCode.ContainsKey( Disassembly[index].Address ) || Disassembly[index].IsLabel )
+						dispCode = Disassembly[index].Code;
+					else
+						dispCode = Debugger.KnownCode[Disassembly[index].Address];
+
+					Size size = new Size( this.Width, gutterSize.Height + 2 );
+					Rectangle textRect = new Rectangle( new Point( gutterSize.Width+3, y ), size );
 					Rectangle mouseRect = new Rectangle( new Point( x, MouseLocation.Y ), new Size( 1, 1 ) );
 					if( textRect.IntersectsWith( mouseRect ) )
 					{
 						ushort oldPC = CPU.PC;
 						ushort oldSP = CPU.SP;
 						CPU.PC = (ushort)( Disassembly[index].Address + 1 );
-						int right, left;
 						ushort valueAcalc = CPU.Get( Disassembly[index].ValueA );
 						ushort valueBcalc = CPU.Get( Disassembly[index].ValueB );
-						if( Disassembly[index].Opcode == 0 )
+
+						// Highlight line.
+						e.Graphics.FillRectangle( lightBlueBrush, gutterSize.Width + 3, y, len, size.Height );
+
+						if( !Debugger.KnownCode.ContainsKey( Disassembly[index].Address ) || Disassembly[index].IsLabel )
+							e.Graphics.DrawString( dispCode, Program.MonoFont, blackBrush, 2 + gutterSize.Width + 3, y );
+						else
+							e.Graphics.DrawString( dispCode, Program.MonoFont, blackBrush, 2 + gutterSize.Width + 3, y );
+
+						// Calculate height of box.
+						int locY = y + size.Height;
+						int sizeY;
+						if ( Disassembly[index].Opcode == 0 )
+							sizeY = gutterSize.Height;
+						else
+							sizeY = gutterSize.Height*2;
+						if ( ( locY + sizeY ) > this.Height )
+							locY = y - gutterSize.Height*2;
+
+						// Value B.
+						tooltipLines.Add( Disassembly[index].ValueBText + " = 0x" + Debugger.GetHexString( valueBcalc, 4 ) );
+						// Value A.
+						if ( Disassembly[index].Opcode != 0 )
+							tooltipLines.Add( Disassembly[index].ValueAText + " = 0x" + Debugger.GetHexString( valueAcalc, 4 ) );
+
+						e.Graphics.FillRectangle( lightBlueBrush, gutterSize.Width + 3, locY, len, sizeY );
+
+						for ( int i = 0; i < tooltipLines.Count; i++ )
 						{
-							left = int.MaxValue;
-							right = TextRenderer.MeasureText( "0000: " + Disassembly[index].OpcodeText + " ", Program.MonoFont ).Width + 8;
-						} else
-						{
-							left = TextRenderer.MeasureText( "0000: " + Disassembly[index].OpcodeText + " ", Program.MonoFont ).Width + 7;
-							right = left + TextRenderer.MeasureText( Disassembly[index].ValueBText, Program.MonoFont ).Width;
-						}
-						if( x >= left && x <= right )
-						{
-							// hovering over value B
-							if( Disassembly[index].ValueB <= 0x1E )
-							{
-								e.Graphics.FillRectangle( lightBlueBrush, new Rectangle( new Point( left, y ),
-									TextRenderer.MeasureText( Disassembly[index].ValueBText, Program.MonoFont ) ) );
-								e.Graphics.DrawString( Disassembly[index].ValueBText, Program.MonoFont, blackBrush, new PointF( left, y ) );
-								int locationY = y + size.Height;
-								if( this.Height / 2 < y )
-									locationY = y - size.Height;
-								string text = Disassembly[index].ValueBText + " = 0x" + Debugger.GetHexString( valueBcalc, 4 );
-								Size hoverSize = TextRenderer.MeasureText( text, Program.MonoFont );
-								hoverSize.Width += 3;
-								e.Graphics.FillRectangle( lightBlueBrush, new Rectangle( new Point(
-									( left + ( TextRenderer.MeasureText( Disassembly[index].ValueBText, Program.MonoFont ).Width / 2 ) ) -
-									( hoverSize.Width / 2 ), locationY ), hoverSize ) );
-								e.Graphics.DrawString( text, Program.MonoFont, blackBrush, new Point(
-									( left + ( TextRenderer.MeasureText( Disassembly[index].ValueBText, Program.MonoFont ).Width / 2 ) ) -
-									( hoverSize.Width / 2 ), locationY ) );
-							}
-						} else if( x >= right + 8 )
-						{
-							// hovering over value A
-							if( Disassembly[index].ValueA <= 0x1E )
-							{
-								e.Graphics.FillRectangle( lightBlueBrush, new Rectangle( new Point( right + 8, y ),
-									TextRenderer.MeasureText( Disassembly[index].ValueAText, Program.MonoFont ) ) );
-								e.Graphics.DrawString( Disassembly[index].ValueAText, Program.MonoFont, blackBrush, new PointF( right + 8, y ) );
-								int locationY = y + size.Height;
-								if( this.Height / 2 < y )
-									locationY = y - size.Height;
-								string text = Disassembly[index].ValueAText + " = 0x" + Debugger.GetHexString( valueAcalc, 4 );
-								Size hoverSize = TextRenderer.MeasureText( text, Program.MonoFont );
-								e.Graphics.FillRectangle( lightBlueBrush, new Rectangle( new Point(
-									( right + 8 + ( TextRenderer.MeasureText( Disassembly[index].ValueAText, Program.MonoFont ).Width / 2 ) ) -
-									( hoverSize.Width / 2 ), locationY ), hoverSize ) );
-								e.Graphics.DrawString( text, Program.MonoFont, blackBrush, new Point(
-									( right + 8 + ( TextRenderer.MeasureText( Disassembly[index].ValueAText, Program.MonoFont ).Width / 2 ) ) -
-									( hoverSize.Width / 2 ), locationY ) );
-							}
+							e.Graphics.DrawString( tooltipLines[i], Program.MonoFont, blackBrush,
+							                       new PointF( 2 + gutterSize.Width + 3, locY + ( gutterSize.Height*i ) ) );
 						}
 						CPU.PC = oldPC;
 						CPU.SP = oldSP;
