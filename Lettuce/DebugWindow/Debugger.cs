@@ -545,7 +545,7 @@ namespace Lettuce
 				string addressText = line.Remove( line.IndexOf( ']' ) );
 				addressText = addressText.Substring( line.IndexOf( '[' ) + 3 ).Trim();
 				ushort address = 0;
-				if( addressText != "NOLIST" )
+				if( addressText != "LIST" )	// Start of NOLIST gets cut off.
 					address = ushort.Parse( addressText, NumberStyles.HexNumber );
 				if( line.Substring( line.IndexOf( " " ) ).Trim().StartsWith( "ERROR" ) )
 					continue;
@@ -561,11 +561,8 @@ namespace Lettuce
 						KnownLabels.Add( address, line );
 				} else
 				{
-					if( !_line.Contains( "                      " ) && !line.ToLower().StartsWith( "." ) ) // .dat directive stuff
-					{
-						if( !KnownCode.ContainsKey( address ) )
-							KnownCode.Add( address, line );
-					}
+					if(!line.StartsWith( "." ) && !KnownCode.ContainsKey( address ) )
+						KnownCode.Add( address, line );
 				}
 			}
 		}
