@@ -160,17 +160,16 @@ namespace Lettuce
 			{
 				string address = Debugger.GetHexString( Disassembly[index].Address, 4 ) + ": ";
 				Brush foreground = blackBrush;
-				if( dark )
-					e.Graphics.FillRectangle( lightGreyBrush, new Rectangle( 0, y, this.Width, gutterSize.Height + 2 ) );
-				dark = !dark;
-
+				
 				bool isBreakPoint = CPU.Breakpoints.Any( b => b.Address == Disassembly[index].Address );
-
 				if( isBreakPoint )
 				{
 					e.Graphics.FillRectangle( darkRedBrush, new Rectangle( 0, y, this.Width, gutterSize.Height + 2 ) );
 					foreground = Brushes.White;
-				}
+				} else if ( dark )
+					e.Graphics.FillRectangle( lightGreyBrush, new Rectangle( 0, y, this.Width, gutterSize.Height + 2 ) );
+				dark = !dark;
+					
 				if( Disassembly[index].Address == CPU.PC )
 				{
 					if( isBreakPoint )
@@ -179,13 +178,9 @@ namespace Lettuce
 							e.Graphics.FillRectangle( yellowBrush, new Rectangle( 0, y + 2, this.Width, gutterSize.Height ) );
 						else
 						{
-							if( index != 0 )
-							{
-								if( Disassembly[index - 1].IsLabel )
-									e.Graphics.FillRectangle( yellowBrush, new Rectangle( 0, y, this.Width, gutterSize.Height ) );
-								else
-									e.Graphics.FillRectangle( yellowBrush, new Rectangle( 0, y + 2, this.Width, gutterSize.Height - 2 ) );
-							} else
+							if( index != 0 && Disassembly[index - 1].IsLabel )
+								e.Graphics.FillRectangle( yellowBrush, new Rectangle( 0, y, this.Width, gutterSize.Height ) );
+							else
 								e.Graphics.FillRectangle( yellowBrush, new Rectangle( 0, y + 2, this.Width, gutterSize.Height - 2 ) );
 						}
 					} else
