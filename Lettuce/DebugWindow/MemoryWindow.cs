@@ -5,7 +5,7 @@ using Tomato.Hardware;
 
 namespace Lettuce
 {
-	public partial class MemoryWindow : DeviceHostForm
+	public partial class MemoryWindow : Form
 	{
 		public MemoryDisplay Stack
 		{
@@ -75,16 +75,9 @@ namespace Lettuce
 			rawMemoryDisplay.gotoAddressToolStripMenuItem_Click( sender, e );
 		}
 
-		#region Overrides of DeviceHostForm
-
-		public override Device[] ManagedDevices
+		private void MemoryWindow_Shown( object sender, EventArgs e )
 		{
-			get
-			{
-				return new Device[] { };
-			}
+			this.Icon = Debugger.Icon;
 		}
-
-		#endregion
 	}
 }

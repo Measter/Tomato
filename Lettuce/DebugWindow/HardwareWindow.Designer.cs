@@ -36,7 +36,6 @@ namespace Lettuce
 			this.listBoxConnectedDevices = new System.Windows.Forms.ListBox();
 			this.label17 = new System.Windows.Forms.Label();
 			this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-			ComponentResourceManager resources = new ComponentResourceManager( typeof( LEM1802Window ) );
 			this.SuspendLayout();
 			// 
 			// checkBoxBreakOnInterrupt
@@ -50,7 +49,7 @@ namespace Lettuce
 			this.checkBoxBreakOnInterrupt.TabIndex = 5;
 			this.checkBoxBreakOnInterrupt.Text = "Break on Interrupt";
 			this.checkBoxBreakOnInterrupt.UseVisualStyleBackColor = true;
-			this.checkBoxBreakOnInterrupt.CheckedChanged += CheckBoxBreakOnInterruptOnCheckedChanged;
+			this.checkBoxBreakOnInterrupt.CheckedChanged += new System.EventHandler(this.CheckBoxBreakOnInterruptOnCheckedChanged);
 			// 
 			// listBoxConnectedDevices
 			// 
@@ -62,8 +61,8 @@ namespace Lettuce
 			this.listBoxConnectedDevices.Name = "listBoxConnectedDevices";
 			this.listBoxConnectedDevices.Size = new System.Drawing.Size(183, 183);
 			this.listBoxConnectedDevices.TabIndex = 4;
-			this.listBoxConnectedDevices.SelectedIndexChanged += ListBoxConnectedDevicesOnSelectedIndexChanged;
-			this.listBoxConnectedDevices.MouseDoubleClick += ListBoxConnectedDevicesOnMouseDoubleClick;
+			this.listBoxConnectedDevices.SelectedIndexChanged += new System.EventHandler(this.ListBoxConnectedDevicesOnSelectedIndexChanged);
+			this.listBoxConnectedDevices.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBoxConnectedDevicesOnMouseDoubleClick);
 			// 
 			// label17
 			// 
@@ -83,22 +82,22 @@ namespace Lettuce
 			this.propertyGrid1.Name = "propertyGrid1";
 			this.propertyGrid1.Size = new System.Drawing.Size(237, 261);
 			this.propertyGrid1.TabIndex = 6;
-			this.propertyGrid1.PropertyValueChanged += PropertyGrid1OnPropertyValueChanged;
+			this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PropertyGrid1OnPropertyValueChanged);
 			// 
-			// Hardware
+			// HardwareWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(450, 282);
-			this.MinimumSize = ClientSize;
 			this.Controls.Add(this.propertyGrid1);
 			this.Controls.Add(this.checkBoxBreakOnInterrupt);
 			this.Controls.Add(this.listBoxConnectedDevices);
 			this.Controls.Add(this.label17);
-			this.Name = "Hardware";
+			this.MinimumSize = this.ClientSize;
+			this.Name = "HardwareWindow";
 			this.Text = "Hardware";
-			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Hardware_FormClosing);
+			this.Shown += new System.EventHandler(this.HardwareWindow_Shown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

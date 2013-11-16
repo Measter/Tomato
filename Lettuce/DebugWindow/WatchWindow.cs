@@ -5,16 +5,8 @@ using Tomato.Hardware;
 
 namespace Lettuce
 {
-	public partial class WatchWindow : DeviceHostForm
-	{
-		public override bool OpenByDefault
-		{
-			get
-			{
-				return false;
-			}
-		}
-
+	public partial class WatchWindow : Form
+	{										  
 		public ListView WatchesList
 		{
 			get;
@@ -37,6 +29,8 @@ namespace Lettuce
 		{
 			InitializeComponent();
 			WatchesList = watchesListView;
+
+			
 
 			if( Program.Configuration.WindowSizes.ContainsKey( "watchWindow" ) )
 				this.Size = Program.Configuration.WindowSizes["watchWindow"];
@@ -99,16 +93,9 @@ namespace Lettuce
 			Program.Configuration.WindowPositions["watchWindow"] = this.Location;
 		}
 
-		#region Overrides of DeviceHostForm
-
-		public override Device[] ManagedDevices
+		private void WatchWindow_Shown( object sender, EventArgs e )
 		{
-			get
-			{
-				return new Device[] { };
-			}
+			this.Icon = Debugger.Icon;
 		}
-
-		#endregion
 	}
 }

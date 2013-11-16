@@ -6,7 +6,7 @@ using Tomato.Hardware;
 
 namespace Lettuce
 {
-	public partial class HardwareWindow : DeviceHostForm
+	public partial class HardwareWindow : Form
 	{
 		public ListBox ConnectedDevices
 		{
@@ -55,14 +55,6 @@ namespace Lettuce
 			}
 		}
 
-		public override bool OpenByDefault
-		{
-			get
-			{
-				return false;
-			}
-		}
-
 		private void Hardware_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			e.Cancel = true;
@@ -104,18 +96,9 @@ namespace Lettuce
 			Debugger.ResetLayout();
 		}
 
-		#region Overrides of DeviceHostForm
-
-		public override Device[] ManagedDevices
+		private void HardwareWindow_Shown( object sender, EventArgs e )
 		{
-			get
-			{
-				return new Device[] { };
-			}
+			this.Icon = Debugger.Icon;
 		}
-
-		
-
-		#endregion
 	}
 }

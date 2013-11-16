@@ -8,7 +8,7 @@ using Tomato.Hardware;
 
 namespace Lettuce
 {
-	public partial class DisassemblyWindow : DeviceHostForm
+	public partial class DisassemblyWindow : Form
 	{
 		public DCPU CPU { get; set; }
 		public Debugger Debugger { get; set; }
@@ -127,16 +127,10 @@ namespace Lettuce
 			Debugger.ResetLayout();
 		}
 
-		#region Overrides of DeviceHostForm
-
-		public override Device[] ManagedDevices
+		private void DisassemblyWindow_Shown( object sender, EventArgs e )
 		{
-			get
-			{
-				return new Device[] { };
-			}
+			this.Icon = Debugger.Icon;
 		}
 
-		#endregion
 	}
 }

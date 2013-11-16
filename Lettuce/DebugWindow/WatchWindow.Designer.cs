@@ -37,8 +37,7 @@ namespace Lettuce
 			this.expressionHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.resultHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.watchesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.removeWatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();			 
-			ComponentResourceManager resources = new ComponentResourceManager( typeof( LEM1802Window ) );
+			this.removeWatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.watchesContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -117,8 +116,8 @@ namespace Lettuce
 			this.MaximizeBox = false;
 			this.Name = "WatchWindow";
 			this.Text = "Watches";
-			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WatchWindow_FormClosing);
+			this.Shown += new System.EventHandler(this.WatchWindow_Shown);
 			this.watchesContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
