@@ -71,6 +71,7 @@ namespace Lettuce
             this.expressionHeader,
             this.resultHeader});
 			this.watchesListView.ContextMenuStrip = this.watchesContextMenuStrip;
+			this.watchesListView.FullRowSelect = true;
 			this.watchesListView.Location = new System.Drawing.Point(12, 12);
 			this.watchesListView.MultiSelect = false;
 			this.watchesListView.Name = "watchesListView";
@@ -78,6 +79,8 @@ namespace Lettuce
 			this.watchesListView.TabIndex = 12;
 			this.watchesListView.UseCompatibleStateImageBehavior = false;
 			this.watchesListView.View = System.Windows.Forms.View.Details;
+			this.watchesListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.watchesListView_MouseClick);
+			this.watchesListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.watchesListView_MouseDoubleClick);
 			// 
 			// expressionHeader
 			// 
