@@ -5,7 +5,7 @@ itself is a .NET library for emulating DCPU-16 and all official 0x10c hardware. 
 is Lettuce, a graphical debugger for DCPU-16 programs. Also included is Pickles, a text-based
 debugger for the command line. All three run on Windows, Linux, and Mac.
 
-[![Download latest version](http://i.imgur.com/cMhpN.png)](http://sircmpwn.github.com/Tomato/Lettuce.zip)
+[![Download latest version](http://i.imgur.com/cMhpN.png)](https://github.com/Measter/Tomato/releases)
 
 ## Features
 
@@ -19,7 +19,7 @@ debugger for the command line. All three run on Windows, Linux, and Mac.
   * M35FD
 * Accurate 100 KHz timing
 * Modular - use Tomato in your own projects easily
-* Load up [Organic](https://github.com/SirCmpwn/Organic) listings for better debugging
+* Load up [Organic](https://github.com/Measter/organic) listings for better debugging
 * Record LEM-1802 and SPED-3 displays as an animated GIF
 * Use any number of devices in any configuration
 
@@ -35,24 +35,24 @@ On Linux and Mac, you must first install Mono to use any Tomato-based software.
 
 ### Tomato
 
-Tomato is easy. Simply head to the [Downloads](https://github.com/SirCmpwn/Tomato/downloads)
+Tomato is easy. Simply head to the [Downloads](https://github.com/Measter/Tomato/releases)
 page and grab Tomato.dll, which you can immediately begin using in your projects.
 
 ### Lettuce
 
 Lettuce is also easy, but requires OpenGL to emulate SPED-3 devices. Grab Lettuce from the
-[Downloads](https://github.com/SirCmpwn/Tomato/downloads) page and head over to
+[Downloads](https://github.com/Measter/Tomato/releases) page and head over to
 http://www.opengl.org/ for information on installing OpenGL (hint: you probably already have
 it installed).
 
 ### Pickles
 
 Pickles is as easy as Tomato. Grab it from the
-[Downloads](https://github.com/SirCmpwn/Tomato/downloads) page to get started.
+[Downloads](https://github.com/Measter/Tomato/releases) page to get started.
 
 ## Usage
 
-If you just want a quick emulator, grab [Lettuce](https://github.com/SirCmpwn/Tomato/downloads)
+If you just want a quick emulator, grab [Lettuce](https://github.com/Measter/Tomato/releases)
 and run it. On Windows, double click the file. On Linux or Mac, run this:
 
     mono Lettuce.exe
