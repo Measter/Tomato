@@ -146,7 +146,7 @@ namespace Lettuce
 			Disassembly = disassembler.FastDisassemble( ref CPU.Memory, SelectedAddress, (ushort)( SelectedAddress + 100 ) );
 
 			int index = 0;
-			bool setLast = false, dark = SelectedAddress % 2 == 0;
+			bool setLast = false, dark = SelectedAddress%2 == 0, hasBroke = false;
 
 			Brush yellowBrush = Brushes.Yellow;
 			Brush blackBrush = Brushes.Black;
@@ -158,6 +158,12 @@ namespace Lettuce
 			#region Draw Loop
 			for( int y = 0; y < this.Height; y += gutterSize.Height + 2 )
 			{
+				if( index == Disassembly.Count )
+				{
+					hasBroke = true;
+					break;
+				}
+
 				string address = Debugger.GetHexString( Disassembly[index].Address, 4 ) + ": ";
 				Brush foreground = blackBrush;
 				
@@ -205,9 +211,12 @@ namespace Lettuce
 				index++;
 			} 
 			#endregion
-			if( !setLast )
+			if( !setLast && hasBroke )
+				EndAddress = Disassembly[Disassembly.Count - 1].Address;
+			else if( !setLast )
 				EndAddress = Disassembly[index--].Address;
 			index = 0;
+			hasBroke = false;
 			#region Mouse Over
 			if( IsMouseWithin && !CPU.IsRunning ) // TODO: Make this more versatile, probably integrate with organic
 			{
@@ -216,6 +225,12 @@ namespace Lettuce
 				int len = this.Width;
 				for( int y = 0; y < this.Height; y += gutterSize.Height + 2 )
 				{
+					if( index == Disassembly.Count )
+					{
+						hasBroke = true;
+						break;
+					}
+
 					if( Disassembly[index].IsLabel || Disassembly[index].Code.StartsWith( "DAT" ) )
 					{
 						index++;
