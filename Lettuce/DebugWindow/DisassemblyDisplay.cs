@@ -142,8 +142,11 @@ namespace Lettuce
 				return;
 			}
 
+			ushort disNum = (ushort)( this.Height / ( gutterSize.Height + 2 ) + 1 );
+			disNum *= 2;
+
 			FastDisassembler disassembler = new FastDisassembler( Debugger.KnownLabels );
-			Disassembly = disassembler.FastDisassemble( ref CPU.Memory, SelectedAddress, (ushort)( SelectedAddress + 100 ) );
+			Disassembly = disassembler.FastDisassemble( ref CPU.Memory, SelectedAddress, (ushort)( SelectedAddress + disNum ) );
 
 			int index = 0;
 			bool setLast = false, dark = SelectedAddress%2 == 0, hasBroke = false;
